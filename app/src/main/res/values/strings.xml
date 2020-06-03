@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Java Mods Optimiser</string>
+    <string name="Button_choose_file">Pick file</string>
+    <string name="File_picked">File Picked:</string>
+</resources>
