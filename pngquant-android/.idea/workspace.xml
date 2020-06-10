@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9154178d-265c-4fb9-82ee-a6f118eac37d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/jni/native_glue.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jni/native_glue.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jni/pngquant" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jni/pngquant" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jni/pngquant.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jni/pngquant.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jni/pngquant.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jni/pngquant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jni/pngquant/lib/libimagequant.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jni/pngquant/lib/libimagequant.c" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1cr1eKcNz6tirZOQyUVIGJe21Th" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="show.unlinked.gradle.project.popup" value="true" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9154178d-265c-4fb9-82ee-a6f118eac37d" name="Default Changelist" comment="" />
+      <created>1591271995072</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1591271995072</updated>
+      <workItem from="1591272032749" duration="403000" />
+      <workItem from="1591278583083" duration="2206000" />
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1812" y="140" width="1506" height="1017" maximized="true" key="dock-window-1" timestamp="1591279829816">
+      <screen x="0" y="0" width="3360" height="1056" />
+    </state>
+    <state x="1812" y="140" width="1506" height="1017" maximized="true" key="dock-window-1/0.0.3360.1056@0.0.3360.1056" timestamp="1591279829816" />
+    <state x="2095" y="176" width="1265" height="704" key="find.popup" timestamp="1591280751094">
+      <screen x="0" y="0" width="3360" height="1056" />
+    </state>
+    <state x="411" y="178" width="949" height="522" key="find.popup/0.0.1440.876@0.0.1440.876" timestamp="1591279257490" />
+    <state x="2095" y="176" width="1265" height="704" key="find.popup/0.0.3360.1056@0.0.3360.1056" timestamp="1591280751094" />
+  </component>
+</project>

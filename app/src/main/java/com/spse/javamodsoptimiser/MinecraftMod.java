@@ -100,6 +100,12 @@ public class MinecraftMod{
         if (soundPath == null){return "NULL";}
         return soundPath[soundIndex];
     }
+    public String[] getSoundPaths(){
+        return soundPath;
+    }
+    public String[] getTexturePaths(){
+        return texturePath;
+    }
 
 
 

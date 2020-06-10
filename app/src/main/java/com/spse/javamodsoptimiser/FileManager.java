@@ -143,4 +143,12 @@ public class FileManager {
             throw new java.io.IOException("failed to rename the file !");
         }
     }
+
+    public static boolean fileExists(String absolutePath){
+        File file = new File(absolutePath);
+        if (file.exists()){
+            return true;
+        }
+        return false;
+    }
 }
