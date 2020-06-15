@@ -1,6 +1,7 @@
-package com.spse.javamodsoptimiser;
+package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
+import android.widget.ProgressBar;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
 
@@ -10,13 +11,18 @@ import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 import static com.spse.javamodsoptimiser.FileManager.renameFile;
 
-public class SoundOptimizer extends AsyncTask<Object, Void, Void> {
+public class SoundOptimizer extends AsyncTask<Task, Object, Void> {
 
     @Override
-    public Void doInBackground(Object ... argument){
+    public Void doInBackground(Task[] task){
         //Parse arguments
-        String[] soundPaths = (String[]) argument[0];
-        int soundNumber = (int) argument[1];
+        String[] soundPaths = (String[]) task[0].getArgument(0);
+        int soundNumber = soundPaths.length;
+
+        ProgressBar progressBar = task[0].getProgressBar();
+        float increment = 100f/soundNumber;
+        float progress = 0;
+        int intProgress;
 
 
         for(int i=0; i < soundNumber; i++) {
@@ -32,10 +38,21 @@ public class SoundOptimizer extends AsyncTask<Object, Void, Void> {
                     e.printStackTrace();
                 }
             }
+            progress += increment;
+            intProgress = Math.round(progress);
+            publishProgress(progressBar,intProgress);
         }
 
         return null;
     }
 
+    @Override
+    protected void onProgressUpdate(Object... argument) {
+        super.onProgressUpdate(argument);
 
+        ProgressBar progressBar = (ProgressBar) argument[0];
+        int progress = (int) argument[1];
+
+        progressBar.setProgress(progress, true);
+    }
 }

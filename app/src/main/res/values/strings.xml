@@ -2,4 +2,28 @@
     <string name="app_name">Java Mods Optimiser</string>
     <string name="Button_choose_file">Pick file</string>
     <string name="File_picked">File Picked:</string>
+
+    <string name="mod_info_title">Information:</string>
+    <string name="mod_info_name">Name: </string>
+    <string name="mod_info_minecraft_version">Made for: </string>
+    <string name="mod_info_version">Version: </string>
+    <string name="mod_info_texture_number">Textures: </string>
+    <string name="mod_info_sound_number">Sounds: </string>
+
+    <string name="option_delete_original">Delete original file</string>
+    <string name="option_really_low_quality">Make the mod even smaller (reduce quality)</string>
+    <string name="option_parallel_workload">Multi-Threaded workload (usually faster)</string>
+    <string name="option_remove_signature">Remove META_INF folder</string>
+    <string name="options_remove_miscellaneous">Remove miscellaneous files</string>
+
+    <string name="process_status_title">Status:</string>
+    <string name="process_status_copying">Copying:</string>
+    <string name="process_status_unzipping">Unzipping:</string>
+    <string name="process_status_parsing">Parsing:</string>
+    <string name="process_status_texture">Textures:</string>
+    <string name="process_status_sound">Sounds:</string>
+    <string name="process_status_zipping">Repacking:</string>
+
+    <string name="text_output_optimizing">Optimizing </string>
+
 </resources>

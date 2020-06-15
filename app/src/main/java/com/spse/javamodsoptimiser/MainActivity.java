@@ -4,35 +4,48 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.arthenica.mobileffmpeg.Config;
-import com.arthenica.mobileffmpeg.FFmpeg;
 import com.codekidlabs.storagechooser.StorageChooser;
-import com.nicdahlquist.pngquant.LibPngQuant;
+import com.spse.javamodsoptimiser.asynctask.FileCopier;
+import com.spse.javamodsoptimiser.asynctask.FileParser;
+import com.spse.javamodsoptimiser.asynctask.FileUnzipper;
+import com.spse.javamodsoptimiser.asynctask.FileZipper;
+import com.spse.javamodsoptimiser.asynctask.SoundOptimizer;
+import com.spse.javamodsoptimiser.asynctask.Task;
+import com.spse.javamodsoptimiser.asynctask.TextureOptimizer;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_CANCEL;
-import static com.arthenica.mobileffmpeg.Config.RETURN_CODE_SUCCESS;
-import static com.spse.javamodsoptimiser.FileManager.copyFile;
-import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
-import static com.spse.javamodsoptimiser.FileManager.renameFile;
-import static com.spse.javamodsoptimiser.FileManager.unzip;
 
 
 public class MainActivity extends AppCompatActivity {
-    String folderPath = Environment.getExternalStorageDirectory().toString().concat("/Mods Optimizer/");
+    public static final String FOLDER_PATH = Environment.getExternalStorageDirectory().toString().concat("/Mods Optimizer/");
+    public static final String TEMP_PATH = FOLDER_PATH.concat("TMP/");
+    public static final String OUT_PATH = FOLDER_PATH.concat("OUTPUT/");
+
+    MinecraftMod mod;
+    public ProgressBar copyProgressBar;
+    public ProgressBar unzipProgressBar;
+    public ProgressBar parsingProgressBar;
+    public ProgressBar textureProgressBar;
+    public ProgressBar soundProgressBar;
+    public ProgressBar zipProgressBar;
+
+    public String realPath;
+    public String fileName;
+    public String fileExtension;
+
+    public Button testButton;
+    public int index = 1;
 
 
 
@@ -41,7 +54,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.file_processing_layout);
+
+        testButton = findViewById(R.id.testButton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchAsyncTask(index);
+                index ++;
+            }
+        });
 
         Button filepickerBtn = findViewById(R.id.filePicker);
         filepickerBtn.setOnClickListener(new View.OnClickListener(){
@@ -90,28 +112,56 @@ public class MainActivity extends AppCompatActivity {
                 while (!(path.charAt(index) == "/".charAt(0))){
                     index --;
                 }
+
+
                 //Once the index is found:
-                String realPath = path.substring(0,index+1);
-                String fileName = path.substring(index+1,path.length()-4);
-                String fileExtension = path.substring(path.length()-4);
+                realPath = path.substring(0,index+1);
+                fileName = path.substring(index+1,path.length()-4);
+                fileExtension = path.substring(path.length()-4);
 
-                Toast.makeText(MainActivity.this,realPath,Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this,fileName,Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this,fileExtension,Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this,folderPath.concat(fileName).concat(fileExtension),Toast.LENGTH_LONG).show();
+                //Create the mod
+                mod = new MinecraftMod(path);
 
-                copyFile(realPath,fileName.concat(fileExtension),folderPath);
+                //Let's use the new layout !
+                //setContentView(R.layout.file_processing_layout);
+                //Get all progress bars set up
+                copyProgressBar = findViewById(R.id.progressBarCopying);
+                unzipProgressBar = findViewById(R.id.progressBarUnzipping);
+                parsingProgressBar = findViewById(R.id.progressBarParsing);
+                textureProgressBar = findViewById(R.id.progressBarTexture);
+                soundProgressBar = findViewById(R.id.progressBarSound);
+                zipProgressBar = findViewById(R.id.progressBarZipping);
+
+                //Then starts all necessary threads
+                //launchAsyncTask(1);
+
+                /*
+                AsyncTaskManager taskManager = new AsyncTaskManager();
+                taskManager.execute(
+                        new Task(copyProgressBar, new Object[] {realPath,fileName.concat(fileExtension)}),
+                        new Task(unzipProgressBar, new Object[] {FOLDER_PATH.concat(fileName.concat(fileExtension))}),
+                        new Task(parsingProgressBar, new Object[] {mod}),
+                        new Task(textureProgressBar, new Object[] {mod.getTexturePaths()}),
+                        new Task(soundProgressBar, new Object[] {mod.getSoundPaths()})
+                );*/
+
+
+
+
+
+                /*
+                copyFile(realPath,fileName.concat(fileExtension),FOLDER_PATH);
 
                 try {
-                    unzip(folderPath.concat(fileName).concat(fileExtension));
+                    unzip(FOLDER_PATH.concat(fileName).concat(fileExtension));
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(MainActivity.this,"bruh, something went wrong",Toast.LENGTH_LONG).show();
                 }
-                removeFile(folderPath,fileName.concat(fileExtension));
+                removeFile(FOLDER_PATH,fileName.concat(fileExtension));
 
                 MinecraftMod mod = new MinecraftMod(fileName,fileExtension);
-                mod.parseUncompressedMod(folderPath);
+                mod.parseUncompressedMod(FOLDER_PATH);
                 int temp = mod.getSoundNumber();
 
                 Toast.makeText(MainActivity.this,String.valueOf(temp),Toast.LENGTH_SHORT).show();
@@ -122,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 //TextureOptimizer threadOne = new TextureOptimizer(mod.getTexturePaths(),mod.getTextureNumber());
                 new TextureOptimizer().execute(mod.getTexturePaths(),mod.getTextureNumber());
                 new SoundOptimizer().execute(mod.getSoundPaths(),mod.getSoundNumber());
-
+                */
                 Toast.makeText(MainActivity.this,"SUCCESS !",Toast.LENGTH_LONG).show();
 
 
@@ -187,5 +237,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void launchAsyncTask(int step){
+        switch (step){
+            case 1:
+                //File copy step
+                new FileCopier().execute(new Task(copyProgressBar, new Object[] {realPath,fileName.concat(fileExtension)}));
+                break;
+
+            case 2:
+                //File unzip step
+                new FileUnzipper().execute(new Task(unzipProgressBar,new Object[] {FOLDER_PATH.concat(fileName).concat(fileExtension)}));
+                break;
+
+            case 3:
+                //File parsing step
+                new FileParser().execute(new Task(parsingProgressBar, new Object[] {mod}));
+                break;
+
+            case 4:
+                //Texture optimization step
+                new TextureOptimizer().execute(new Task(textureProgressBar, new Object[] {mod.getTexturePaths()}));
+                break;
+
+            case 5:
+                //Sound optimization step
+                new SoundOptimizer().execute(new Task(soundProgressBar, new Object[] {mod.getSoundPaths()}));
+                break;
+
+            case 6:
+                //Repacking step
+                new FileZipper().execute(new Task(zipProgressBar, new Object[] {mod}));
+                break;
+        }
+
+    }
 
 }

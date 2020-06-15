@@ -1,6 +1,7 @@
-package com.spse.javamodsoptimiser;
+package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
+import android.widget.ProgressBar;
 
 import com.nicdahlquist.pngquant.LibPngQuant;
 
@@ -11,13 +12,19 @@ import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 import static com.spse.javamodsoptimiser.FileManager.renameFile;
 
-public class TextureOptimizer extends AsyncTask<Object, Void, Void> {
+public class TextureOptimizer extends AsyncTask<Task, Object, Void> {
 
     @Override
-    protected Void doInBackground(Object ... argument){
+    protected Void doInBackground(Task[] task){
         //First parse the arguments
-        String[] texturePaths = (String[]) argument[0];
-        int textureNumber = (int) argument[1];
+        String[] texturePaths = (String[]) task[0].getArgument(0);
+        int textureNumber = texturePaths.length;
+
+        ProgressBar progressBar = task[0].getProgressBar();
+
+        float increment = 100f/textureNumber;
+        float progress = 0;
+        int intProgress;
 
 
         //Optimize textures
@@ -35,10 +42,20 @@ public class TextureOptimizer extends AsyncTask<Object, Void, Void> {
                     e.printStackTrace();
                 }
             }
+            progress += increment;
+            intProgress = Math.round(progress);
+            publishProgress(progressBar, intProgress);
         }
         return null;
     }
 
+    @Override
+    protected void onProgressUpdate(Object... argument) {
+        super.onProgressUpdate(argument);
+        ProgressBar progressBar = (ProgressBar) argument[0];
+        int progress = (int) argument[1];
 
+        progressBar.setProgress(progress, true);
 
+    }
 }

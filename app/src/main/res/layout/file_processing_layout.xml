@@ -1,6 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blackBackground"
+
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/half_width_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="205dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/half_height_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="365dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/quarter_height_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="182dp" />
+
+    <TextView
+        android:id="@+id/modInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/mod_info_title"
+        android:textColor="@color/neutralText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/modInfoName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/mod_info_name"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/neutralText"
+        app:layout_constraintStart_toStartOf="@+id/modInfo"
+        app:layout_constraintTop_toBottomOf="@+id/modInfo" />
+
+    <TextView
+        android:id="@+id/modInfoVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/mod_info_version"
+        android:textColor="@color/neutralText"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toStartOf="@+id/modInfo"
+        app:layout_constraintTop_toBottomOf="@+id/modInfoName" />
+
+    <TextView
+        android:id="@+id/modInfoMinecraftVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/mod_info_minecraft_version"
+        android:textColor="@color/neutralText"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toStartOf="@+id/modInfo"
+        app:layout_constraintTop_toBottomOf="@+id/modInfoVersion" />
+
+    <TextView
+        android:id="@+id/modInfoTextureNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/mod_info_texture_number"
+        android:textColor="@color/neutralText"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toStartOf="@+id/modInfo"
+        app:layout_constraintTop_toBottomOf="@+id/modInfoMinecraftVersion" />
+
+    <TextView
+        android:id="@+id/modInfoSoundNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/mod_info_sound_number"
+        android:textColor="@color/neutralText"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toStartOf="@+id/modInfo"
+        app:layout_constraintTop_toBottomOf="@+id/modInfoTextureNumber" />
+
+
+    <ProgressBar
+        android:id="@+id/progressBarCopying"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressBackgroundTint="@color/progressBarOff"
+        android:progress="0"
+        android:progressTint="@color/progressBarCopying"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/quarter_height_guideline" />
+
+    <ProgressBar
+        android:id="@+id/progressBarUnzipping"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressBackgroundTint="@color/progressBarOff"
+        android:progress="0"
+        android:progressTint="@color/progressBarUnzipping"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/progressBarParsing"
+        app:layout_constraintStart_toEndOf="@+id/progressBarCopying"
+        app:layout_constraintTop_toTopOf="@+id/progressBarCopying" />
+
+    <ProgressBar
+        android:id="@+id/progressBarParsing"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressBackgroundTint="@color/progressBarOff"
+        android:progress="0"
+        android:progressTint="@color/progressBarParsing"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/progressBarUnzipping" />
+
+    <ProgressBar
+        android:id="@+id/progressBarTexture"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressBackgroundTint="@color/progressBarOff"
+        android:progress="0"
+        android:progressTint="@color/progressBarTexture"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintStart_toStartOf="@+id/progressBarCopying"
+        app:layout_constraintTop_toTopOf="@+id/progressBarCopying" />
+
+    <ProgressBar
+        android:id="@+id/progressBarSound"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressBackgroundTint="@color/progressBarOff"
+        android:progress="0"
+        android:progressTint="@color/progressBarSound"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintStart_toStartOf="@+id/progressBarUnzipping"
+        app:layout_constraintTop_toTopOf="@+id/progressBarCopying" />
+
+    <ProgressBar
+        android:id="@+id/progressBarZipping"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressBackgroundTint="@color/progressBarOff"
+        android:progress="0"
+        android:progressTint="@color/progressBarZipping"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintStart_toStartOf="@+id/progressBarParsing"
+        app:layout_constraintTop_toTopOf="@+id/progressBarCopying" />
+
+    <TextView
+        android:id="@+id/textViewCopying"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/process_status_copying"
+        android:textColor="@color/neutralText"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarCopying"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarCopying"
+        app:layout_constraintStart_toStartOf="@+id/progressBarCopying" />
+
+    <TextView
+        android:id="@+id/textViewUnzipping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/process_status_unzipping"
+        android:textColor="@color/neutralText"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarUnzipping"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarUnzipping"
+        app:layout_constraintStart_toStartOf="@+id/progressBarUnzipping" />
+
+    <TextView
+        android:id="@+id/textViewParsing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/process_status_parsing"
+        android:textColor="@color/neutralText"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarParsing"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarParsing"
+        app:layout_constraintStart_toStartOf="@+id/progressBarParsing" />
+
+    <TextView
+        android:id="@+id/textViewTexture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/process_status_texture"
+        android:textColor="@color/neutralText"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarTexture"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarTexture"
+        app:layout_constraintStart_toStartOf="@+id/progressBarTexture" />
+
+    <TextView
+        android:id="@+id/textViewSound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/process_status_sound"
+        android:textColor="@color/neutralText"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarSound"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarSound"
+        app:layout_constraintStart_toStartOf="@+id/progressBarSound" />
+
+    <TextView
+        android:id="@+id/textViewZipping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/process_status_zipping"
+        android:textColor="@color/neutralText"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarZipping"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarZipping"
+        app:layout_constraintStart_toStartOf="@+id/progressBarZipping" />
+
+    <TextView
+        android:id="@+id/textViewProcessTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/process_status_title"
+        android:textColor="@color/neutralText"
+        android:layout_marginBottom="35dp"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarCopying"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/filePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Button_choose_file"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/testButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/filePicker"
+        app:layout_constraintTop_toBottomOf="@+id/filePicker" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

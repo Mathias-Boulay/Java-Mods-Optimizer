@@ -3,4 +3,22 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="blackBackground">#303030</color>
+    <color name="neutralText">#F0F0F0</color>
+    <color name="soundFileText">#F0F000</color>
+    <color name="textureFileText">#00D600</color>
+    <color name="errorText">#D20000</color>
+
+    <color name="optionOn">#FF8B00</color>
+    <color name="optionOff">#A2A2A2</color>
+
+    <color name="progressBarOff">#737373</color>
+    <color name="progressBarCopying">#0074E7</color>
+    <color name="progressBarUnzipping">#004C97</color>
+    <color name="progressBarParsing">#00386F</color>
+    <color name="progressBarTexture">@color/textureFileText</color>
+    <color name="progressBarSound">@color/soundFileText</color>
+    <color name="progressBarZipping">#FFFFFF</color>
+
 </resources>

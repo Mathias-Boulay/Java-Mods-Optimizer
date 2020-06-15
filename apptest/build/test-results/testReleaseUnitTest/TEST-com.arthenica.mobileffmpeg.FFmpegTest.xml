@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.arthenica.mobileffmpeg.FFmpegTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2020-06-15T16:15:22" hostname="SPSE-Lubuntu" time="0.026">
+  <properties/>
+  <testcase name="parseSingleQuotesInCommand" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.002"/>
+  <testcase name="mediaInformationGif" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.003"/>
+  <testcase name="mediaInformationJpg" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.002"/>
+  <testcase name="mediaInformationMp3" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.001"/>
+  <testcase name="mediaInformationMp4" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.002"/>
+  <testcase name="mediaInformationOgg" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.002"/>
+  <testcase name="mediaInformationPng" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.002"/>
+  <testcase name="parseDoubleQuotesAndEscapesInCommand" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.0"/>
+  <testcase name="parseDoubleQuotesInCommand" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.001"/>
+  <testcase name="mediaInformationH264" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.001"/>
+  <testcase name="mediaInformationMp42" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.002"/>
+  <testcase name="setMediaInformationRecording" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.002"/>
+  <testcase name="parseSimpleCommand" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.0"/>
+  <testcase name="mediaInformationH2642" classname="com.arthenica.mobileffmpeg.FFmpegTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

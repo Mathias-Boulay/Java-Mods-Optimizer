@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.arthenica.mobileffmpeg.MediaInformationTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2020-06-15T16:15:22" hostname="SPSE-Lubuntu" time="0.025">
+  <properties/>
+  <testcase name="parseBitrate" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="parseDurationBlock" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.001"/>
+  <testcase name="parseVideoStreamSampleAspectRatio" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="parseAverageFrameRate" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="parseStartTime" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.007"/>
+  <testcase name="parseAudioStream" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.005"/>
+  <testcase name="count" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="index" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="parseInputBlock" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="parseVideoStream" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.004"/>
+  <testcase name="parseAudioStreamType" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="parseVideoDimensions" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="parseMetadataBlock" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="parseVideoStreamDisplayAspectRatio" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="parseStreamCodec" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="parseStreamIndex" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.001"/>
+  <testcase name="parseStreamFullCodec" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <testcase name="parseDuration" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.001"/>
+  <testcase name="parseAudioSampleRate" classname="com.arthenica.mobileffmpeg.MediaInformationTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

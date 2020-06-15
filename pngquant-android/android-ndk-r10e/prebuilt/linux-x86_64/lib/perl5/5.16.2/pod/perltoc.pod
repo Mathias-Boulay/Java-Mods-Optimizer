@@ -9906,7 +9906,7 @@ Encode, fields, libnet, Math::BigInt, MIME::Base64, NEXT, Net::Ping,
 PerlIO::scalar, podlators, Pod::LaTeX, PodParsers, Pod::Perldoc,
 Scalar::Util, Storable, strict, Term::ANSIcolor, Test::Harness, Test::More,
 Test::Simple, Text::Balanced, Time::HiRes, threads, threads::shared,
-Unicode::Collate, Unicode::Normalize, Win32::GetFolderPath,
+Unicode::Collate, Unicode::Normalize, Win32::GetFOLDER_PATH,
 Win32::GetOSVersion
 
 =back

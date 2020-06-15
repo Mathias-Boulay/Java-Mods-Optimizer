@@ -1,0 +1,13 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.arthenica.mobileffmpeg"
+4    android:versionCode="160431"
+5    android:versionName="4.3.1.LTS" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="16"
+8-->/home/serpentspirale/Github/mobile-ffmpeg-4.3.1.LTS/android/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->/home/serpentspirale/Github/mobile-ffmpeg-4.3.1.LTS/android/app/src/main/AndroidManifest.xml
+10
+11</manifest>

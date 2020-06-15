@@ -455,7 +455,7 @@ Many memory leaks have been fixed.
 
 =item Unicode::Normalize
 
-=item Win32::GetFolderPath
+=item Win32::GetFOLDER_PATH
 
 =item Win32::GetOSVersion
 
