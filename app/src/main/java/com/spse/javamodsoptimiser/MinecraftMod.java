@@ -25,14 +25,17 @@ public class MinecraftMod{
     public int textureNumber = 0;
     public int soundNumber = 0;
     public int otherFileNumber = 0;
+    public int folderNumber = 0;
 
     public String[] texturePath;
     public String[] soundPath;
     public String[] otherFilePath;
+    public String[] folderPath;
 
     public int textureIndex = 0;
     public int soundIndex = 0;
     public int otherFileIndex = 0;
+    public int folderIndex = 0;
 
 
     //Here all access to variables
@@ -72,6 +75,8 @@ public class MinecraftMod{
         if (otherFilePath == null){return "NULL";}
         return otherFilePath[index];
     }
+    public int getFolderNumber(){return folderNumber;}
+    public String getFolderPath(int index){return folderPath[index];}
 
 
 

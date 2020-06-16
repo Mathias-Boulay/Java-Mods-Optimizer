@@ -2,8 +2,10 @@ package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.spse.javamodsoptimiser.FileManager;
+import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
 
 import java.io.File;
@@ -45,6 +47,10 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
             }
             for(int i=0;i < mod.getOtherFileNumber();i++){
                 addFileToZip(zos, mod.getOtherFilePath(i));
+            }
+            for(int i=mod.getFolderNumber()-1;i >= 0;i--){
+                FileManager.removeFile(mod.getFolderPath(i) + "/");
+                System.out.println(i);
             }
 
             zos.close();

@@ -39,6 +39,8 @@ public class FileParser extends AsyncTask<Task, Object, Void> {
         @Override
         public boolean accept(File pathname) {
             if (pathname.isDirectory()) {
+                mod.folderPath[mod.folderIndex] = pathname.getAbsolutePath();
+                mod.folderIndex++;
                 return true;
             }
             if (pathname.toString().contains(".png")) {
@@ -87,7 +89,7 @@ public class FileParser extends AsyncTask<Task, Object, Void> {
         mod.texturePath = new String[mod.textureNumber];
         mod.soundPath = new String[mod.soundNumber];
         mod.otherFilePath = new String[mod.otherFileNumber];
-        mod.folderPath = new String[mod.folderIndex];
+        mod.folderPath = new String[mod.folderNumber];
 
         //Then store those files path
         walk(FOLDER_PATH, fileFilter);
