@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.MainActivity;
+import com.spse.javamodsoptimiser.MinecraftMod;
 import com.spse.javamodsoptimiser.R;
 
 import java.io.File;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import static com.spse.javamodsoptimiser.MainActivity.FOLDER_PATH;
+import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
 public class FileCopier extends AsyncTask<Task, Object, Void> {
 
@@ -22,34 +24,31 @@ public class FileCopier extends AsyncTask<Task, Object, Void> {
     @Override
     protected Void doInBackground(Task[] task) {
 
-
         //Parse arguments
-        String inputPath = (String) task[0].getArgument(0);
-        String inputFile = (String) task[0].getArgument(1);
-        String outputPath = FOLDER_PATH;
-        float fileSize = new File(inputPath.concat(inputFile)).length()/1024f;
-        float increment = 100/fileSize;
+        MinecraftMod mod = task[0].getMod();
+        ProgressBar progressBar = task[0].getProgressBar();
+
+        float increment = 100f/(mod.getFileSize()/1024f);
         float progress = 0;
         int intprogress;
 
-        ProgressBar progressBar = task[0].getProgressBar();
-
-
+        //Then copy the file
         InputStream in;
         OutputStream out ;
         try {
             //create output directory if it doesn't exist
-            File dir = new File(outputPath);
+            File dir = new File(TEMP_PATH);
             if (!dir.exists()){dir.mkdirs();}
 
 
-            in = new FileInputStream(inputPath + inputFile);
-            out = new FileOutputStream(outputPath + inputFile);
+            in = new FileInputStream(mod.getFolder() + mod.getFullName());
+            out = new FileOutputStream(TEMP_PATH + mod.getFullName());
 
             byte[] buffer = new byte[1024];
             int read;
             while ((read = in.read(buffer)) != -1) {
                 out.write(buffer, 0, read);
+
                 progress += increment;
                 intprogress = Math.round(progress);
                 publishProgress(progressBar,intprogress);

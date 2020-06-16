@@ -74,7 +74,7 @@ public class FileParser extends AsyncTask<Task, Object, Void> {
     @Override
     public Void doInBackground(Task[] task) {
         //Parse arguments
-        mod = (MinecraftMod) task[0].getArgument(0);
+        mod = task[0].getMod();
         ProgressBar progressBar = task[0].getProgressBar();
 
 

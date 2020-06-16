@@ -22,7 +22,7 @@ public class FileUnzipper  extends AsyncTask<Task, Object, Void> {
     @Override
     protected Void doInBackground(Task[] task) {
         try {
-            unzip((String) task[0].getArgument(0), task[0].getProgressBar());
+            unzip(TEMP_PATH + task[0].getMod().getFullName(), task[0].getProgressBar());
         } catch (IOException e) {
             e.printStackTrace();
         }

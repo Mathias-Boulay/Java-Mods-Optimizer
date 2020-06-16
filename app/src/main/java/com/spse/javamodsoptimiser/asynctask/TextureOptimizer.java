@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.widget.ProgressBar;
 
 import com.nicdahlquist.pngquant.LibPngQuant;
+import com.spse.javamodsoptimiser.MinecraftMod;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,27 +18,26 @@ public class TextureOptimizer extends AsyncTask<Task, Object, Void> {
     @Override
     protected Void doInBackground(Task[] task){
         //First parse the arguments
-        String[] texturePaths = (String[]) task[0].getArgument(0);
-        int textureNumber = texturePaths.length;
+        MinecraftMod mod = task[0].getMod();
 
         ProgressBar progressBar = task[0].getProgressBar();
 
-        float increment = 100f/textureNumber;
+        float increment = 100f/mod.getTextureNumber();
         float progress = 0;
         int intProgress;
 
 
         //Optimize textures
-        for(int i=0; i < textureNumber; i++){
-            File inputFile = new File(texturePaths[i]);
-            File outputFile = new File(texturePaths[i].concat("-min.png"));
+        for(int i=0; i < mod.getTextureNumber(); i++){
+            File inputFile = new File(mod.getTexturePath(i));
+            File outputFile = new File(mod.getTexturePath(i).concat("-min.png"));
             new LibPngQuant().pngQuantFile(inputFile,outputFile);
 
             //ONCE THE OPTIMISATION IS DONE
-            if (fileExists(texturePaths[i].concat("-min.png"))) {
-                removeFile(texturePaths[i]);
+            if (fileExists(mod.getTexturePath(i).concat("-min.png"))) {
+                removeFile(mod.getTexturePath(i));
                 try {
-                    renameFile(texturePaths[i].concat("-min.png"), texturePaths[i]);
+                    renameFile(mod.getTexturePath(i).concat("-min.png"), mod.getTexturePath(i));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

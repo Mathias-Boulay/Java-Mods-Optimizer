@@ -206,32 +206,32 @@ public class MainActivity extends AppCompatActivity {
         switch (step){
             case 1:
                 //File copy step
-                new FileCopier().execute(new Task(copyProgressBar, new Object[] {realPath,fileName.concat(fileExtension)}));
+                new FileCopier().execute(new Task(copyProgressBar, mod));
                 break;
 
             case 2:
                 //File unzip step
-                new FileUnzipper().execute(new Task(unzipProgressBar,new Object[] {FOLDER_PATH.concat(fileName).concat(fileExtension)}));
+                new FileUnzipper().execute(new Task(unzipProgressBar,mod));
                 break;
 
             case 3:
                 //File parsing step
-                new FileParser().execute(new Task(parsingProgressBar, new Object[] {mod}));
+                new FileParser().execute(new Task(parsingProgressBar, mod));
                 break;
 
             case 4:
                 //Texture optimization step
-                new TextureOptimizer().execute(new Task(textureProgressBar, new Object[] {mod.getTexturePaths()}));
+                new TextureOptimizer().execute(new Task(textureProgressBar, mod));
                 break;
 
             case 5:
                 //Sound optimization step
-                new SoundOptimizer().execute(new Task(soundProgressBar, new Object[] {mod.getSoundPaths()}));
+                new SoundOptimizer().execute(new Task(soundProgressBar, mod));
                 break;
 
             case 6:
                 //Repacking step
-                new FileZipper().execute(new Task(zipProgressBar, new Object[] {mod}));
+                new FileZipper().execute(new Task(zipProgressBar, mod));
                 break;
         }
 

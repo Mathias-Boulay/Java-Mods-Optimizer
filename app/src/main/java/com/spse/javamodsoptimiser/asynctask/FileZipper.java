@@ -22,7 +22,7 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
 
     @Override
     protected Void doInBackground(Task... task) {
-        MinecraftMod mod = (MinecraftMod) task[0].getArgument(0);
+        MinecraftMod mod = (MinecraftMod) task[0].getMod();
 
         repackMod(mod);
         return null;
@@ -49,6 +49,8 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
 
             zos.close();
             fos.close();
+
+            new File(TEMP_PATH).delete();
 
         }catch (IOException io){
             io.printStackTrace();

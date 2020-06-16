@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.widget.ProgressBar;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
+import com.spse.javamodsoptimiser.MinecraftMod;
 
 import java.io.IOException;
 
@@ -16,24 +17,23 @@ public class SoundOptimizer extends AsyncTask<Task, Object, Void> {
     @Override
     public Void doInBackground(Task[] task){
         //Parse arguments
-        String[] soundPaths = (String[]) task[0].getArgument(0);
-        int soundNumber = soundPaths.length;
-
+        MinecraftMod mod = task[0].getMod();
         ProgressBar progressBar = task[0].getProgressBar();
-        float increment = 100f/soundNumber;
+        
+        float increment = 100f/mod.getSoundNumber();
         float progress = 0;
         int intProgress;
 
 
-        for(int i=0; i < soundNumber; i++) {
-            String command = "-y -i '" + soundPaths[i] + "' -c:a libvorbis -b:a 48k -ac 1 -ar 26000 '" + soundPaths[i] + "-min.ogg'";
+        for(int i=0; i < mod.getSoundNumber(); i++) {
+            String command = "-y -i '" + mod.getSoundPath(i) + "' -c:a libvorbis -b:a 48k -ac 1 -ar 26000 '" + mod.getSoundPath(i) + "-min.ogg'";
 
             int rc = FFmpeg.execute(command);
 
-            if (fileExists(soundPaths[i].concat("-min.ogg"))) {
-                removeFile(soundPaths[i]);
+            if (fileExists(mod.getSoundPath(i).concat("-min.ogg"))) {
+                removeFile(mod.getSoundPath(i));
                 try {
-                    renameFile(soundPaths[i].concat("-min.ogg"), soundPaths[i]);
+                    renameFile(mod.getSoundPath(i).concat("-min.ogg"), mod.getSoundPath(i));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

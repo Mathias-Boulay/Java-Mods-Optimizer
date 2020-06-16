@@ -30,15 +30,12 @@ public class MinecraftMod{
     public String[] soundPath;
     public String[] otherFilePath;
 
-
-    //Don't interact outside of the class
     public int textureIndex = 0;
     public int soundIndex = 0;
     public int otherFileIndex = 0;
 
 
-    //Here all access to private variables
-
+    //Here all access to variables
     public int getTextureNumber(){return textureNumber;}
     public int getSoundNumber(){return soundNumber;}
     public String getTexturePath(int textureIndex){
