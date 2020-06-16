@@ -7,8 +7,8 @@ public class MinecraftMod{
     //Interact with outside the class
     private String name;
     private String extension;
-    private long sizeInBytes;
-    private String fileFolder;
+    private long sizeInBytes; //Size of the UNoptimized archive
+    private String fileFolder; //Folder where the file is stored
 
     MinecraftMod(String filePath){
         int index = filePath.length()-1;
@@ -25,19 +25,16 @@ public class MinecraftMod{
     public int textureNumber = 0;
     public int soundNumber = 0;
     public int otherFileNumber = 0;
-    public int folderNumber = 0;
 
     public String[] texturePath;
     public String[] soundPath;
     public String[] otherFilePath;
-    public String[] folderPath;
 
 
     //Don't interact outside of the class
     public int textureIndex = 0;
     public int soundIndex = 0;
     public int otherFileIndex = 0;
-    public int folderIndex = 0;
 
 
     //Here all access to private variables
@@ -72,6 +69,11 @@ public class MinecraftMod{
     }
     public String getFolder(){
         return fileFolder;
+    }
+    public int getOtherFileNumber(){return otherFileNumber;}
+    public String getOtherFilePath(int index){
+        if (otherFilePath == null){return "NULL";}
+        return otherFilePath[index];
     }
 
 

@@ -3,6 +3,7 @@ package com.spse.javamodsoptimiser.asynctask;
 import android.os.AsyncTask;
 import android.widget.ProgressBar;
 
+import com.spse.javamodsoptimiser.FileManager;
 import com.spse.javamodsoptimiser.MinecraftMod;
 
 import java.io.File;
@@ -22,75 +23,55 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
     @Override
     protected Void doInBackground(Task... task) {
         MinecraftMod mod = (MinecraftMod) task[0].getArgument(0);
+
+        repackMod(mod);
+        return null;
+    }
+
+    private void repackMod(MinecraftMod mod){
+        //First step is to create I/O streams
         String zipFile = OUT_PATH.concat(mod.getFullName());
-
-        String srcDir = TEMP_PATH;
-
         try {
             FileOutputStream fos = new FileOutputStream(zipFile);
 
             ZipOutputStream zos = new ZipOutputStream(fos);
 
-            File srcFile = new File(srcDir);
+            //Add all files
+            for(int i=0; i < mod.getTextureNumber(); i++){
+                addFileToZip(zos, mod.getTexturePath(i));
+            }
+            for(int i=0;i < mod.getSoundNumber();i++){
+                addFileToZip(zos,mod.getSoundPath(i));
+            }
+            for(int i=0;i < mod.getOtherFileNumber();i++){
+                addFileToZip(zos, mod.getOtherFilePath(i));
+            }
 
-            addToArchive(zos, srcFile, "");
-
-            // close the ZipOutputStream
             zos.close();
+            fos.close();
 
+        }catch (IOException io){
+            io.printStackTrace();
         }
-        catch (IOException ioe) {
-            System.out.println("Error creating zip file: " + ioe);
-        }
 
-
-        return null;
     }
 
-    private void addToArchive(ZipOutputStream zos, File srcFile, String subfolder) {
-        //MinecraftMod mod = (MinecraftMod) task.getArgument(0);
-
-        File[] files = srcFile.listFiles();
-
-        System.out.println("Adding directory: " + srcFile.getName());
-
-        for (int i = 0; i < files.length; i++) {
-
-            // if the file is directory, use recursion
-            if (files[i].isDirectory()) {
-                if (!files[i].getName().contains("OUTPUT")) {
-                    addToArchive(zos, files[i], files[i].getAbsolutePath());
-                    files[i].delete();
-                }
-                continue;
-            }
-
-            try {
-                byte[] buffer = new byte[1024];
-
-                FileInputStream fis = new FileInputStream(files[i]);
-
-                zos.putNextEntry(new ZipEntry(subfolder.replace(TEMP_PATH,"") + "/" + files[i].getName()));
-
-
-                int length;
-                while ((length = fis.read(buffer)) > 0) {
-                    zos.write(buffer, 0, length);
-                    //progress += 100f/((mod.getFileSize()*0.70)/1024);
-                    //publishProgress((ProgressBar) task.getProgressBar(), mod.getFileSize()*0.70, Math.round(progress));
-                }
-                zos.closeEntry();
-                // close the InputStream
-                fis.close();
-                files[i].delete();
-
-            } catch (IOException ioe) {
-                System.out.println("IOException :" + ioe);
-            }
-
-
-
+    private void addFileToZip(ZipOutputStream zos, String filePath) throws IOException{
+        if(!FileManager.fileExists(filePath)){
+            return;
         }
+
+        FileInputStream fis = new FileInputStream(filePath);
+        byte[] BUFFER = new byte[1024];
+        zos.putNextEntry(new ZipEntry(filePath.replace(TEMP_PATH,"/") ));
+
+        int length;
+        while ((length = fis.read(BUFFER)) > 0) {
+            zos.write(BUFFER, 0, length);
+        }
+        zos.closeEntry();
+        fis.close();
+        FileManager.removeFile(filePath);
 
     }
 
