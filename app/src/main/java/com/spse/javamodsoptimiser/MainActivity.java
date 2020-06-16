@@ -123,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
                 mod = new MinecraftMod(path);
 
                 //Let's use the new layout !
-                //setContentView(R.layout.file_processing_layout);
                 //Get all progress bars set up
                 copyProgressBar = findViewById(R.id.progressBarCopying);
                 unzipProgressBar = findViewById(R.id.progressBarUnzipping);
@@ -132,47 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 soundProgressBar = findViewById(R.id.progressBarSound);
                 zipProgressBar = findViewById(R.id.progressBarZipping);
 
-                //Then starts all necessary threads
-                //launchAsyncTask(1);
 
-                /*
-                AsyncTaskManager taskManager = new AsyncTaskManager();
-                taskManager.execute(
-                        new Task(copyProgressBar, new Object[] {realPath,fileName.concat(fileExtension)}),
-                        new Task(unzipProgressBar, new Object[] {FOLDER_PATH.concat(fileName.concat(fileExtension))}),
-                        new Task(parsingProgressBar, new Object[] {mod}),
-                        new Task(textureProgressBar, new Object[] {mod.getTexturePaths()}),
-                        new Task(soundProgressBar, new Object[] {mod.getSoundPaths()})
-                );*/
-
-
-
-
-
-                /*
-                copyFile(realPath,fileName.concat(fileExtension),FOLDER_PATH);
-
-                try {
-                    unzip(FOLDER_PATH.concat(fileName).concat(fileExtension));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(MainActivity.this,"bruh, something went wrong",Toast.LENGTH_LONG).show();
-                }
-                removeFile(FOLDER_PATH,fileName.concat(fileExtension));
-
-                MinecraftMod mod = new MinecraftMod(fileName,fileExtension);
-                mod.parseUncompressedMod(FOLDER_PATH);
-                int temp = mod.getSoundNumber();
-
-                Toast.makeText(MainActivity.this,String.valueOf(temp),Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this,String.valueOf(mod.getTextureNumber()),Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this,mod.getSoundPath(0),Toast.LENGTH_LONG).show();
-
-
-                //TextureOptimizer threadOne = new TextureOptimizer(mod.getTexturePaths(),mod.getTextureNumber());
-                new TextureOptimizer().execute(mod.getTexturePaths(),mod.getTextureNumber());
-                new SoundOptimizer().execute(mod.getSoundPaths(),mod.getSoundNumber());
-                */
                 Toast.makeText(MainActivity.this,"SUCCESS !",Toast.LENGTH_LONG).show();
 
 
