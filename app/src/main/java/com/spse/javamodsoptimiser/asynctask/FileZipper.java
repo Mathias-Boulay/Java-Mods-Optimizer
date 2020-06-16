@@ -26,13 +26,17 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
     protected Void doInBackground(Task... task) {
         MinecraftMod mod = (MinecraftMod) task[0].getMod();
 
-        repackMod(mod);
+        repackMod(task[0].getMod(), task[0].getProgressBar());
         return null;
     }
 
-    private void repackMod(MinecraftMod mod){
+    private void repackMod(MinecraftMod mod, ProgressBar progressBar){
         //First step is to create I/O streams
         String zipFile = OUT_PATH.concat(mod.getFullName());
+        int fileNumber = mod.getOtherFileNumber() + mod.getFolderNumber() + mod.getTextureNumber() + mod.getSoundNumber();
+        float progress = 0;
+        float increment = fileNumber/100f;
+
         try {
             FileOutputStream fos = new FileOutputStream(zipFile);
 
@@ -41,16 +45,19 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
             //Add all files
             for(int i=0; i < mod.getTextureNumber(); i++){
                 addFileToZip(zos, mod.getTexturePath(i));
+                incrementProgress(progressBar,progress,increment);
             }
             for(int i=0;i < mod.getSoundNumber();i++){
                 addFileToZip(zos,mod.getSoundPath(i));
+                incrementProgress(progressBar,progress,increment);
             }
             for(int i=0;i < mod.getOtherFileNumber();i++){
                 addFileToZip(zos, mod.getOtherFilePath(i));
+                incrementProgress(progressBar,progress,increment);
             }
             for(int i=mod.getFolderNumber()-1;i >= 0;i--){
                 FileManager.removeFile(mod.getFolderPath(i) + "/");
-                System.out.println(i);
+                incrementProgress(progressBar,progress,increment);
             }
 
             zos.close();
@@ -62,6 +69,12 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
             io.printStackTrace();
         }
 
+    }
+
+    private void incrementProgress(ProgressBar progressBar, float currentProgress, float increment){
+        currentProgress += increment;
+        int intProgress = Math.round(currentProgress);
+        publishProgress(progressBar,intProgress);
     }
 
     private void addFileToZip(ZipOutputStream zos, String filePath) throws IOException{
@@ -92,4 +105,6 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
         progressBar.setProgress(progress, true);
 
     }
+
+
 }
