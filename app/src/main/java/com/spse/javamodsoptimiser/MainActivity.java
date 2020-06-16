@@ -24,6 +24,7 @@ import com.spse.javamodsoptimiser.asynctask.TextureOptimizer;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.spse.javamodsoptimiser.FileManager.createFolder;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 
 
@@ -55,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.file_processing_layout);
+
+        //Create folders used by the app:
+        createFolder(FOLDER_PATH);
+        createFolder(TEMP_PATH);
+        createFolder(OUT_PATH);
 
         testButton = findViewById(R.id.testButton);
         testButton.setOnClickListener(new View.OnClickListener() {
