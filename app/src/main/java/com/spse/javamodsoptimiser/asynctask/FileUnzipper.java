@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.FileManager;
+import com.spse.javamodsoptimiser.MainActivity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -17,17 +18,17 @@ import java.util.zip.ZipFile;
 import static com.spse.javamodsoptimiser.MainActivity.FOLDER_PATH;
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
-public class FileUnzipper  extends AsyncTask<Task, Object, Void> {
+public class FileUnzipper  extends AsyncTask<Task, Object, MainActivity> {
 
     @Override
-    protected Void doInBackground(Task[] task) {
+    protected MainActivity doInBackground(Task[] task) {
         try {
             unzip(TEMP_PATH + task[0].getMod().getFullName(), task[0].getProgressBar());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return task[0].getActivity();
     }
 
     private void unzip(String zipFile, ProgressBar updateBar) throws IOException{
@@ -108,5 +109,9 @@ public class FileUnzipper  extends AsyncTask<Task, Object, Void> {
         progressBar.setProgress(progress, true);
     }
 
-
+    @Override
+    protected void onPostExecute(MainActivity activity) {
+        super.onPostExecute(activity);
+        activity.launchAsyncTask(3);
+    }
 }

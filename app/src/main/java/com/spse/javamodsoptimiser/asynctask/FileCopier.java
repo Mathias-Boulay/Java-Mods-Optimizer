@@ -18,11 +18,11 @@ import java.io.OutputStream;
 import static com.spse.javamodsoptimiser.MainActivity.FOLDER_PATH;
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
-public class FileCopier extends AsyncTask<Task, Object, Void> {
+public class FileCopier extends AsyncTask<Task, Object, MainActivity> {
 
 
     @Override
-    protected Void doInBackground(Task[] task) {
+    protected MainActivity doInBackground(Task[] task) {
 
         //Parse arguments
         MinecraftMod mod = task[0].getMod();
@@ -68,7 +68,7 @@ public class FileCopier extends AsyncTask<Task, Object, Void> {
             Log.e("tag", e.getMessage());
         }
 
-        return null;
+        return task[0].getActivity();
     }
 
     @Override
@@ -80,5 +80,9 @@ public class FileCopier extends AsyncTask<Task, Object, Void> {
         progressBar.setProgress(progress,true);
     }
 
-
+    @Override
+    protected void onPostExecute(MainActivity activity) {
+        super.onPostExecute(activity);
+        activity.launchAsyncTask(2);
+    }
 }

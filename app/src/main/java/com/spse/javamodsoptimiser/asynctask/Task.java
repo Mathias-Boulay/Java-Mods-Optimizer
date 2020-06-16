@@ -3,6 +3,7 @@ package com.spse.javamodsoptimiser.asynctask;
 
 import android.widget.ProgressBar;
 
+import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
 
 public class Task {
@@ -11,9 +12,11 @@ public class Task {
 
     private ProgressBar progressBar;
     private MinecraftMod mod;
-    public Task(ProgressBar progressBar, MinecraftMod mod){
+    private MainActivity activity;
+    public Task(ProgressBar progressBar, MinecraftMod mod, MainActivity activity){
         this.progressBar = progressBar;
         this.mod = mod;
+        this.activity = activity;
     }
 
     public ProgressBar getProgressBar(){
@@ -23,5 +26,6 @@ public class Task {
     public MinecraftMod getMod() {
         return mod;
     }
+    public MainActivity getActivity(){return activity;}
 
 }

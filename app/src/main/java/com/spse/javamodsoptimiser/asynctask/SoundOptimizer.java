@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.widget.ProgressBar;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
+import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
 
 import java.io.IOException;
@@ -12,10 +13,10 @@ import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 import static com.spse.javamodsoptimiser.FileManager.renameFile;
 
-public class SoundOptimizer extends AsyncTask<Task, Object, Void> {
+public class SoundOptimizer extends AsyncTask<Task, Object, MainActivity> {
 
     @Override
-    public Void doInBackground(Task[] task){
+    public MainActivity doInBackground(Task[] task){
         //Parse arguments
         MinecraftMod mod = task[0].getMod();
         ProgressBar progressBar = task[0].getProgressBar();
@@ -43,7 +44,7 @@ public class SoundOptimizer extends AsyncTask<Task, Object, Void> {
             publishProgress(progressBar,intProgress);
         }
 
-        return null;
+        return task[0].getActivity();
     }
 
     @Override
@@ -54,5 +55,11 @@ public class SoundOptimizer extends AsyncTask<Task, Object, Void> {
         int progress = (int) argument[1];
 
         progressBar.setProgress(progress, true);
+    }
+
+    @Override
+    protected void onPostExecute(MainActivity activity) {
+        super.onPostExecute(activity);
+        activity.launchAsyncTask(6);
     }
 }

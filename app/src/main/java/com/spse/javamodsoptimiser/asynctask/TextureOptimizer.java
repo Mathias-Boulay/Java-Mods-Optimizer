@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.widget.ProgressBar;
 
 import com.nicdahlquist.pngquant.LibPngQuant;
+import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
 
 import java.io.File;
@@ -13,10 +14,10 @@ import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 import static com.spse.javamodsoptimiser.FileManager.renameFile;
 
-public class TextureOptimizer extends AsyncTask<Task, Object, Void> {
+public class TextureOptimizer extends AsyncTask<Task, Object, MainActivity> {
 
     @Override
-    protected Void doInBackground(Task[] task){
+    protected MainActivity doInBackground(Task[] task){
         //First parse the arguments
         MinecraftMod mod = task[0].getMod();
 
@@ -46,7 +47,7 @@ public class TextureOptimizer extends AsyncTask<Task, Object, Void> {
             intProgress = Math.round(progress);
             publishProgress(progressBar, intProgress);
         }
-        return null;
+        return task[0].getActivity();
     }
 
     @Override
@@ -57,5 +58,11 @@ public class TextureOptimizer extends AsyncTask<Task, Object, Void> {
 
         progressBar.setProgress(progress, true);
 
+    }
+
+    @Override
+    protected void onPostExecute(MainActivity activity) {
+        super.onPostExecute(activity);
+        activity.launchAsyncTask(5);
     }
 }

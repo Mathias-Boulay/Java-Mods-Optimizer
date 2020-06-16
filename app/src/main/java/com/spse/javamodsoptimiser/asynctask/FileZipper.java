@@ -49,19 +49,19 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
             //Add all files
             for(int i=0; i < mod.getTextureNumber(); i++){
                 addFileToZip(zos, mod.getTexturePath(i));
-                incrementProgress(progressBar,progress,increment);
+                progress = incrementProgress(progressBar,progress,increment);
             }
             for(int i=0;i < mod.getSoundNumber();i++){
                 addFileToZip(zos,mod.getSoundPath(i));
-                incrementProgress(progressBar,progress,increment);
+                progress = incrementProgress(progressBar,progress,increment);
             }
             for(int i=0;i < mod.getOtherFileNumber();i++){
                 addFileToZip(zos, mod.getOtherFilePath(i));
-                incrementProgress(progressBar,progress,increment);
+                progress = incrementProgress(progressBar,progress,increment);
             }
             for(int i=mod.getFolderNumber()-1;i >= 0;i--){
                 FileManager.removeFile(mod.getFolderPath(i) + "/");
-                incrementProgress(progressBar,progress,increment);
+                progress = incrementProgress(progressBar,progress,increment);
             }
 
             zos.close();
@@ -75,10 +75,12 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
 
     }
 
-    private void incrementProgress(ProgressBar progressBar, float currentProgress, float increment){
+    private float incrementProgress(ProgressBar progressBar, float currentProgress, float increment){
         currentProgress += increment;
         int intProgress = Math.round(currentProgress);
         publishProgress(progressBar,intProgress);
+
+        return currentProgress;
     }
 
     private void addFileToZip(ZipOutputStream zos, String filePath) throws IOException{

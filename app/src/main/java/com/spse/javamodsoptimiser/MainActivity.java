@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String FOLDER_PATH = Environment.getExternalStorageDirectory().toString().concat("/Mods Optimizer/");
     public static final String TEMP_PATH = FOLDER_PATH.concat("TMP/");
     public static final String OUT_PATH = FOLDER_PATH.concat("OUTPUT/");
+    public final MainActivity MAIN_ACTIVITY = this;
 
     MinecraftMod mod;
     public ProgressBar copyProgressBar;
@@ -206,32 +207,32 @@ public class MainActivity extends AppCompatActivity {
         switch (step){
             case 1:
                 //File copy step
-                new FileCopier().execute(new Task(copyProgressBar, mod));
+                new FileCopier().execute(new Task(copyProgressBar, mod, MAIN_ACTIVITY));
                 break;
 
             case 2:
                 //File unzip step
-                new FileUnzipper().execute(new Task(unzipProgressBar,mod));
+                new FileUnzipper().execute(new Task(unzipProgressBar,mod, MAIN_ACTIVITY));
                 break;
 
             case 3:
                 //File parsing step
-                new FileParser().execute(new Task(parsingProgressBar, mod));
+                new FileParser().execute(new Task(parsingProgressBar, mod, MAIN_ACTIVITY));
                 break;
 
             case 4:
                 //Texture optimization step
-                new TextureOptimizer().execute(new Task(textureProgressBar, mod));
+                new TextureOptimizer().execute(new Task(textureProgressBar, mod, MAIN_ACTIVITY));
                 break;
 
             case 5:
                 //Sound optimization step
-                new SoundOptimizer().execute(new Task(soundProgressBar, mod));
+                new SoundOptimizer().execute(new Task(soundProgressBar, mod, MAIN_ACTIVITY));
                 break;
 
             case 6:
                 //Repacking step
-                new FileZipper().execute(new Task(zipProgressBar, mod));
+                new FileZipper().execute(new Task(zipProgressBar, mod, MAIN_ACTIVITY));
                 break;
         }
 

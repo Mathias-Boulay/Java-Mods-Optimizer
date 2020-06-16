@@ -11,7 +11,7 @@ import java.io.FileFilter;
 
 import static com.spse.javamodsoptimiser.MainActivity.FOLDER_PATH;
 
-public class FileParser extends AsyncTask<Task, Object, Void> {
+public class FileParser extends AsyncTask<Task, Object, MainActivity> {
 
     MinecraftMod mod;
 
@@ -74,7 +74,7 @@ public class FileParser extends AsyncTask<Task, Object, Void> {
     }
 
     @Override
-    public Void doInBackground(Task[] task) {
+    public MainActivity doInBackground(Task[] task) {
         //Parse arguments
         mod = task[0].getMod();
         ProgressBar progressBar = task[0].getProgressBar();
@@ -96,7 +96,7 @@ public class FileParser extends AsyncTask<Task, Object, Void> {
 
         publishProgress(progressBar, 100);
 
-        return null;
+        return task[0].getActivity();
     }
 
     @Override
@@ -106,5 +106,11 @@ public class FileParser extends AsyncTask<Task, Object, Void> {
         int progress = (int) argument[1];
 
         progressBar.setProgress(progress,true);
+    }
+
+    @Override
+    protected void onPostExecute(MainActivity activity) {
+        super.onPostExecute(activity);
+        activity.launchAsyncTask(4);
     }
 }
