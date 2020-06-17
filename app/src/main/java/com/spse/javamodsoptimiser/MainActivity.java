@@ -2,11 +2,14 @@ package com.spse.javamodsoptimiser;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
     public ProgressBar soundProgressBar;
     public ProgressBar zipProgressBar;
 
+    private TextView modInfoName;
+    private TextView modInfoTextureNumber;
+    private TextView modInfoSoundNumber;
+
 
     public static final int FILEPICKER_PERMISSIONS = 1;
 
@@ -62,6 +69,13 @@ public class MainActivity extends AppCompatActivity {
         textureProgressBar = findViewById(R.id.progressBarTexture);
         soundProgressBar = findViewById(R.id.progressBarSound);
         zipProgressBar = findViewById(R.id.progressBarZipping);
+
+        modInfoName = findViewById(R.id.modInfoName);
+        modInfoTextureNumber = findViewById(R.id.modInfoTextureNumber);
+        modInfoSoundNumber = findViewById(R.id.modInfoSoundNumber);
+
+
+
 
 
         Button filepickerBtn = findViewById(R.id.filePicker);
@@ -107,13 +121,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSelect(String path) {
 
+                //Reset the progressBar progression:
+                copyProgressBar.setProgress(0);
+                unzipProgressBar.setProgress(0);
+                parsingProgressBar.setProgress(0);
+                textureProgressBar.setProgress(0);
+                soundProgressBar.setProgress(0);
+                zipProgressBar.setProgress(0);
+
                 //Create the mod
                 mod = new MinecraftMod(path);
+
+                //Actualise info
+                modInfoName.setText(getString(R.string.mod_info_name) + mod.getFullName());
+                modInfoTextureNumber.setText(getString(R.string.mod_info_texture_number) + getString(R.string.mod_info_unknown));
+                modInfoSoundNumber.setText(getString(R.string.mod_info_sound_number) + getString(R.string.mod_info_unknown));
 
                 //Check if the same mod doesn't exist in output files
                 if(fileExists(OUT_PATH + mod.getFullName())) {
                     removeFile(OUT_PATH + mod.getFullName());
                 }
+
 
                 //Launch the first task, each task will launch the next one when it finishes
                 launchAsyncTask(1);
@@ -217,4 +245,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void setInfoTextureNumber(int number){
+        modInfoTextureNumber.setText(getString(R.string.mod_info_texture_number) + number);
+    }
+
+    public void setInfoSoundNumber(int number){
+        modInfoSoundNumber.setText(getString(R.string.mod_info_sound_number) + number);
+    }
 }

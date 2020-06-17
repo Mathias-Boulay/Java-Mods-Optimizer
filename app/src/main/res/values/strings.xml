@@ -9,11 +9,12 @@
     <string name="mod_info_version">Version: </string>
     <string name="mod_info_texture_number">Textures: </string>
     <string name="mod_info_sound_number">Sounds: </string>
+    <string name="mod_info_unknown">Unknown, wait for parsing…</string>
 
     <string name="option_delete_original">Delete original file</string>
-    <string name="option_really_low_quality">Make the mod even smaller (reduce quality)</string>
+    <string name="option_really_low_quality">Make the mod even smaller (reduced quality)</string>
     <string name="option_parallel_workload">Multi-Threaded workload (usually faster)</string>
-    <string name="option_remove_signature">Remove META_INF folder</string>
+    <string name="option_remove_signature">Remove signature files</string>
     <string name="options_remove_miscellaneous">Remove miscellaneous files</string>
 
     <string name="process_status_title">Status:</string>
