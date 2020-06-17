@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileFilter;
 
 import static com.spse.javamodsoptimiser.MainActivity.FOLDER_PATH;
+import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
 public class FileParser extends AsyncTask<Task, Object, MainActivity> {
 
@@ -81,7 +82,7 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
 
 
         //First count how many textures and sounds we have
-        walk(FOLDER_PATH, numberFilter);
+        walk(TEMP_PATH, numberFilter);
 
         publishProgress(progressBar, 50);
 
@@ -91,8 +92,10 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
         mod.otherFilePath = new String[mod.otherFileNumber];
         mod.folderPath = new String[mod.folderNumber];
 
+
+
         //Then store those files path
-        walk(FOLDER_PATH, fileFilter);
+        walk(TEMP_PATH, fileFilter);
 
         publishProgress(progressBar, 100);
 
