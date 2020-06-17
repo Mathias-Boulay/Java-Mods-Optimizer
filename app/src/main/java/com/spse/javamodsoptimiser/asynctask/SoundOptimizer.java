@@ -29,7 +29,7 @@ public class SoundOptimizer extends AsyncTask<Task, Object, MainActivity> {
         for(int i=0; i < mod.getSoundNumber(); i++) {
             String command = "-y -i '" + mod.getSoundPath(i) + "' -c:a libvorbis -b:a 48k -ac 1 -ar 26000 '" + mod.getSoundPath(i) + "-min.ogg'";
 
-            int rc = FFmpeg.execute(command);
+            FFmpeg.execute(command);
 
             if (fileExists(mod.getSoundPath(i).concat("-min.ogg"))) {
                 removeFile(mod.getSoundPath(i));
