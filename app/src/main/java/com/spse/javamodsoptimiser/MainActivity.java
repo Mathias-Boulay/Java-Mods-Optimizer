@@ -209,6 +209,10 @@ public class MainActivity extends AppCompatActivity {
                 //Repacking step
                 new FileZipper().execute(new Task(zipProgressBar, mod, MAIN_ACTIVITY));
                 break;
+
+            default:
+                Toast.makeText(MainActivity.this, "The async task launcher tried to launch a non-existing task ! (".concat(Integer.toString(step)).concat(")"),Toast.LENGTH_LONG);
+                break;
         }
 
     }

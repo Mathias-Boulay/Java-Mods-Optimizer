@@ -22,6 +22,8 @@ import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
 public class FileZipper extends AsyncTask<Task, Object, Void> {
 
+
+
     @Override
     protected Void doInBackground(Task... task) {
         MinecraftMod mod = (MinecraftMod) task[0].getMod();
