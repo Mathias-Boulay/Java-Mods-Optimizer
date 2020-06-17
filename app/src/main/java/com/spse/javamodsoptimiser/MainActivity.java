@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String OUT_PATH = FOLDER_PATH.concat("OUTPUT/");
     public final MainActivity MAIN_ACTIVITY = this;
 
+    public int FINISHED_THREADS; //Used for multi-threading the texture and sound optimization
+
     private MinecraftMod mod;
     public ProgressBar copyProgressBar;
     public ProgressBar unzipProgressBar;
@@ -138,6 +140,9 @@ public class MainActivity extends AppCompatActivity {
                 textureProgressBar.setProgress(0);
                 soundProgressBar.setProgress(0);
                 zipProgressBar.setProgress(0);
+
+                //Reset other stuff
+                FINISHED_THREADS = 0;
 
                 //Create the mod
                 mod = new MinecraftMod(path);
@@ -262,4 +267,18 @@ public class MainActivity extends AppCompatActivity {
     public void setInfoSoundNumber(int number){
         modInfoSoundNumber.setText(getString(R.string.mod_info_sound_number) + number);
     }
+
+    public boolean isQualityReduced(){
+        return reducedQuality.isChecked();
+    }
+    public boolean isWorkloadThreaded(){
+        return threadedWorkload.isChecked();
+    }
+    public boolean haveSignaturesRemoved(){
+        return removeSignatures.isChecked();
+    }
+    public boolean haveOriginalDeleted(){
+        return deleteOriginalFile.isChecked();
+    }
+
 }
