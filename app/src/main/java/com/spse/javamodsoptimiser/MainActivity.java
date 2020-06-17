@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.spse.javamodsoptimiser.FileManager.createFolder;
+import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 
 
@@ -34,21 +35,13 @@ public class MainActivity extends AppCompatActivity {
     public static final String OUT_PATH = FOLDER_PATH.concat("OUTPUT/");
     public final MainActivity MAIN_ACTIVITY = this;
 
-    MinecraftMod mod;
+    private MinecraftMod mod;
     public ProgressBar copyProgressBar;
     public ProgressBar unzipProgressBar;
     public ProgressBar parsingProgressBar;
     public ProgressBar textureProgressBar;
     public ProgressBar soundProgressBar;
     public ProgressBar zipProgressBar;
-
-    public String realPath;
-    public String fileName;
-    public String fileExtension;
-
-    public Button testButton;
-    public int index = 1;
-
 
 
     public static final int FILEPICKER_PERMISSIONS = 1;
@@ -63,14 +56,13 @@ public class MainActivity extends AppCompatActivity {
         createFolder(TEMP_PATH);
         createFolder(OUT_PATH);
 
-        testButton = findViewById(R.id.testButton);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchAsyncTask(index);
-                index ++;
-            }
-        });
+        copyProgressBar = findViewById(R.id.progressBarCopying);
+        unzipProgressBar = findViewById(R.id.progressBarUnzipping);
+        parsingProgressBar = findViewById(R.id.progressBarParsing);
+        textureProgressBar = findViewById(R.id.progressBarTexture);
+        soundProgressBar = findViewById(R.id.progressBarSound);
+        zipProgressBar = findViewById(R.id.progressBarZipping);
+
 
         Button filepickerBtn = findViewById(R.id.filePicker);
         filepickerBtn.setOnClickListener(new View.OnClickListener(){
@@ -114,36 +106,19 @@ public class MainActivity extends AppCompatActivity {
         chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
             @Override
             public void onSelect(String path) {
-                Toast.makeText(MainActivity.this, "The selected path is : " + path, Toast.LENGTH_SHORT).show();
-                int index = path.length()-1;
-                while (!(path.charAt(index) == "/".charAt(0))){
-                    index --;
-                }
-
-
-                //Once the index is found:
-                realPath = path.substring(0,index+1);
-                fileName = path.substring(index+1,path.length()-4);
-                fileExtension = path.substring(path.length()-4);
 
                 //Create the mod
                 mod = new MinecraftMod(path);
 
-                //Let's use the new layout !
-                //Get all progress bars set up
-                copyProgressBar = findViewById(R.id.progressBarCopying);
-                unzipProgressBar = findViewById(R.id.progressBarUnzipping);
-                parsingProgressBar = findViewById(R.id.progressBarParsing);
-                textureProgressBar = findViewById(R.id.progressBarTexture);
-                soundProgressBar = findViewById(R.id.progressBarSound);
-                zipProgressBar = findViewById(R.id.progressBarZipping);
+                //Check if the same mod doesn't exist in output files
+                if(fileExists(OUT_PATH + mod.getFullName())) {
+                    removeFile(OUT_PATH + mod.getFullName());
+                }
 
+                //Launch the first task, each task will launch the next one when it finishes
+                launchAsyncTask(1);
 
-                Toast.makeText(MainActivity.this,"SUCCESS !",Toast.LENGTH_LONG).show();
-
-
-
-
+                Toast.makeText(MainActivity.this,"Launching optimization process !",Toast.LENGTH_LONG).show();
 
 
             }

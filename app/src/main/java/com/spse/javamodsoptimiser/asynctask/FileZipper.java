@@ -33,9 +33,7 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
     private void repackMod(MinecraftMod mod, ProgressBar progressBar){
         //First step is to create I/O streams
         String zipFile = OUT_PATH.concat(mod.getFullName());
-        if(new File(zipFile).exists()){
-            FileManager.removeFile(zipFile);
-        }
+
 
         int fileNumber = mod.getOtherFileNumber() + mod.getFolderNumber() + mod.getTextureNumber() + mod.getSoundNumber();
         float progress = 0;
