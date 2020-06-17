@@ -1,7 +1,6 @@
 package com.spse.javamodsoptimiser;
 
 import java.io.File;
-import java.io.FileFilter;
 
 public class MinecraftMod{
     //Interact with outside the class

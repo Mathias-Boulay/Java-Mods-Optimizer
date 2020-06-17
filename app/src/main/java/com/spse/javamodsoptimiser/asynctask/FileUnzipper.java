@@ -15,7 +15,6 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import static com.spse.javamodsoptimiser.MainActivity.FOLDER_PATH;
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
 public class FileUnzipper  extends AsyncTask<Task, Object, MainActivity> {

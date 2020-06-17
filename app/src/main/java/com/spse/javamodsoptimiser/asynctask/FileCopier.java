@@ -6,7 +6,6 @@ import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
-import com.spse.javamodsoptimiser.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,7 +14,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static com.spse.javamodsoptimiser.MainActivity.FOLDER_PATH;
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
 public class FileCopier extends AsyncTask<Task, Object, MainActivity> {

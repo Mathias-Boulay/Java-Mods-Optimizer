@@ -9,7 +9,6 @@ import com.spse.javamodsoptimiser.MinecraftMod;
 import java.io.File;
 import java.io.FileFilter;
 
-import static com.spse.javamodsoptimiser.MainActivity.FOLDER_PATH;
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
 public class FileParser extends AsyncTask<Task, Object, MainActivity> {

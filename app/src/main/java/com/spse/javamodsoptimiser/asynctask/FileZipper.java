@@ -2,7 +2,6 @@ package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.spse.javamodsoptimiser.FileManager;
 import com.spse.javamodsoptimiser.MainActivity;
@@ -15,7 +14,6 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static com.spse.javamodsoptimiser.MainActivity.FOLDER_PATH;
 import static com.spse.javamodsoptimiser.MainActivity.OUT_PATH;
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
