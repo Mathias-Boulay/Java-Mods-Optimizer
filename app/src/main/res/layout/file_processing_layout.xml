@@ -53,40 +53,15 @@
         app:layout_constraintTop_toBottomOf="@+id/modInfo" />
 
     <TextView
-        android:id="@+id/modInfoVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/mod_info_version"
-        android:textColor="@color/neutralText"
-        android:fontFamily="sans-serif-medium"
-        app:layout_constraintStart_toStartOf="@+id/modInfo"
-        app:layout_constraintTop_toBottomOf="@+id/modInfoName" />
-
-    <TextView
-        android:id="@+id/modInfoMinecraftVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/mod_info_minecraft_version"
-        android:textColor="@color/neutralText"
-        android:fontFamily="sans-serif-medium"
-        app:layout_constraintStart_toStartOf="@+id/modInfo"
-        app:layout_constraintTop_toBottomOf="@+id/modInfoVersion" />
-
-    <TextView
         android:id="@+id/modInfoTextureNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginBottom="10dp"
+        android:fontFamily="sans-serif-medium"
         android:text="@string/mod_info_texture_number"
         android:textColor="@color/neutralText"
-        android:fontFamily="sans-serif-medium"
         app:layout_constraintStart_toStartOf="@+id/modInfo"
-        app:layout_constraintTop_toBottomOf="@+id/modInfoMinecraftVersion" />
+        app:layout_constraintTop_toBottomOf="@+id/modInfoName" />
 
     <TextView
         android:id="@+id/modInfoSoundNumber"
@@ -261,16 +236,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/testButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/filePicker"
-        app:layout_constraintTop_toBottomOf="@+id/filePicker" />
+        app:layout_constraintTop_toTopOf="@+id/quarter_height_guideline" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

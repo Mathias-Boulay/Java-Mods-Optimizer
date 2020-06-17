@@ -15,8 +15,8 @@
 
     <color name="progressBarOff">#737373</color>
     <color name="progressBarCopying">#0074E7</color>
-    <color name="progressBarUnzipping">#004C97</color>
-    <color name="progressBarParsing">#00386F</color>
+    <color name="progressBarUnzipping">#CA00B4</color>
+    <color name="progressBarParsing">#DC0000</color>
     <color name="progressBarTexture">@color/textureFileText</color>
     <color name="progressBarSound">@color/soundFileText</color>
     <color name="progressBarZipping">#FFFFFF</color>
