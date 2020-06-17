@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView modInfoTextureNumber;
     private TextView modInfoSoundNumber;
 
+    private CheckBox deleteOriginalFile;
+    private CheckBox removeSignatures;
+    private CheckBox threadedWorkload;
+    private CheckBox reducedQuality;
+
 
     public static final int FILEPICKER_PERMISSIONS = 1;
 
@@ -72,6 +77,12 @@ public class MainActivity extends AppCompatActivity {
         modInfoName = findViewById(R.id.modInfoName);
         modInfoTextureNumber = findViewById(R.id.modInfoTextureNumber);
         modInfoSoundNumber = findViewById(R.id.modInfoSoundNumber);
+
+        deleteOriginalFile = findViewById(R.id.optionDeleteOriginal);
+        removeSignatures = findViewById(R.id.optionRemoveSignatures);
+        threadedWorkload = findViewById(R.id.optionThreadedWorkload);
+        reducedQuality = findViewById(R.id.optionReducedQuality);
+
 
 
 
