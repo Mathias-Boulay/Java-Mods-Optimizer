@@ -24,13 +24,12 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
 
     @Override
     protected Void doInBackground(Task... task) {
-        MinecraftMod mod = (MinecraftMod) task[0].getMod();
 
-        repackMod(task[0].getMod(), task[0].getProgressBar());
+        repackMod(task[0].getMod(), task[0].getProgressBar(), task[0].getActivity());
         return null;
     }
 
-    private void repackMod(MinecraftMod mod, ProgressBar progressBar){
+    private void repackMod(MinecraftMod mod, ProgressBar progressBar,MainActivity activity){
         //First step is to create I/O streams
         String zipFile = OUT_PATH.concat(mod.getFullName());
 
@@ -54,7 +53,15 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
                 progress = incrementProgress(progressBar,progress,increment);
             }
             for(int i=0;i < mod.getOtherFileNumber();i++){
-                addFileToZip(zos, mod.getOtherFilePath(i));
+                //Remove signatures if needed
+                if (!activity.haveSignaturesRemoved()) {
+                    addFileToZip(zos, mod.getOtherFilePath(i));
+                }else{
+                    if (!mod.getOtherFilePath(i).contains(".RSA") || !mod.getOtherFilePath(i).contains(".MF") || !mod.getOtherFilePath(i).contains(".SF")){
+                        addFileToZip(zos, mod.getOtherFilePath(i));
+                    } //else we don't add the file back.
+                }
+
                 progress = incrementProgress(progressBar,progress,increment);
             }
             for(int i=mod.getFolderNumber()-1;i >= 0;i--){
@@ -69,6 +76,10 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
 
         }catch (IOException io){
             io.printStackTrace();
+        }
+
+        if(activity.haveOriginalDeleted()){
+            FileManager.removeFile(mod.folderPath + mod.getFullName());
         }
 
     }
@@ -109,6 +120,5 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
         progressBar.setProgress(progress, true);
 
     }
-
 
 }
