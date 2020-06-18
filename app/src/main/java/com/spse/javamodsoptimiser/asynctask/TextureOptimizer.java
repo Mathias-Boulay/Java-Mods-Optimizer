@@ -32,7 +32,11 @@ public class TextureOptimizer extends AsyncTask<Task, Object, MainActivity> {
         for(int i=0; i < mod.getTextureNumber(); i++){
             File inputFile = new File(mod.getTexturePath(i));
             File outputFile = new File(mod.getTexturePath(i).concat("-min.png"));
-            new LibPngQuant().pngQuantFile(inputFile,outputFile);
+            if(task[0].getActivity().isQualityReduced()) {
+                new LibPngQuant().pngQuantFile(inputFile, outputFile, 0, 65);
+            }else{
+                new LibPngQuant().pngQuantFile(inputFile, outputFile, 45, 85);
+            }
 
             //ONCE THE OPTIMISATION IS DONE
             if (fileExists(mod.getTexturePath(i).concat("-min.png"))) {

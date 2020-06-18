@@ -27,7 +27,12 @@ public class SoundOptimizer extends AsyncTask<Task, Object, MainActivity> {
 
 
         for(int i=0; i < mod.getSoundNumber(); i++) {
-            String command = "-y -i '" + mod.getSoundPath(i) + "' -c:a libvorbis -b:a 48k -ac 1 -ar 26000 '" + mod.getSoundPath(i) + "-min.ogg'";
+            String command;
+            if(task[0].getActivity().isQualityReduced()){
+                command = "-y -i '" + mod.getSoundPath(i) + "' -c:a libvorbis -b:a 36k -ac 1 -ar 26000 '" + mod.getSoundPath(i) + "-min.ogg'";
+            }else {
+                command = "-y -i '" + mod.getSoundPath(i) + "' -c:a libvorbis -b:a 48k -ac 1 -ar 26000 '" + mod.getSoundPath(i) + "-min.ogg'";
+            }
 
             FFmpeg.execute(command);
 
