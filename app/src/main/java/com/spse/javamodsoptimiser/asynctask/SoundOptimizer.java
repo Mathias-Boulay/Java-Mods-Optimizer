@@ -60,14 +60,7 @@ public class SoundOptimizer extends AsyncTask<Task, Object, MainActivity> {
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
-        if (activity.isWorkloadThreaded()){
-            activity.FINISHED_THREADS ++;
-            if (activity.FINISHED_THREADS == 2) {
-                activity.launchAsyncTask(6);
-            }
-        }else{
-            activity.launchAsyncTask(6);
-        }
+        activity.launchAsyncTask(6);
 
     }
 }

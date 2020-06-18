@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String OUT_PATH = FOLDER_PATH.concat("OUTPUT/");
     public final MainActivity MAIN_ACTIVITY = this;
 
-    public int FINISHED_THREADS; //Used for multi-threading the texture and sound optimization
 
     private MinecraftMod mod;
     public ProgressBar copyProgressBar;
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
     private CheckBox deleteOriginalFile;
     private CheckBox removeSignatures;
-    private CheckBox threadedWorkload;
     private CheckBox reducedQuality;
 
 
@@ -82,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
         deleteOriginalFile = findViewById(R.id.optionDeleteOriginal);
         removeSignatures = findViewById(R.id.optionRemoveSignatures);
-        threadedWorkload = findViewById(R.id.optionThreadedWorkload);
         reducedQuality = findViewById(R.id.optionReducedQuality);
 
 
@@ -141,16 +138,13 @@ public class MainActivity extends AppCompatActivity {
                 soundProgressBar.setProgress(0);
                 zipProgressBar.setProgress(0);
 
-                //Reset other stuff
-                FINISHED_THREADS = 0;
-
                 //Create the mod
                 mod = new MinecraftMod(path);
 
                 //Actualise info
                 modInfoName.setText(getString(R.string.mod_info_name) + mod.getFullName());
-                modInfoTextureNumber.setText(getString(R.string.mod_info_texture_number) + getString(R.string.mod_info_unknown));
-                modInfoSoundNumber.setText(getString(R.string.mod_info_sound_number) + getString(R.string.mod_info_unknown));
+                modInfoTextureNumber.setText(getString(R.string.mod_info_texture_number)  + getString(R.string.mod_info_unknown));
+                modInfoSoundNumber.setText(getString(R.string.mod_info_sound_number) +  getString(R.string.mod_info_unknown));
 
                 //Check if the same mod doesn't exist in output files
                 if(fileExists(OUT_PATH + mod.getFullName())) {
@@ -270,9 +264,6 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isQualityReduced(){
         return reducedQuality.isChecked();
-    }
-    public boolean isWorkloadThreaded(){
-        return threadedWorkload.isChecked();
     }
     public boolean haveSignaturesRemoved(){
         return removeSignatures.isChecked();
