@@ -228,16 +228,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/filePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Button_choose_file"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/half_height_guideline" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
@@ -279,15 +269,16 @@
         app:layout_constraintStart_toStartOf="@+id/optionDeleteOriginal"
         app:layout_constraintTop_toBottomOf="@+id/optionRemoveSignatures" />
 
-    <CheckBox
-        android:id="@+id/optionThreadedWorkload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/option_parallel_workload"
-        android:textColor="@color/neutralText"
-        app:buttonTint="@drawable/checkbox_color_states"
-        app:layout_constraintStart_toStartOf="@+id/optionDeleteOriginal"
-        app:layout_constraintTop_toBottomOf="@+id/optionReducedQuality" />
+    <ImageButton
+        android:id="@+id/filePicker"
+        android:layout_width="73dp"
+        android:layout_height="73dp"
+        android:background="@drawable/button_shape"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/half_height_guideline"
+        app:srcCompat="@drawable/plus" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

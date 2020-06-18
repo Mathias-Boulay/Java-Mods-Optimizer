@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Button filepickerBtn = findViewById(R.id.filePicker);
+        ImageButton filepickerBtn = findViewById(R.id.filePicker);
         filepickerBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             //On click function
