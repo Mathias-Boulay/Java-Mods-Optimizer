@@ -57,7 +57,7 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
                 if (!activity.haveSignaturesRemoved()) {
                     addFileToZip(zos, mod.getOtherFilePath(i));
                 }else{
-                    if (!mod.getOtherFilePath(i).contains(".RSA") || !mod.getOtherFilePath(i).contains(".MF") || !mod.getOtherFilePath(i).contains(".SF")){
+                    if (!mod.getOtherFilePath(i).contains(".RSA") && !mod.getOtherFilePath(i).contains(".MF") && !mod.getOtherFilePath(i).contains(".SF")){
                         addFileToZip(zos, mod.getOtherFilePath(i));
                     } //else we don't add the file back.
                 }
