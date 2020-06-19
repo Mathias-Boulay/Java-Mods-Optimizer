@@ -59,7 +59,10 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
                 }else{
                     if (!mod.getOtherFilePath(i).contains(".RSA") && !mod.getOtherFilePath(i).contains(".MF") && !mod.getOtherFilePath(i).contains(".SF")){
                         addFileToZip(zos, mod.getOtherFilePath(i));
-                    } //else we don't add the file back.
+                    }else{
+                        //else we don't add the file back but we still have to delete it.
+                        FileManager.removeFile(mod.getOtherFilePath(i));
+                    }
                 }
 
                 progress = incrementProgress(progressBar,progress,increment);
@@ -79,7 +82,7 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
         }
 
         if(activity.haveOriginalDeleted()){
-            FileManager.removeFile(mod.folderPath + mod.getFullName());
+            FileManager.removeFile(mod.getFolder() + mod.getFullName());
         }
 
     }
