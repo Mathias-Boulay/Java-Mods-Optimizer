@@ -85,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
         removeSignatures = findViewById(R.id.optionRemoveSignatures);
         reducedQuality = findViewById(R.id.optionReducedQuality);
 
+        //Pre-activate recommended options
+        removeSignatures.setChecked(true);
+        reducedQuality.setChecked(true);
+
 
 
 
