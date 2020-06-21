@@ -6,7 +6,6 @@ import android.widget.ProgressBar;
 import com.spse.javamodsoptimiser.FileManager;
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
-import com.whoischarles.util.json.Minify;
 
 import java.io.File;
 import java.io.FileInputStream;

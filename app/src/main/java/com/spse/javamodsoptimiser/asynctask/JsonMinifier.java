@@ -3,19 +3,17 @@ package com.spse.javamodsoptimiser.asynctask;
 import android.os.AsyncTask;
 import android.widget.ProgressBar;
 
-import static com.spse.javamodsoptimiser.FileManager.fileExists;
-import static com.spse.javamodsoptimiser.FileManager.removeFile;
-import static com.spse.javamodsoptimiser.FileManager.renameFile;
-
-import com.spse.javamodsoptimiser.FileManager;
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
 import com.whoischarles.util.json.Minify;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import static com.spse.javamodsoptimiser.FileManager.fileExists;
+import static com.spse.javamodsoptimiser.FileManager.removeFile;
+import static com.spse.javamodsoptimiser.FileManager.renameFile;
 
 public class JsonMinifier extends AsyncTask<Task, Object, MainActivity> {
     @Override

@@ -8,7 +8,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
-        versionName "1.2"
+        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -30,9 +30,10 @@ dependencies {
     implementation 'com.github.codekidX:storage-chooser:2.0.4.4'
     implementation project(':pngquant-android')
     implementation project(path: ':mobile-ffmpeg')
+    implementation project(path: ':minify-1.0.0')
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation project(path: ':minify-1.0.0')
+
 
 
     testImplementation 'junit:junit:4.13'

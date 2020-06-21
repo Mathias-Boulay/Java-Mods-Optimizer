@@ -47,6 +47,7 @@ public class FileCopier extends AsyncTask<Task, Object, MainActivity> {
             while ((read = in.read(buffer)) != -1) {
                 out.write(buffer, 0, read);
 
+
                 progress += increment;
                 intprogress = Math.round(progress);
                 publishProgress(progressBar,intprogress);
@@ -75,7 +76,12 @@ public class FileCopier extends AsyncTask<Task, Object, MainActivity> {
         ProgressBar progressBar = (ProgressBar) argument[0];
         int progress = (int) argument[1];
 
+
+
         progressBar.setProgress(progress,true);
+
+
+
     }
 
     @Override
