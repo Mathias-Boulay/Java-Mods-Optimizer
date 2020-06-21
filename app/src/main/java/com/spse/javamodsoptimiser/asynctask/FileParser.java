@@ -30,6 +30,10 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
                 mod.soundNumber++;
                 return true;
             }
+            if (pathname.toString().contains(".json")) {
+                mod.jsonNumber++;
+                return true;
+            }
             mod.otherFileNumber++;
             return false;
         }
@@ -51,6 +55,11 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
             if (pathname.toString().contains(".ogg")) {
                 mod.soundPath[mod.soundIndex] = pathname.getAbsolutePath();
                 mod.soundIndex++;
+                return true;
+            }
+            if (pathname.toString().contains(".json")) {
+                mod.jsonPath[mod.jsonIndex] = pathname.getAbsolutePath();
+                mod.jsonIndex++;
                 return true;
             }
             mod.otherFilePath[mod.otherFileIndex] = pathname.getAbsolutePath();
@@ -88,6 +97,7 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
         //Then assign arrays to store both textures and sounds paths
         mod.texturePath = new String[mod.textureNumber];
         mod.soundPath = new String[mod.soundNumber];
+        mod.jsonPath = new String[mod.jsonNumber];
         mod.otherFilePath = new String[mod.otherFileNumber];
         mod.folderPath = new String[mod.folderNumber];
 

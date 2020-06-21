@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 import com.spse.javamodsoptimiser.FileManager;
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.whoischarles.util.json.Minify;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +35,7 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
         String zipFile = OUT_PATH.concat(mod.getFullName());
 
 
-        int fileNumber = mod.getOtherFileNumber() + mod.getFolderNumber() + mod.getTextureNumber() + mod.getSoundNumber();
+        float fileNumber = mod.getOtherFileNumber() + mod.getJsonNumber() + mod.getTextureNumber() + mod.getSoundNumber();
         float progress = 0;
         float increment = fileNumber/100f;
 
@@ -52,6 +53,11 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
                 addFileToZip(zos,mod.getSoundPath(i));
                 progress = incrementProgress(progressBar,progress,increment);
             }
+            for (int i=0; i < mod.getJsonNumber(); i++){
+                addFileToZip(zos,mod.getJsonPath(i));
+                progress = incrementProgress(progressBar,progress,increment);
+            }
+
             for(int i=0;i < mod.getOtherFileNumber();i++){
                 //Remove signatures if needed
                 if (!activity.haveSignaturesRemoved()) {

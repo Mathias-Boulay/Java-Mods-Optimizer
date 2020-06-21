@@ -29,6 +29,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="634dp" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.67" />
+
     <TextView
         android:id="@+id/modInfo"
         android:layout_width="wrap_content"
@@ -142,11 +149,11 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="80dp"
         android:layout_height="20dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="120dp"
         android:progress="0"
         android:progressBackgroundTint="@color/progressBarOff"
         android:progressTint="@color/progressBarZipping"
-        app:layout_constraintStart_toStartOf="@+id/progressBarParsing"
+        app:layout_constraintStart_toStartOf="@+id/progressBarUnzipping"
         app:layout_constraintTop_toTopOf="@+id/progressBarCopying" />
 
     <TextView
@@ -228,12 +235,33 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
+
+    <ImageButton
+        android:id="@+id/filePicker"
+        android:layout_width="73dp"
+        android:layout_height="73dp"
+        android:background="@drawable/button_shape"
+        app:layout_constraintBottom_toTopOf="@+id/textViewOptions"
+        app:layout_constraintEnd_toStartOf="@+id/half_width_guideline"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="@+id/half_width_guideline"
+        app:layout_constraintTop_toTopOf="@+id/half_height_guideline"
+        app:layout_constraintVertical_bias="0.805"
+        app:srcCompat="@drawable/plus" />
+
+    <TextView
+        android:id="@+id/textViewOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        android:fontFamily="sans-serif-black"
+        android:text="@string/option_title"
+        android:textColor="@color/neutralText"
+        app:layout_constraintBottom_toTopOf="@+id/optionDeleteOriginal"
+        app:layout_constraintEnd_toStartOf="@+id/half_width_guideline"
+        app:layout_constraintHorizontal_bias="0.462"
+        app:layout_constraintStart_toStartOf="@+id/half_width_guideline"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.735" />
 
     <CheckBox
         android:id="@+id/optionDeleteOriginal"
@@ -269,16 +297,27 @@
         app:layout_constraintStart_toStartOf="@+id/optionDeleteOriginal"
         app:layout_constraintTop_toBottomOf="@+id/optionRemoveSignatures" />
 
-    <ImageButton
-        android:id="@+id/filePicker"
-        android:layout_width="73dp"
-        android:layout_height="73dp"
-        android:background="@drawable/button_shape"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/half_height_guideline"
-        app:srcCompat="@drawable/plus" />
+    <ProgressBar
+        android:id="@+id/progressBarJson"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progress="0"
+        android:progressBackgroundTint="@color/progressBarOff"
+        android:progressTint="@color/progressBarMinifying"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        app:layout_constraintStart_toStartOf="@+id/progressBarParsing"
+        app:layout_constraintTop_toTopOf="@+id/progressBarSound" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/process_status_json"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/neutralText"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarJson"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarJson"
+        app:layout_constraintStart_toStartOf="@+id/progressBarJson" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

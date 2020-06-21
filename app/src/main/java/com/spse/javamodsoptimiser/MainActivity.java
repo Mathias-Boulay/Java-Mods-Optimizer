@@ -19,6 +19,7 @@ import com.spse.javamodsoptimiser.asynctask.FileCopier;
 import com.spse.javamodsoptimiser.asynctask.FileParser;
 import com.spse.javamodsoptimiser.asynctask.FileUnzipper;
 import com.spse.javamodsoptimiser.asynctask.FileZipper;
+import com.spse.javamodsoptimiser.asynctask.JsonMinifier;
 import com.spse.javamodsoptimiser.asynctask.SoundOptimizer;
 import com.spse.javamodsoptimiser.asynctask.Task;
 import com.spse.javamodsoptimiser.asynctask.TextureOptimizer;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public ProgressBar parsingProgressBar;
     public ProgressBar textureProgressBar;
     public ProgressBar soundProgressBar;
+    public ProgressBar jsonProgressBar;
     public ProgressBar zipProgressBar;
 
     private TextView modInfoName;
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         parsingProgressBar = findViewById(R.id.progressBarParsing);
         textureProgressBar = findViewById(R.id.progressBarTexture);
         soundProgressBar = findViewById(R.id.progressBarSound);
+        jsonProgressBar = findViewById(R.id.progressBarJson);
         zipProgressBar = findViewById(R.id.progressBarZipping);
 
         modInfoName = findViewById(R.id.modInfoName);
@@ -132,12 +135,13 @@ public class MainActivity extends AppCompatActivity {
             public void onSelect(String path) {
 
                 //Reset the progressBar progression:
-                copyProgressBar.setProgress(0);
-                unzipProgressBar.setProgress(0);
-                parsingProgressBar.setProgress(0);
-                textureProgressBar.setProgress(0);
-                soundProgressBar.setProgress(0);
-                zipProgressBar.setProgress(0);
+                copyProgressBar.setProgress(0, true);
+                unzipProgressBar.setProgress(0, true);
+                parsingProgressBar.setProgress(0, true);
+                textureProgressBar.setProgress(0, true);
+                jsonProgressBar.setProgress(0, true);
+                soundProgressBar.setProgress(0, true);
+                zipProgressBar.setProgress(0, true);
 
                 //Create the mod
                 mod = new MinecraftMod(path);
@@ -244,6 +248,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case 6:
+                //Json minify step
+                new JsonMinifier().execute(new Task(jsonProgressBar, mod, MAIN_ACTIVITY));
+                break;
+
+            case 7:
                 //Repacking step
                 new FileZipper().execute(new Task(zipProgressBar, mod, MAIN_ACTIVITY));
                 break;
