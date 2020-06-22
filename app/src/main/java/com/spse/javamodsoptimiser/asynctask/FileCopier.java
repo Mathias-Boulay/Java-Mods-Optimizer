@@ -22,6 +22,9 @@ public class FileCopier extends AsyncTask<Task, Object, MainActivity> {
     @Override
     protected MainActivity doInBackground(Task[] task) {
 
+        //Activate the CPU wakelock
+        task[0].getActivity().setWakelockState(true);
+
         //Parse arguments
         MinecraftMod mod = task[0].getMod();
         ProgressBar progressBar = task[0].getProgressBar();

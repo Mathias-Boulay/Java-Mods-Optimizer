@@ -26,6 +26,10 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
     protected Void doInBackground(Task... task) {
 
         repackMod(task[0].getMod(), task[0].getProgressBar(), task[0].getActivity());
+
+        //Deactivate the CPU wakelock
+        task[0].getActivity().setWakelockState(false);
+
         return null;
     }
 
