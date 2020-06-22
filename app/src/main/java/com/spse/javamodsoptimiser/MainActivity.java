@@ -1,9 +1,11 @@
 package com.spse.javamodsoptimiser;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox deleteOriginalFile;
     private CheckBox removeSignatures;
     private CheckBox reducedQuality;
+
+    private PowerManager.WakeLock wakelock;
 
 
     public static final int FILEPICKER_PERMISSIONS = 1;
@@ -284,6 +288,16 @@ public class MainActivity extends AppCompatActivity {
     }
     public boolean haveOriginalDeleted(){
         return deleteOriginalFile.isChecked();
+    }
+
+    public void setWakelockState(boolean awake){
+        if(awake){
+            PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+            wakelock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"Minecraft Java Mods Optimizer::ProcessingWakelock");
+            wakelock.acquire();
+        }else{
+            wakelock.release();
+        }
     }
 
 }
