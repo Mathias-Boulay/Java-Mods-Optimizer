@@ -24,15 +24,15 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
             }
             if (pathname.toString().contains(".png")) {
                 mod.textureNumber++;
-                return true;
+                return false;
             }
             if (pathname.toString().contains(".ogg")) {
                 mod.soundNumber++;
-                return true;
+                return false;
             }
             if (pathname.toString().contains(".json")) {
                 mod.jsonNumber++;
-                return true;
+                return false;
             }
             mod.otherFileNumber++;
             return false;
@@ -50,23 +50,24 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
             if (pathname.toString().contains(".png")) {
                 mod.texturePath[mod.textureIndex] = pathname.getAbsolutePath();
                 mod.textureIndex++;
-                return true;
+                return false;
             }
             if (pathname.toString().contains(".ogg")) {
                 mod.soundPath[mod.soundIndex] = pathname.getAbsolutePath();
                 mod.soundIndex++;
-                return true;
+                return false;
             }
             if (pathname.toString().contains(".json")) {
                 mod.jsonPath[mod.jsonIndex] = pathname.getAbsolutePath();
                 mod.jsonIndex++;
-                return true;
+                return false;
             }
             mod.otherFilePath[mod.otherFileIndex] = pathname.getAbsolutePath();
             mod.otherFileIndex++;
             return false;
         }
     };
+
 
     private void walk(String path, FileFilter filter) {
 

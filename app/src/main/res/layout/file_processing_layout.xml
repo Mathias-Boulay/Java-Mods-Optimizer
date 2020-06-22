@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.67" />
+        app:layout_constraintGuide_percent="0.85" />
 
     <TextView
         android:id="@+id/modInfo"
@@ -60,6 +60,17 @@
         app:layout_constraintTop_toBottomOf="@+id/modInfo" />
 
     <TextView
+        android:id="@+id/modInfoNameData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/neutralText"
+        android:layout_marginStart="10dp"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/modInfoName"
+        app:layout_constraintStart_toEndOf="@+id/modInfoName" />
+
+    <TextView
         android:id="@+id/modInfoTextureNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,6 +80,17 @@
         android:textColor="@color/neutralText"
         app:layout_constraintStart_toStartOf="@+id/modInfo"
         app:layout_constraintTop_toBottomOf="@+id/modInfoName" />
+
+    <TextView
+        android:id="@+id/modInfoTextureNumberData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginStart="10dp"
+        android:text=""
+        android:textColor="@color/neutralText"
+        app:layout_constraintBottom_toBottomOf="@+id/modInfoTextureNumber"
+        app:layout_constraintStart_toEndOf="@+id/modInfoTextureNumber" />
 
     <TextView
         android:id="@+id/modInfoSoundNumber"
@@ -81,6 +103,17 @@
         android:textColor="@color/neutralText"
         app:layout_constraintStart_toStartOf="@+id/modInfo"
         app:layout_constraintTop_toBottomOf="@+id/modInfoTextureNumber" />
+
+    <TextView
+        android:id="@+id/modInfoSoundNumberData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/neutralText"
+        android:layout_marginStart="10dp"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/modInfoSoundNumber"
+        app:layout_constraintStart_toEndOf="@+id/modInfoSoundNumber" />
 
 
     <ProgressBar
@@ -243,10 +276,10 @@
         android:background="@drawable/button_shape"
         app:layout_constraintBottom_toTopOf="@+id/textViewOptions"
         app:layout_constraintEnd_toStartOf="@+id/half_width_guideline"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="@+id/half_width_guideline"
         app:layout_constraintTop_toTopOf="@+id/half_height_guideline"
-        app:layout_constraintVertical_bias="0.805"
+        app:layout_constraintVertical_bias="0.745"
         app:srcCompat="@drawable/plus" />
 
     <TextView
@@ -256,12 +289,11 @@
         android:fontFamily="sans-serif-black"
         android:text="@string/option_title"
         android:textColor="@color/neutralText"
-        app:layout_constraintBottom_toTopOf="@+id/optionDeleteOriginal"
-        app:layout_constraintEnd_toStartOf="@+id/half_width_guideline"
-        app:layout_constraintHorizontal_bias="0.462"
-        app:layout_constraintStart_toStartOf="@+id/half_width_guideline"
-        app:layout_constraintTop_toTopOf="@+id/guideline2"
-        app:layout_constraintVertical_bias="0.735" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/half_height_guideline" />
 
     <CheckBox
         android:id="@+id/optionDeleteOriginal"
@@ -270,12 +302,10 @@
         android:text="@string/option_delete_original"
         android:textColor="@color/neutralText"
         app:buttonTint="@drawable/checkbox_color_states"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.284"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2"
-        app:layout_constraintVertical_bias="0.159" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOptions" />
 
     <CheckBox
         android:id="@+id/optionRemoveSignatures"
@@ -300,24 +330,26 @@
     <ProgressBar
         android:id="@+id/progressBarJson"
         style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
         android:progress="0"
         android:progressBackgroundTint="@color/progressBarOff"
         android:progressTint="@color/progressBarMinifying"
-        android:layout_width="80dp"
-        android:layout_height="20dp"
         app:layout_constraintStart_toStartOf="@+id/progressBarParsing"
         app:layout_constraintTop_toTopOf="@+id/progressBarSound" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textViewMinify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/process_status_json"
         android:fontFamily="sans-serif-medium"
+        android:text="@string/process_status_json"
         android:textColor="@color/neutralText"
         app:layout_constraintBottom_toTopOf="@+id/progressBarJson"
         app:layout_constraintEnd_toEndOf="@+id/progressBarJson"
         app:layout_constraintStart_toStartOf="@+id/progressBarJson" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

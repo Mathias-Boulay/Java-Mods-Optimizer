@@ -29,4 +29,15 @@
 
     <string name="text_output_optimizing">Optimizing </string>
 
+    <string name="dialog_illegal_path_title">Illegal path !</string>
+    <string name="dialog_illegal_path_message">You can\'t take mods which are in the app folder !</string>
+    <string name="dialog_illegal_path_button">Oh, OK.</string>
+
+    <string name="dialog_temp_files_found_title">Temporary files found !</string>
+    <string name="dialog_temp_files_found_message">It seems the optimizing last optimizing process has been interrupted, the app will start cleaning any leftovers. \n This process may take several seconds…</string>
+    <string name="dialog_temp_files_found_button">Oh, OK.</string>
+
+
+
+
 </resources>

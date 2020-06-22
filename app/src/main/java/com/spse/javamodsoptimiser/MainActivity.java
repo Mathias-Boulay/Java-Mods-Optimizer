@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -26,6 +27,7 @@ import com.spse.javamodsoptimiser.asynctask.SoundOptimizer;
 import com.spse.javamodsoptimiser.asynctask.Task;
 import com.spse.javamodsoptimiser.asynctask.TextureOptimizer;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,6 +70,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.file_processing_layout);
 
+
+        if(fileExists(TEMP_PATH)){
+            File[] root = new File(TEMP_PATH).listFiles();
+            if (root.length > 0) {
+                //Then it means the previous work has been interrupted somehow.
+                //We have to notify the user about this issue
+                AlertDialog.Builder tempFilesFound = new AlertDialog.Builder(MAIN_ACTIVITY);
+                tempFilesFound.setTitle(R.string.dialog_temp_files_found_title);
+                tempFilesFound.setMessage(R.string.dialog_temp_files_found_message);
+
+                tempFilesFound.setNeutralButton(R.string.dialog_temp_files_found_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //We start cleaning the leftovers
+                        FileManager.removeLeftOvers();
+                    }
+                });
+
+                tempFilesFound.create().show();
+            }
+        }
+
         //Create folders used by the app:
         createFolder(FOLDER_PATH);
         createFolder(TEMP_PATH);
@@ -81,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
         jsonProgressBar = findViewById(R.id.progressBarJson);
         zipProgressBar = findViewById(R.id.progressBarZipping);
 
-        modInfoName = findViewById(R.id.modInfoName);
-        modInfoTextureNumber = findViewById(R.id.modInfoTextureNumber);
-        modInfoSoundNumber = findViewById(R.id.modInfoSoundNumber);
+        modInfoName = findViewById(R.id.modInfoNameData);
+        modInfoTextureNumber = findViewById(R.id.modInfoTextureNumberData);
+        modInfoSoundNumber = findViewById(R.id.modInfoSoundNumberData);
 
         deleteOriginalFile = findViewById(R.id.optionDeleteOriginal);
         removeSignatures = findViewById(R.id.optionRemoveSignatures);
@@ -134,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 .setType(StorageChooser.FILE_PICKER)
                 .customFilter(filters)
                 .disableMultiSelect()
+                .setDialogTitle("Choose a mod (.zip/.jar)")
 
                 .build();
 
@@ -141,6 +166,26 @@ public class MainActivity extends AppCompatActivity {
         chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
             @Override
             public void onSelect(String path) {
+
+                if(path.contains(OUT_PATH)){
+                    AlertDialog.Builder illegalPathDialog = new AlertDialog.Builder(MAIN_ACTIVITY);
+                    illegalPathDialog.setTitle(R.string.dialog_illegal_path_title);
+                    illegalPathDialog.setMessage(R.string.dialog_illegal_path_message);
+
+
+                    illegalPathDialog.setNeutralButton(R.string.dialog_illegal_path_button, new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            System.out.println(which);
+                            return;
+                        }
+                    });
+
+
+
+                    illegalPathDialog.create().show();
+                    return;
+                }
 
                 //Reset the progressBar progression:
                 copyProgressBar.setProgress(0, true);
@@ -155,9 +200,9 @@ public class MainActivity extends AppCompatActivity {
                 mod = new MinecraftMod(path);
 
                 //Actualise info
-                modInfoName.setText(getString(R.string.mod_info_name) + mod.getFullName());
-                modInfoTextureNumber.setText(getString(R.string.mod_info_texture_number)  + getString(R.string.mod_info_unknown));
-                modInfoSoundNumber.setText(getString(R.string.mod_info_sound_number) +  getString(R.string.mod_info_unknown));
+                modInfoName.setText(mod.getFullName());
+                modInfoTextureNumber.setText(R.string.mod_info_unknown);
+                modInfoSoundNumber.setText(R.string.mod_info_unknown);
 
                 //Check if the same mod doesn't exist in output files
                 if(fileExists(OUT_PATH + mod.getFullName())) {
@@ -266,20 +311,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             default:
-                Toast.makeText(MainActivity.this, "The async task launcher tried to launch a non-existing task ! (".concat(Integer.toString(step)).concat(")"),Toast.LENGTH_LONG);
+                Toast.makeText(MainActivity.this, "The async task launcher tried to launch a non-existing task ! (".concat(Integer.toString(step)).concat(")"),Toast.LENGTH_LONG).show();
                 break;
         }
 
     }
 
     public void setInfoTextureNumber(int number){
-        modInfoTextureNumber.setText(getString(R.string.mod_info_texture_number) + number);
+        modInfoTextureNumber.setText(Integer.toString(number));
     }
-
     public void setInfoSoundNumber(int number){
-        modInfoSoundNumber.setText(getString(R.string.mod_info_sound_number) + number);
+        modInfoSoundNumber.setText(Integer.toString(number));
     }
-
     public boolean isQualityReduced(){
         return reducedQuality.isChecked();
     }

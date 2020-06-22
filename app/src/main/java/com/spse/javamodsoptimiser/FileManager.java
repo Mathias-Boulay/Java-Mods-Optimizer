@@ -5,6 +5,8 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
+import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
+
 public class FileManager {
     //Class related to everything related to files
 
@@ -59,4 +61,30 @@ public class FileManager {
             file.mkdir();
         }
     }
+
+    public static void removeLeftOvers(){
+        //Remove anything within the TEMP_PATH
+
+        walkAndRemove(TEMP_PATH);
+    }
+
+    private static void walkAndRemove(String path) {
+
+        File root = new File(path);
+        File[] list = root.listFiles();
+
+        if (list == null) return;
+
+        for (File f : list) {
+            if (f.isDirectory()) {
+                walkAndRemove(f.getAbsolutePath());
+            }else{
+                removeFile(f.getAbsolutePath());
+                return;
+            }
+            removeFile(f.getAbsolutePath());
+        }
+    }
+
+
 }

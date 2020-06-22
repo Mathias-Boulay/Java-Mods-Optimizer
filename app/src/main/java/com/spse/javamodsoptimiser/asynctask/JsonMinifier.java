@@ -25,7 +25,7 @@ public class JsonMinifier extends AsyncTask<Task, Object, MainActivity> {
         ProgressBar progressBar = task[0].getProgressBar();
 
         float progress = 0;
-        float increment = mod.getJsonNumber()/100f;
+        float increment = 100f/mod.getJsonNumber();
 
         for(int i=0; i < mod.getJsonNumber(); i++ ){
             try{
@@ -34,10 +34,14 @@ public class JsonMinifier extends AsyncTask<Task, Object, MainActivity> {
 
                 new Minify().minify(jis,jos);
 
+                jos.close();
+                jis.close();
+
                 if (fileExists(mod.getJsonPath(i).concat("-min.json"))){
                     removeFile(mod.getJsonPath(i));
                     renameFile(mod.getJsonPath(i).concat("-min.json"), mod.getJsonPath(i));
                 }
+
 
             }catch (IOException | Minify.UnterminatedCommentException | Minify.UnterminatedStringLiteralException | Minify.UnterminatedRegExpLiteralException io){
                 io.printStackTrace();
