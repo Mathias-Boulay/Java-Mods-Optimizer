@@ -1,4 +1,5 @@
 include ':mobile-ffmpeg'
+include ':mobile-ffmpeg'
 include ':minify-1.0.0'
 include ':mobile-ffmpeg'
 include ':pngquant-android'
