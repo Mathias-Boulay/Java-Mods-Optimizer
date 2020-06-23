@@ -18,7 +18,7 @@ This tool lowers the requirements for playing Minecraft modpacks:
  - **Increase on FPS on integrated graphics** due to lower RAM bandwidth being taken by textures.
 
 # Should I use this awesome optimizer ?
-**Yes**, I personally use this in **all my modpacks** to allow them **to run on my lower-end hardware** (limited RAM, integrated graphics...). 
+**Yes**, I personally use this in **all my modpacks** to allow them **to run on my lower-end hardware** (limited RAM, integrated graphics...).
 
 However, consider performing other optimizations before doing this one, like removing useless mods, tweaking config files, using optifine and performing some windows 10 optimizations to make more RAM friendly (W7 is pretty RAM friendly already).
 
@@ -34,10 +34,12 @@ Some more recent mods make heavy use of JSON files, those can be trimmed down as
 
 Upon opening the application, you will encounter the main (and only) menu of the app.
 
-Notice that two options are already activated, as they are the recommended settings, however nothing blocks you from changing them.
-Once your are satisfied with the options, click on the "+" button and choose a Minecraft mod to optimize.
-After, just wait for the process to complete. 
-You can see the progression of each steps with the various progress bars.
+ - Two options are already activated, as they are the recommended setting
+ - Click on the " **+** " button
+ - Select your Minecraft mod
+ - Wait for the process to complete !
+ - **Enjoy !** 
+*Note*: You can see the progression of each steps with the various progress bars.
 
 
 # Credits
