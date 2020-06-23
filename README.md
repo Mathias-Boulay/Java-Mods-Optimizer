@@ -39,7 +39,11 @@ Upon opening the application, you will encounter the main (and only) menu of the
  - Select your Minecraft mod
  - Wait for the process to complete !
  - **Enjoy !** 
-*Note*: You can see the progression of each steps with the various progress bars.
+ 
+*Note*: 
+- You can see the progression of each steps with the various progress bars.
+
+- All optimized mods are in the internal storage>Mods Optimizer>OUTPUT
 
 
 # Credits
