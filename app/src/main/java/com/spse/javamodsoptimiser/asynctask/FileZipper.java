@@ -30,6 +30,9 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
         //Deactivate the CPU wakelock
         task[0].getActivity().setWakelockState(false);
 
+        //Enable the ImageButton
+        task[0].getActivity().filepickerBtn.setClickable(true);
+
         return null;
     }
 

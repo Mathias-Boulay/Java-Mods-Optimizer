@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox reducedQuality;
 
     private PowerManager.WakeLock wakelock;
+    public ImageButton filepickerBtn;
 
 
     public static final int FILEPICKER_PERMISSIONS = 1;
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        ImageButton filepickerBtn = findViewById(R.id.filePicker);
+        filepickerBtn = findViewById(R.id.filePicker);
         filepickerBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             //On click function
@@ -186,6 +187,9 @@ public class MainActivity extends AppCompatActivity {
                     illegalPathDialog.create().show();
                     return;
                 }
+
+                //Make the button un-clickable for the rest of the process.
+                filepickerBtn.setClickable(false);
 
                 //Reset the progressBar progression:
                 copyProgressBar.setProgress(0, true);
