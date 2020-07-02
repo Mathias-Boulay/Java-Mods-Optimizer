@@ -3,6 +3,7 @@ package com.spse.javamodsoptimiser;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
@@ -28,6 +29,7 @@ import com.spse.javamodsoptimiser.asynctask.Task;
 import com.spse.javamodsoptimiser.asynctask.TextureOptimizer;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String TEMP_PATH = FOLDER_PATH.concat("TMP/");
     public static final String OUT_PATH = FOLDER_PATH.concat("OUTPUT/");
     public final MainActivity MAIN_ACTIVITY = this;
+    public Boolean MULTIPLE_MODS_CHECKED;
+    public int modIndex = 0;
+    public ArrayList<String> modList;
 
 
     private MinecraftMod mod;
@@ -158,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                 .allowCustomPath(true)
                 .setType(StorageChooser.FILE_PICKER)
                 .customFilter(filters)
-                .disableMultiSelect()
                 .setDialogTitle("Choose a mod (.zip/.jar)")
 
                 .build();
@@ -167,57 +171,31 @@ public class MainActivity extends AppCompatActivity {
         chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
             @Override
             public void onSelect(String path) {
+                //We aren't optimizing multiple mods.
+                MULTIPLE_MODS_CHECKED = false;
+                AsyncTask task;
 
-                if(path.contains(OUT_PATH)){
-                    AlertDialog.Builder illegalPathDialog = new AlertDialog.Builder(MAIN_ACTIVITY);
-                    illegalPathDialog.setTitle(R.string.dialog_illegal_path_title);
-                    illegalPathDialog.setMessage(R.string.dialog_illegal_path_message);
-
-
-                    illegalPathDialog.setNeutralButton(R.string.dialog_illegal_path_button, new DialogInterface.OnClickListener(){
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            System.out.println(which);
-                            return;
-                        }
-                    });
+                init(path);
 
 
+            }
+        });
 
-                    illegalPathDialog.create().show();
-                    return;
+        chooser.setOnMultipleSelectListener(new StorageChooser.OnMultipleSelectListener(){
+            @Override
+            public void onDone(ArrayList<String> selectedFilePaths) {
+                //We are optimizing multiple mods
+                MULTIPLE_MODS_CHECKED = true;
+
+                modList = new ArrayList<String>(selectedFilePaths.size());
+
+                for(String mods : selectedFilePaths){
+                    modList.add(mods);
                 }
 
-                //Make the button un-clickable for the rest of the process.
-                filepickerBtn.setClickable(false);
-
-                //Reset the progressBar progression:
-                copyProgressBar.setProgress(0, true);
-                unzipProgressBar.setProgress(0, true);
-                parsingProgressBar.setProgress(0, true);
-                textureProgressBar.setProgress(0, true);
-                jsonProgressBar.setProgress(0, true);
-                soundProgressBar.setProgress(0, true);
-                zipProgressBar.setProgress(0, true);
-
-                //Create the mod
-                mod = new MinecraftMod(path);
-
-                //Actualise info
-                modInfoName.setText(mod.getFullName());
-                modInfoTextureNumber.setText(R.string.mod_info_unknown);
-                modInfoSoundNumber.setText(R.string.mod_info_unknown);
-
-                //Check if the same mod doesn't exist in output files
-                if(fileExists(OUT_PATH + mod.getFullName())) {
-                    removeFile(OUT_PATH + mod.getFullName());
-                }
-
-
-                //Launch the first task, each task will launch the next one when it finishes
-                launchAsyncTask(1);
-
-                Toast.makeText(MainActivity.this,"Launching optimization process !",Toast.LENGTH_LONG).show();
+                String path = modList.get(modIndex);
+                modIndex++;
+                init(path);
 
 
             }
@@ -318,7 +296,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "The async task launcher tried to launch a non-existing task ! (".concat(Integer.toString(step)).concat(")"),Toast.LENGTH_LONG).show();
                 break;
         }
-
     }
 
     public void setInfoTextureNumber(int number){
@@ -345,6 +322,64 @@ public class MainActivity extends AppCompatActivity {
         }else{
             wakelock.release();
         }
+    }
+
+    private boolean isPathIllegal(String absolutePath){
+        if(absolutePath.contains(OUT_PATH)){
+            AlertDialog.Builder illegalPathDialog = new AlertDialog.Builder(MAIN_ACTIVITY);
+            illegalPathDialog.setTitle(R.string.dialog_illegal_path_title);
+            illegalPathDialog.setMessage(R.string.dialog_illegal_path_message);
+
+
+            illegalPathDialog.setNeutralButton(R.string.dialog_illegal_path_button, new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    return;
+                }
+            });
+
+            illegalPathDialog.create().show();
+            return true;
+        }
+        return false;
+    }
+
+    public void init(String absolutePath){
+
+        if(isPathIllegal(absolutePath)){
+            return;
+        }
+
+        //Make the button un-clickable for the rest of the process.
+        filepickerBtn.setClickable(false);
+
+        //Reset the progressBar progression:
+        copyProgressBar.setProgress(0, true);
+        unzipProgressBar.setProgress(0, true);
+        parsingProgressBar.setProgress(0, true);
+        textureProgressBar.setProgress(0, true);
+        jsonProgressBar.setProgress(0, true);
+        soundProgressBar.setProgress(0, true);
+        zipProgressBar.setProgress(0, true);
+
+        //Create the mod
+        mod = new MinecraftMod(absolutePath);
+
+        //Actualise info
+        modInfoName.setText(mod.getFullName());
+        modInfoTextureNumber.setText(R.string.mod_info_unknown);
+        modInfoSoundNumber.setText(R.string.mod_info_unknown);
+
+        //Check if the same mod doesn't exist in output files
+        if(fileExists(OUT_PATH + mod.getFullName())) {
+            removeFile(OUT_PATH + mod.getFullName());
+        }
+
+
+        //Launch the first task, each task will launch the next one when it finishes
+        launchAsyncTask(1);
+
+        Toast.makeText(MainActivity.this,"Launching optimization process !\n" + mod.getName(),Toast.LENGTH_LONG).show();
     }
 
 }

@@ -18,22 +18,20 @@ import static com.spse.javamodsoptimiser.MainActivity.OUT_PATH;
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
 
-public class FileZipper extends AsyncTask<Task, Object, Void> {
+public class FileZipper extends AsyncTask<Task, Object, MainActivity> {
 
 
 
     @Override
-    protected Void doInBackground(Task... task) {
+    protected MainActivity doInBackground(Task... task) {
 
         repackMod(task[0].getMod(), task[0].getProgressBar(), task[0].getActivity());
 
         //Deactivate the CPU wakelock
         task[0].getActivity().setWakelockState(false);
 
-        //Enable the ImageButton
-        task[0].getActivity().filepickerBtn.setClickable(true);
 
-        return null;
+        return task[0].getActivity();
     }
 
     private void repackMod(MinecraftMod mod, ProgressBar progressBar,MainActivity activity){
@@ -136,4 +134,15 @@ public class FileZipper extends AsyncTask<Task, Object, Void> {
 
     }
 
+    @Override
+    protected void onPostExecute(MainActivity activity) {
+        super.onPostExecute(activity);
+        if((activity.MULTIPLE_MODS_CHECKED) && (activity.modIndex < activity.modList.size())){
+            activity.init(activity.modList.get(activity.modIndex));
+            activity.modIndex++;
+        }else{
+            activity.filepickerBtn.setClickable(true);
+        }
+
+    }
 }
