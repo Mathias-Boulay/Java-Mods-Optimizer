@@ -27,10 +27,6 @@ public class FileZipper extends AsyncTask<Task, Object, MainActivity> {
 
         repackMod(task[0].getMod(), task[0].getProgressBar(), task[0].getActivity());
 
-        //Deactivate the CPU wakelock
-        task[0].getActivity().setWakelockState(false);
-
-
         return task[0].getActivity();
     }
 
@@ -144,6 +140,9 @@ public class FileZipper extends AsyncTask<Task, Object, MainActivity> {
             activity.modIndex++;
         }else{
             activity.filepickerBtn.setClickable(true);
+
+            //Deactivate the CPU wakelock
+            activity.setWakelockState(false);
         }
 
     }

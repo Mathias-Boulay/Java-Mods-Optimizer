@@ -173,7 +173,9 @@ public class MainActivity extends AppCompatActivity {
             public void onSelect(String path) {
                 //We aren't optimizing multiple mods.
                 MULTIPLE_MODS_CHECKED = false;
-                AsyncTask task;
+
+                //Activate the CPU wakelock
+                setWakelockState(true);
 
                 init(path);
 
@@ -186,6 +188,9 @@ public class MainActivity extends AppCompatActivity {
             public void onDone(ArrayList<String> selectedFilePaths) {
                 //We are optimizing multiple mods
                 MULTIPLE_MODS_CHECKED = true;
+
+                //Activate the CPU wakelock
+                setWakelockState(true);
 
                 modList = new ArrayList<String>(selectedFilePaths.size());
 
