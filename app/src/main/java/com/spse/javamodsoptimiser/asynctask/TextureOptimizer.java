@@ -67,6 +67,8 @@ public class TextureOptimizer extends AsyncTask<Task, Object, MainActivity> {
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
+        activity.textureProgressBar.setProgress(100);
+
         activity.launchAsyncTask(5);
     }
 }

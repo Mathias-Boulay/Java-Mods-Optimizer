@@ -90,6 +90,8 @@ public class FileCopier extends AsyncTask<Task, Object, MainActivity> {
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
+        activity.copyProgressBar.setProgress(100);
+
         activity.launchAsyncTask(2);
     }
 }

@@ -68,6 +68,8 @@ public class JsonMinifier extends AsyncTask<Task, Object, MainActivity> {
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
+        activity.jsonProgressBar.setProgress(100);
+
         activity.launchAsyncTask(7);
     }
 }

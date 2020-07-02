@@ -111,6 +111,8 @@ public class FileUnzipper  extends AsyncTask<Task, Object, MainActivity> {
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
+        activity.unzipProgressBar.setProgress(100);
+
         activity.launchAsyncTask(3);
     }
 }

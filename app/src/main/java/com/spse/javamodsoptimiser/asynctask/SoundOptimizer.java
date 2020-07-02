@@ -65,6 +65,8 @@ public class SoundOptimizer extends AsyncTask<Task, Object, MainActivity> {
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
+        activity.soundProgressBar.setProgress(100);
+
         activity.launchAsyncTask(6);
 
     }

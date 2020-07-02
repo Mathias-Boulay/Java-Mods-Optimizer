@@ -126,6 +126,9 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
         super.onPostExecute(activity);
         activity.setInfoSoundNumber(mod.getSoundNumber());
         activity.setInfoTextureNumber(mod.getTextureNumber());
+
+        activity.parsingProgressBar.setProgress(100);
+
         activity.launchAsyncTask(4);
     }
 }

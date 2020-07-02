@@ -137,6 +137,8 @@ public class FileZipper extends AsyncTask<Task, Object, MainActivity> {
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
+        activity.zipProgressBar.setProgress(100);
+
         if((activity.MULTIPLE_MODS_CHECKED) && (activity.modIndex < activity.modList.size())){
             activity.init(activity.modList.get(activity.modIndex));
             activity.modIndex++;
