@@ -34,14 +34,14 @@ public class FileZipper extends AsyncTask<Task, Object, MainActivity> {
         return task[0].getActivity();
     }
 
-    private void repackMod(MinecraftMod mod, ProgressBar progressBar,MainActivity activity){
+    private void repackMod(MinecraftMod mod, ProgressBar progressBar, MainActivity activity){
         //First step is to create I/O streams
         String zipFile = OUT_PATH.concat(mod.getFullName());
 
 
-        float fileNumber = mod.getOtherFileNumber() + mod.getJsonNumber() + mod.getTextureNumber() + mod.getSoundNumber();
+        int fileNumber = mod.getOtherFileNumber() + mod.getJsonNumber() + mod.getTextureNumber() + mod.getSoundNumber();
         float progress = 0;
-        float increment = fileNumber/100f;
+        float increment = 100f/fileNumber;
 
         try {
             FileOutputStream fos = new FileOutputStream(zipFile);
