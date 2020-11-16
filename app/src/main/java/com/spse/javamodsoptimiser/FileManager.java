@@ -49,10 +49,7 @@ public class FileManager {
 
     public static boolean fileExists(String absolutePath){
         File file = new File(absolutePath);
-        if (file.exists()){
-            return true;
-        }
-        return false;
+        return file.exists();
     }
 
     public static void createFolder(String absolutePathToFolder){

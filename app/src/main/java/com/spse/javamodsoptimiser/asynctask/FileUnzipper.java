@@ -1,10 +1,10 @@
 package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.FileManager;
 import com.spse.javamodsoptimiser.MainActivity;
+import com.spse.javamodsoptimiser.R;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -17,30 +17,25 @@ import java.util.zip.ZipFile;
 
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
-public class FileUnzipper  extends AsyncTask<Task, Object, MainActivity> {
+public class FileUnzipper  extends AsyncTask<MainActivity, Object, MainActivity> {
 
     @Override
-    protected MainActivity doInBackground(Task[] task) {
+    protected MainActivity doInBackground(MainActivity[] activity) {
+        publishProgress(activity[0], R.string.log_file_unzipper_1, activity[0].mod.getName());
         try {
-            unzip(TEMP_PATH + task[0].getMod().getFullName(), task[0].getProgressBar());
+            unzip(TEMP_PATH + activity[0].mod.getFullName());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return task[0].getActivity();
+        publishProgress(activity[0], R.string.log_file_unzipper_2, activity[0].mod.getName());
+        return activity[0];
     }
 
-    private void unzip(String zipFile, ProgressBar updateBar) throws IOException{
+    private void unzip(String zipFile) throws IOException{
         int BUFFER = 2048;
         File file = new File(zipFile);
 
-        float approximatedUncompressedFileSize = file.length();
-        approximatedUncompressedFileSize *= 1.3f;
-        approximatedUncompressedFileSize /= BUFFER;
 
-        float increment = 100/approximatedUncompressedFileSize;
-        float progress = 0f;
-        int intProgress;
 
 
 
@@ -74,7 +69,7 @@ public class FileUnzipper  extends AsyncTask<Task, Object, MainActivity> {
                         .getInputStream(entry));
                 int currentByte;
                 // establish buffer for writing file
-                byte data[] = new byte[BUFFER];
+                byte[] data = new byte[BUFFER];
 
                 // write the current file to disk
                 FileOutputStream fos = new FileOutputStream(destFile);
@@ -85,10 +80,6 @@ public class FileUnzipper  extends AsyncTask<Task, Object, MainActivity> {
                 while ((currentByte = is.read(data, 0, BUFFER)) != -1) {
                     dest.write(data, 0, currentByte);
 
-                    //Actualise progress
-                    progress += increment;
-                    intProgress = Math.round(progress);
-                    publishProgress(updateBar, intProgress);
                 }
                 dest.flush();
                 dest.close();
@@ -103,16 +94,13 @@ public class FileUnzipper  extends AsyncTask<Task, Object, MainActivity> {
     @Override
     protected void onProgressUpdate(Object... argument) {
         super.onProgressUpdate(argument);
-        ProgressBar progressBar = (ProgressBar) argument[0];
-        int progress = (int) argument[1];
-        progressBar.setProgress(progress, true);
+        MainActivity activity = (MainActivity) argument[0];
+        activity.addUserLog((int) argument[1], (String) argument[2]);
     }
 
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
-        activity.unzipProgressBar.setProgress(100);
-
         activity.launchAsyncTask(3);
     }
 }

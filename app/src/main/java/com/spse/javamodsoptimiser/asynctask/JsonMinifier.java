@@ -1,10 +1,10 @@
 package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.R;
 import com.whoischarles.util.json.Minify;
 
 import java.io.FileInputStream;
@@ -15,17 +15,13 @@ import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 import static com.spse.javamodsoptimiser.FileManager.renameFile;
 
-public class JsonMinifier extends AsyncTask<Task, Object, MainActivity> {
+public class JsonMinifier extends AsyncTask<MainActivity, Object, MainActivity> {
     @Override
-    protected MainActivity doInBackground(Task[] task) {
+    protected MainActivity doInBackground(MainActivity[] activity) {
 
 
 
-        MinecraftMod mod = task[0].getMod();
-        ProgressBar progressBar = task[0].getProgressBar();
-
-        float progress = 0;
-        float increment = 100f/mod.getJsonNumber();
+        MinecraftMod mod = activity[0].mod;
 
         for(int i=0; i < mod.getJsonNumber(); i++ ){
             try{
@@ -40,6 +36,7 @@ public class JsonMinifier extends AsyncTask<Task, Object, MainActivity> {
                 if (fileExists(mod.getJsonPath(i).concat("-min.json"))){
                     removeFile(mod.getJsonPath(i));
                     renameFile(mod.getJsonPath(i).concat("-min.json"), mod.getJsonPath(i));
+                    publishProgress(activity[0], R.string.log_file_minifier_1,  mod.getJsonPath(i).substring(mod.getJsonPath(i).lastIndexOf('/') + 1));
                 }
 
 
@@ -47,29 +44,22 @@ public class JsonMinifier extends AsyncTask<Task, Object, MainActivity> {
                 io.printStackTrace();
             }
 
-            progress += increment;
-            publishProgress(progressBar,Math.round(progress));
-
         }
 
-        return task[0].getActivity();
+        return activity[0];
     }
 
 
     @Override
-    protected void onProgressUpdate(Object... values) {
-        super.onProgressUpdate(values);
-        ProgressBar progressBar = (ProgressBar) values[0];
-        int progress = (int) values[1];
-
-        progressBar.setProgress(progress, true);
+    protected void onProgressUpdate(Object... argument) {
+        super.onProgressUpdate(argument);
+        MainActivity activity = (MainActivity) argument[0];
+        activity.addUserLog((int) argument[1], (String) argument[2]);
     }
 
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
-        activity.jsonProgressBar.setProgress(100);
-
         activity.launchAsyncTask(7);
     }
 }

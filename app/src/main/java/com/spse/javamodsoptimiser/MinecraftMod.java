@@ -4,10 +4,10 @@ import java.io.File;
 
 public class MinecraftMod{
     //Interact with outside the class
-    private String name;
-    private String extension;
-    private long sizeInBytes; //Size of the UNoptimized archive
-    private String fileFolder; //Folder where the file is stored
+    private final String name;
+    private final String extension;
+    private final long sizeInBytes; //Size of the UNoptimized archive
+    private final String fileFolder; //Folder where the file is stored
 
     MinecraftMod(String filePath){
         int index = filePath.length()-1;

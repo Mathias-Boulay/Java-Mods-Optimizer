@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#8600C4</color>
-    <color name="colorPrimaryDark">#5F008B</color>
-    <color name="colorAccent">#FF8B00</color>
-
     <color name="blackBackground">#303030</color>
     <color name="neutralText">#F0F0F0</color>
     <color name="soundFileText">#F0F000</color>
@@ -22,4 +18,37 @@
     <color name="progressBarMinifying">#00E8C9</color>
     <color name="progressBarZipping">#FFFFFF</color>
 
-</resources>
+
+
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#FF1900</color>
+
+    <color name="backgroundTopStart">#3F41F8</color>
+    <color name="backgroundTopEnd">#595BF7</color>
+
+    <color name="pureWhite">#FFFFFF</color>
+    <color name="shadowBlack">#191919</color>
+
+    <color name="impureWhite">#F8F7FC</color>
+    <color name="impureGrey">#7F7F7F</color>
+
+    <color name="backgroundProgressBar">#C4C4C4</color>
+
+    <color name="backgroundListStart">#16A1A5</color>
+    <color name="backgroundListEnd">#8ED9C0</color>
+
+    <color name="textTop">#1F2072</color>
+
+    <color name="resSlider">#5720FF</color>
+
+    <color name="recentGameTextColor">#FF1900</color>
+
+    <color name="backgroundDownStart">#FA5805</color>
+    <color name="backgroundDownEnd">#D100FF</color>
+
+    <color name="textureOptimizationBackgroundCard">#6EA508</color>
+    <color name="textureOptimizationStrokeCard">#3E5E04</color>
+
+
+    </resources>

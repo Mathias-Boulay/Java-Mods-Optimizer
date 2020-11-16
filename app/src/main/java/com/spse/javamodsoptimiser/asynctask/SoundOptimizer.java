@@ -1,11 +1,11 @@
 package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.R;
 
 import java.io.IOException;
 
@@ -13,22 +13,16 @@ import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 import static com.spse.javamodsoptimiser.FileManager.renameFile;
 
-public class SoundOptimizer extends AsyncTask<Task, Object, MainActivity> {
+public class SoundOptimizer extends AsyncTask<MainActivity, Object, MainActivity> {
 
     @Override
-    public MainActivity doInBackground(Task[] task){
-        //Parse arguments
-        MinecraftMod mod = task[0].getMod();
-        ProgressBar progressBar = task[0].getProgressBar();
+    public MainActivity doInBackground(MainActivity[] activity){
         
-        float increment = 100f/mod.getSoundNumber();
-        float progress = 0;
-        int intProgress;
-
+        MinecraftMod mod = activity[0].mod;
 
         for(int i=0; i < mod.getSoundNumber(); i++) {
             String command;
-            if(task[0].getActivity().isQualityReduced()){
+            if(activity[0].isQualityReduced()){
                 command = "-y -i '" + mod.getSoundPath(i) + "' -c:a libvorbis -b:a 36k -ac 1 -ar 26000 '" + mod.getSoundPath(i) + "-min.ogg'";
             }else {
                 command = "-y -i '" + mod.getSoundPath(i) + "' -c:a libvorbis -b:a 48k -ac 1 -ar 26000 '" + mod.getSoundPath(i) + "-min.ogg'";
@@ -43,31 +37,23 @@ public class SoundOptimizer extends AsyncTask<Task, Object, MainActivity> {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                publishProgress(activity[0], R.string.log_file_sound_1 , mod.getSoundPath(i).substring(mod.getSoundPath(i).lastIndexOf('/') + 1));
             }
-            progress += increment;
-            intProgress = Math.round(progress);
-            publishProgress(progressBar,intProgress);
         }
 
-        return task[0].getActivity();
+        return activity[0];
     }
 
     @Override
     protected void onProgressUpdate(Object... argument) {
         super.onProgressUpdate(argument);
-
-        ProgressBar progressBar = (ProgressBar) argument[0];
-        int progress = (int) argument[1];
-
-        progressBar.setProgress(progress, true);
+        MainActivity activity = (MainActivity) argument[0];
+        activity.addUserLog((int) argument[1], (String) argument[2]);
     }
 
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
-        activity.soundProgressBar.setProgress(100);
-
         activity.launchAsyncTask(6);
-
     }
 }

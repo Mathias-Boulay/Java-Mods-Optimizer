@@ -1,11 +1,11 @@
 package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
 
 import com.nicdahlquist.pngquant.LibPngQuant;
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,25 +14,20 @@ import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 import static com.spse.javamodsoptimiser.FileManager.renameFile;
 
-public class TextureOptimizer extends AsyncTask<Task, Object, MainActivity> {
+public class TextureOptimizer extends AsyncTask<MainActivity, Object, MainActivity> {
 
     @Override
-    protected MainActivity doInBackground(Task[] task){
+    protected MainActivity doInBackground(MainActivity[] activity){
         //First parse the arguments
-        MinecraftMod mod = task[0].getMod();
+        MinecraftMod mod = activity[0].mod;
 
-        ProgressBar progressBar = task[0].getProgressBar();
-
-        float increment = 100f/mod.getTextureNumber();
-        float progress = 0;
-        int intProgress;
 
 
         //Optimize textures
         for(int i=0; i < mod.getTextureNumber(); i++){
             File inputFile = new File(mod.getTexturePath(i));
             File outputFile = new File(mod.getTexturePath(i).concat("-min.png"));
-            if(task[0].getActivity().isQualityReduced()) {
+            if(activity[0].isQualityReduced()) {
                 new LibPngQuant().pngQuantFile(inputFile, outputFile, 0, 65);
             }else{
                 new LibPngQuant().pngQuantFile(inputFile, outputFile, 45, 85);
@@ -46,29 +41,23 @@ public class TextureOptimizer extends AsyncTask<Task, Object, MainActivity> {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                publishProgress(activity[0], R.string.log_file_texture_1, mod.getTexturePath(i).substring(mod.getTexturePath(i).lastIndexOf('/') + 1));
             }
-            progress += increment;
-            intProgress = Math.round(progress);
-            publishProgress(progressBar, intProgress);
         }
-        return task[0].getActivity();
+        return activity[0];
     }
 
     @Override
     protected void onProgressUpdate(Object... argument) {
         super.onProgressUpdate(argument);
-        ProgressBar progressBar = (ProgressBar) argument[0];
-        int progress = (int) argument[1];
-
-        progressBar.setProgress(progress, true);
+        MainActivity activity = (MainActivity) argument[0];
+        activity.addUserLog((int) argument[1], (String) argument[2]);
 
     }
 
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
-        activity.textureProgressBar.setProgress(100);
-
         activity.launchAsyncTask(5);
     }
 }

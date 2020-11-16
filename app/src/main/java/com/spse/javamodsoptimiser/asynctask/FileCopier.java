@@ -2,7 +2,6 @@ package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
@@ -16,20 +15,14 @@ import java.io.OutputStream;
 
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
-public class FileCopier extends AsyncTask<Task, Object, MainActivity> {
+public class FileCopier extends AsyncTask<MainActivity, Object, MainActivity> {
 
 
     @Override
-    protected MainActivity doInBackground(Task[] task) {
+    protected MainActivity doInBackground(MainActivity... activity) {
 
+        MinecraftMod mod = activity[0].mod;
 
-        //Parse arguments
-        MinecraftMod mod = task[0].getMod();
-        ProgressBar progressBar = task[0].getProgressBar();
-
-        float increment = 100f/(mod.getFileSize()/1024f);
-        float progress = 0;
-        int intprogress;
 
         //Then copy the file
         InputStream in;
@@ -48,10 +41,6 @@ public class FileCopier extends AsyncTask<Task, Object, MainActivity> {
             while ((read = in.read(buffer)) != -1) {
                 out.write(buffer, 0, read);
 
-
-                progress += increment;
-                intprogress = Math.round(progress);
-                publishProgress(progressBar,intprogress);
             }
             in.close();
             in = null;
@@ -68,28 +57,14 @@ public class FileCopier extends AsyncTask<Task, Object, MainActivity> {
             Log.e("tag", e.getMessage());
         }
 
-        return task[0].getActivity();
+        return activity[0];
     }
 
-    @Override
-    protected void onProgressUpdate(Object... argument) {
-        super.onProgressUpdate(argument);
-        ProgressBar progressBar = (ProgressBar) argument[0];
-        int progress = (int) argument[1];
 
-
-
-        progressBar.setProgress(progress,true);
-
-
-
-    }
 
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
-        activity.copyProgressBar.setProgress(100);
-
         activity.launchAsyncTask(2);
     }
 }

@@ -37,6 +37,39 @@
     <string name="dialog_temp_files_found_message">It seems the optimizing last optimizing process has been interrupted, the app will start cleaning any leftovers. \n This process may take several seconds…</string>
     <string name="dialog_temp_files_found_button">Oh, OK.</string>
 
+    <string name="empty_string"> </string>
+
+    <string name="step">STEP</string>
+    <string name="step_user">Add a minecraft\nmod</string>
+    <string name="step_copying">Copying</string>
+    <string name="step_unzipping">Unzipping</string>
+    <string name="step_parsing">Parsing</string>
+    <string name="step_texture_optimization">Optimizing\ntextures</string>
+    <string name="step_sound_optimization">Optimizing\nsounds</string>
+    <string name="step_trimming">Trimming\njson</string>
+    <string name="step_repacking">Repacking</string>
+    <string name="step_done">Done</string>
+
+    <string name="setting_title">Settings</string>
+    <string name="setting_delete_original">Replace original mod</string>
+    <string name="setting_reduced_quality">Reduce the mod even more</string>
+    <string name="setting_remove_signature">Remove signatures files</string>
+
+    <string name="log_file_parser_1">Counted how many files to optimize</string>
+    <string name="log_file_parser_2">Parsed all paths</string>
+
+    <string name="log_file_unzipper_1">Unzipping </string>
+    <string name="log_file_unzipper_2">Unzipped </string>
+
+    <string name="log_file_zipper_1">Repacked </string>
+
+    <string name="log_file_minifier_1">Trimmed </string>
+
+    <string name="log_file_sound_1">Downsampled </string>
+
+    <string name="log_file_texture_1">Re-textured </string>
+
+    <string name="mod_is_optimized">Finished the optimization of </string>
 
 
 

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/MainActivity"
+    android:background="@color/impureWhite">
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontalBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontalTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3515732" />
+
+
+    <View
+        android:id="@+id/viewTop"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/background_gradient_top"
+        android:elevation="5dp"
+        android:outlineProvider="none"
+
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontalTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:alpha="100"
+        android:elevation="5dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="0"
+
+        android:progressDrawable="@drawable/circular_custom_progress"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontalTop"
+        app:layout_constraintEnd_toEndOf="@+id/viewTop"
+        app:layout_constraintStart_toStartOf="@+id/viewTop"
+        app:layout_constraintTop_toTopOf="@+id/viewTop" />
+
+    <View
+        android:id="@+id/stepSeparationBar"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/line_separator"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
+    <TextView
+        android:id="@+id/textViewStepTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:fontFamily="@font/nunito_bold"
+        android:lineSpacingExtra="-9sp"
+        android:text="STEP 0/7"
+        android:textAlignment="center"
+        android:textColor="@color/textTop"
+        android:textSize="26sp"
+
+        app:layout_constraintBottom_toTopOf="@+id/stepSeparationBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toTopOf="@+id/progressBar"
+        app:layout_constraintVertical_bias="0.85" />
+
+    <TextView
+        android:id="@+id/textViewStep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:fontFamily="@font/nunito_semi_bold"
+        android:lineSpacingExtra="-5sp"
+        android:text="Add a Minecraft\nmod"
+        android:textAlignment="center"
+        android:textSize="18sp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/stepSeparationBar"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <ImageButton
+        android:id="@+id/imageViewAddMod"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="65dp"
+        android:visibility="invisible"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontalBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalTop"
+        app:srcCompat="@drawable/add_mod_button" />
+
+    <View
+        android:id="@+id/viewBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/background_gradient_bottom"
+        android:elevation="5dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalBottom" />
+
+    <ImageButton
+        android:id="@+id/imageViewSettingsSwitch"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:elevation="5dp"
+        android:scaleType="fitCenter"
+        android:rotation="180"
+        android:background="@android:color/transparent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalBottom"
+        app:srcCompat="@drawable/arrow_up" />
+
+    <TextView
+        android:id="@+id/textViewSettingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:fontFamily="@font/nunito_bold"
+        android:text="@string/setting_title"
+        android:textColor="@color/impureWhite"
+        android:textSize="38sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewSettingsSwitch"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewSettingsSwitch"
+        app:layout_constraintStart_toStartOf="@+id/imageViewSettingsSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewSettingsSwitch" />
+
+    <CheckBox
+        android:id="@+id/checkBoxRemoveFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="5dp"
+        android:fontFamily="@font/nunito_bold"
+        android:paddingStart="6dp"
+        android:text="@string/setting_delete_original"
+        android:textAlignment="center"
+        android:textSize="17sp"
+        android:visibility="visible"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewSettingsSwitch"
+        app:layout_constraintVertical_bias="0.25" />
+
+    <CheckBox
+        android:id="@+id/checkBoxReducedQuality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="5dp"
+        android:fontFamily="@font/nunito_bold"
+        android:paddingStart="6dp"
+        android:text="@string/setting_reduced_quality"
+        android:textAlignment="center"
+        android:textSize="17sp"
+        android:visibility="visible"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewSettingsSwitch"
+        app:layout_constraintVertical_bias="0.50" />
+
+    <CheckBox
+        android:id="@+id/checkBoxRemoveSignatures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="5dp"
+        android:fontFamily="@font/nunito_bold"
+        android:paddingStart="6dp"
+        android:text="@string/setting_remove_signature"
+        android:textAlignment="center"
+        android:textSize="17sp"
+        android:visibility="visible"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewSettingsSwitch"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <TextView
+        android:id="@+id/textViewLog1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/logging_card_shape"
+        android:elevation="2dp"
+
+        android:fontFamily="@font/nunito_semi_bold"
+        android:text="@string/empty_string"
+        android:textColor="@color/shadowBlack"
+
+
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontalBottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalTop"
+        app:layout_constraintVertical_bias="0.10" />
+
+    <TextView
+        android:id="@+id/textViewLog2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/logging_card_shape"
+        android:elevation="2dp"
+
+        android:fontFamily="@font/nunito_semi_bold"
+        android:text="@string/empty_string"
+        android:textColor="@color/shadowBlack"
+
+
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontalBottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalTop"
+        app:layout_constraintVertical_bias="0.30" />
+
+    <TextView
+        android:id="@+id/textViewLog3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/logging_card_shape"
+        android:elevation="2dp"
+
+        android:fontFamily="@font/nunito_semi_bold"
+        android:text="@string/empty_string"
+        android:textColor="@color/shadowBlack"
+
+
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontalBottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalTop"
+        app:layout_constraintVertical_bias="0.50" />
+
+    <TextView
+        android:id="@+id/textViewLog4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/logging_card_shape"
+        android:elevation="2dp"
+
+        android:fontFamily="@font/nunito_semi_bold"
+        android:text="@string/empty_string"
+        android:textColor="@color/shadowBlack"
+
+
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontalBottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalTop"
+        app:layout_constraintVertical_bias="0.70" />
+
+    <TextView
+        android:id="@+id/textViewLog5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/logging_card_shape"
+        android:elevation="2dp"
+
+        android:fontFamily="@font/nunito_semi_bold"
+        android:text="@string/empty_string"
+        android:textColor="@color/shadowBlack"
+
+
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontalBottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalTop"
+        app:layout_constraintVertical_bias="0.90" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

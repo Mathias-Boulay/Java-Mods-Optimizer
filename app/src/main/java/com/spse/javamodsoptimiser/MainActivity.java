@@ -1,12 +1,14 @@
 package com.spse.javamodsoptimiser;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -16,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 
 import com.codekidlabs.storagechooser.StorageChooser;
@@ -25,11 +29,9 @@ import com.spse.javamodsoptimiser.asynctask.FileUnzipper;
 import com.spse.javamodsoptimiser.asynctask.FileZipper;
 import com.spse.javamodsoptimiser.asynctask.JsonMinifier;
 import com.spse.javamodsoptimiser.asynctask.SoundOptimizer;
-import com.spse.javamodsoptimiser.asynctask.Task;
 import com.spse.javamodsoptimiser.asynctask.TextureOptimizer;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,27 +45,24 @@ public class MainActivity extends AppCompatActivity {
     public static final String TEMP_PATH = FOLDER_PATH.concat("TMP/");
     public static final String OUT_PATH = FOLDER_PATH.concat("OUTPUT/");
     public final MainActivity MAIN_ACTIVITY = this;
-    public Boolean MULTIPLE_MODS_CHECKED;
-    public int modIndex = 0;
-    public ArrayList<String> modList;
 
+    public MinecraftMod mod;
 
-    private MinecraftMod mod;
-    public ProgressBar copyProgressBar;
-    public ProgressBar unzipProgressBar;
-    public ProgressBar parsingProgressBar;
-    public ProgressBar textureProgressBar;
-    public ProgressBar soundProgressBar;
-    public ProgressBar jsonProgressBar;
-    public ProgressBar zipProgressBar;
+    private ProgressBar stepProgressBar;
+    private TextView stepTitle;
+    private TextView stepText;
 
-    private TextView modInfoName;
-    private TextView modInfoTextureNumber;
-    private TextView modInfoSoundNumber;
+    public ImageButton settingsSwitch;
+    private boolean settingsShown = false;
 
-    private CheckBox deleteOriginalFile;
+    private CheckBox replaceOriginalFile;
     private CheckBox removeSignatures;
     private CheckBox reducedQuality;
+
+    private final TextView[] userLogs = new TextView[5];
+
+    private final ConstraintSet layoutSettingsHidden = new ConstraintSet();
+    private final ConstraintSet layoutSettingShown = new ConstraintSet();
 
     private PowerManager.WakeLock wakelock;
     public ImageButton filepickerBtn;
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.file_processing_layout);
+        setContentView(R.layout.main_activity);
 
 
         if(fileExists(TEMP_PATH)){
@@ -92,6 +91,11 @@ public class MainActivity extends AppCompatActivity {
                         //We start cleaning the leftovers
                         FileManager.removeLeftOvers();
                     }
+                }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        FileManager.removeLeftOvers();
+                    }
                 });
 
                 tempFilesFound.create().show();
@@ -103,32 +107,34 @@ public class MainActivity extends AppCompatActivity {
         createFolder(TEMP_PATH);
         createFolder(OUT_PATH);
 
-        copyProgressBar = findViewById(R.id.progressBarCopying);
-        unzipProgressBar = findViewById(R.id.progressBarUnzipping);
-        parsingProgressBar = findViewById(R.id.progressBarParsing);
-        textureProgressBar = findViewById(R.id.progressBarTexture);
-        soundProgressBar = findViewById(R.id.progressBarSound);
-        jsonProgressBar = findViewById(R.id.progressBarJson);
-        zipProgressBar = findViewById(R.id.progressBarZipping);
 
-        modInfoName = findViewById(R.id.modInfoNameData);
-        modInfoTextureNumber = findViewById(R.id.modInfoTextureNumberData);
-        modInfoSoundNumber = findViewById(R.id.modInfoSoundNumberData);
+        stepProgressBar = findViewById(R.id.progressBar);
+        stepTitle = findViewById(R.id.textViewStepTitle);
+        stepText = findViewById(R.id.textViewStep);
 
-        deleteOriginalFile = findViewById(R.id.optionDeleteOriginal);
-        removeSignatures = findViewById(R.id.optionRemoveSignatures);
-        reducedQuality = findViewById(R.id.optionReducedQuality);
+        replaceOriginalFile = findViewById(R.id.checkBoxRemoveFile);
+        removeSignatures = findViewById(R.id.checkBoxRemoveSignatures);
+        reducedQuality = findViewById(R.id.checkBoxReducedQuality);
+
+
 
         //Pre-activate recommended options
-        removeSignatures.setChecked(true);
+        replaceOriginalFile.setChecked(false);
+        removeSignatures.setChecked(false);
         reducedQuality.setChecked(true);
 
+        userLogs[0] = findViewById(R.id.textViewLog1);
+        userLogs[1] = findViewById(R.id.textViewLog2);
+        userLogs[2] = findViewById(R.id.textViewLog3);
+        userLogs[3] = findViewById(R.id.textViewLog4);
+        userLogs[4] = findViewById(R.id.textViewLog5);
+
+        setLogVisibility(View.INVISIBLE);
 
 
 
 
-
-        filepickerBtn = findViewById(R.id.filePicker);
+        filepickerBtn = findViewById(R.id.imageViewAddMod);
         filepickerBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             //On click function
@@ -143,6 +149,32 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS, FILEPICKER_PERMISSIONS);
                 }
+            }
+        });
+
+
+        layoutSettingsHidden.clone((ConstraintLayout) findViewById(R.id.MainActivity));
+        layoutSettingShown.clone(this, R.layout.main_activity_settings_shown);
+
+        settingsSwitch = findViewById(R.id.imageViewSettingsSwitch);
+        settingsSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TransitionManager.beginDelayedTransition((ConstraintLayout) findViewById(R.id.MainActivity));
+                ConstraintSet constrain;
+                if(settingsShown){
+                    constrain = layoutSettingsHidden;
+                    setAddMinecraftModClickable(true);
+                    setSettingsClickable(false);
+                }else{
+                    constrain = layoutSettingShown;
+                    setAddMinecraftModClickable(false);
+                    setSettingsClickable(true);
+                }
+
+                constrain.applyTo((ConstraintLayout) findViewById(R.id.MainActivity));
+                settingsShown = !settingsShown;
+                setLogVisibility(View.INVISIBLE);
             }
         });
 
@@ -171,37 +203,10 @@ public class MainActivity extends AppCompatActivity {
         chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
             @Override
             public void onSelect(String path) {
-                //We aren't optimizing multiple mods.
-                MULTIPLE_MODS_CHECKED = false;
-
                 //Activate the CPU wakelock
                 setWakelockState(true);
 
                 init(path);
-
-
-            }
-        });
-
-        chooser.setOnMultipleSelectListener(new StorageChooser.OnMultipleSelectListener(){
-            @Override
-            public void onDone(ArrayList<String> selectedFilePaths) {
-                //We are optimizing multiple mods
-                MULTIPLE_MODS_CHECKED = true;
-
-                //Activate the CPU wakelock
-                setWakelockState(true);
-
-                modList = new ArrayList<String>(selectedFilePaths.size());
-
-                for(String mods : selectedFilePaths){
-                    modList.add(mods);
-                }
-
-                String path = modList.get(modIndex);
-                modIndex++;
-                init(path);
-
 
             }
         });
@@ -236,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
      * @param grantResults
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case FILEPICKER_PERMISSIONS: {
                 // If request is cancelled, the result arrays are empty.
@@ -261,40 +266,43 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void launchAsyncTask(int step){
+        //Mark the progress
+        setStepProgress(step);
+
         switch (step){
             case 1:
                 //File copy step
-                new FileCopier().execute(new Task(copyProgressBar, mod, MAIN_ACTIVITY));
+                new FileCopier().execute(MAIN_ACTIVITY);
                 break;
 
             case 2:
                 //File unzip step
-                new FileUnzipper().execute(new Task(unzipProgressBar,mod, MAIN_ACTIVITY));
+                new FileUnzipper().execute(MAIN_ACTIVITY);
                 break;
 
             case 3:
                 //File parsing step
-                new FileParser().execute(new Task(parsingProgressBar, mod, MAIN_ACTIVITY));
+                new FileParser().execute(MAIN_ACTIVITY);
                 break;
 
             case 4:
                 //Texture optimization step
-                new TextureOptimizer().execute(new Task(textureProgressBar, mod, MAIN_ACTIVITY));
+                new TextureOptimizer().execute(MAIN_ACTIVITY);
                 break;
 
             case 5:
                 //Sound optimization step
-                new SoundOptimizer().execute(new Task(soundProgressBar, mod, MAIN_ACTIVITY));
+                new SoundOptimizer().execute(MAIN_ACTIVITY);
                 break;
 
             case 6:
                 //Json minify step
-                new JsonMinifier().execute(new Task(jsonProgressBar, mod, MAIN_ACTIVITY));
+                new JsonMinifier().execute(MAIN_ACTIVITY);
                 break;
 
             case 7:
                 //Repacking step
-                new FileZipper().execute(new Task(zipProgressBar, mod, MAIN_ACTIVITY));
+                new FileZipper().execute(MAIN_ACTIVITY);
                 break;
 
             default:
@@ -303,12 +311,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setInfoTextureNumber(int number){
-        modInfoTextureNumber.setText(Integer.toString(number));
-    }
-    public void setInfoSoundNumber(int number){
-        modInfoSoundNumber.setText(Integer.toString(number));
-    }
     public boolean isQualityReduced(){
         return reducedQuality.isChecked();
     }
@@ -316,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
         return removeSignatures.isChecked();
     }
     public boolean haveOriginalDeleted(){
-        return deleteOriginalFile.isChecked();
+        return replaceOriginalFile.isChecked();
     }
 
     public void setWakelockState(boolean awake){
@@ -357,34 +359,127 @@ public class MainActivity extends AppCompatActivity {
 
         //Make the button un-clickable for the rest of the process.
         filepickerBtn.setClickable(false);
+        settingsSwitch.setClickable(false);
 
-        //Reset the progressBar progression:
-        copyProgressBar.setProgress(0, true);
-        unzipProgressBar.setProgress(0, true);
-        parsingProgressBar.setProgress(0, true);
-        textureProgressBar.setProgress(0, true);
-        jsonProgressBar.setProgress(0, true);
-        soundProgressBar.setProgress(0, true);
-        zipProgressBar.setProgress(0, true);
 
         //Create the mod
         mod = new MinecraftMod(absolutePath);
 
-        //Actualise info
-        modInfoName.setText(mod.getFullName());
-        modInfoTextureNumber.setText(R.string.mod_info_unknown);
-        modInfoSoundNumber.setText(R.string.mod_info_unknown);
 
         //Check if the same mod doesn't exist in output files
         if(fileExists(OUT_PATH + mod.getFullName())) {
             removeFile(OUT_PATH + mod.getFullName());
         }
 
+        setLogVisibility(View.VISIBLE);
+        filepickerBtn.setVisibility(View.INVISIBLE);
 
         //Launch the first task, each task will launch the next one when it finishes
         launchAsyncTask(1);
 
         Toast.makeText(MainActivity.this,"Launching optimization process !\n" + mod.getName(),Toast.LENGTH_LONG).show();
     }
+
+    public void postOptimize(){
+        filepickerBtn.setClickable(true);
+        filepickerBtn.setVisibility(View.VISIBLE);
+        setLogVisibility(View.INVISIBLE);
+        settingsSwitch.setClickable(true);
+
+        setStepProgress(0);
+
+        Toast.makeText(this,getString(R.string.mod_is_optimized) + mod.getFullName(), Toast.LENGTH_LONG).show();
+
+        //Deactivate the CPU wakelock
+        setWakelockState(false);
+    }
+
+    @SuppressLint("DefaultLocale")
+    public void setStepProgress(int step){
+        //Changes the circular progressBar, with its text inside it.
+        stepTitle.setText(String.format("%s %d/7", getString(R.string.step), step));
+        stepProgressBar.setProgress((int) Math.max((100f/7f)*step, 0));
+
+        switch (step){
+            case 0:
+                stepText.setText(getString(R.string.step_user));
+                break;
+
+            case 1:
+                stepText.setText(getString(R.string.step_copying));
+                break;
+
+            case 2:
+                stepText.setText(getString(R.string.step_unzipping));
+                break;
+
+            case 3:
+                stepText.setText(getString(R.string.step_parsing));
+                break;
+
+            case 4:
+                stepText.setText(getString(R.string.step_texture_optimization));
+                break;
+
+            case 5:
+                stepText.setText(getString(R.string.step_sound_optimization));
+                break;
+
+            case 6:
+                stepText.setText(getString(R.string.step_trimming));
+                break;
+
+            case 7:
+                stepText.setText(getString(R.string.step_repacking));
+                break;
+
+            default:
+                Log.d("SET STEP", "Wrong STEP : " + step);
+                break;
+
+        }
+    }
+
+    private void setSettingsClickable(boolean state){
+        replaceOriginalFile.setClickable(state);
+        removeSignatures.setClickable(state);
+        reducedQuality.setClickable(state);
+    }
+
+    private void setAddMinecraftModClickable(boolean state){
+        filepickerBtn.setClickable(state);
+    }
+
+    public void addUserLog(String log){
+        for(int i = 1; i < userLogs.length; i++){
+            userLogs[i-1].setText(userLogs[i].getText().toString());
+        }
+        userLogs[userLogs.length-1].setText(log);
+    }
+
+    public void addUserLog(int constLog){
+        for(int i = 1; i < userLogs.length; i++){
+            userLogs[i-1].setText(userLogs[i].getText().toString());
+        }
+        userLogs[userLogs.length-1].setText(getString(constLog));
+    }
+
+    public void addUserLog(int constLog, String modularLog){
+        for(int i = 1; i < userLogs.length; i++){
+            userLogs[i-1].setText(userLogs[i].getText().toString());
+        }
+        userLogs[userLogs.length-1].setText(String.format("%s%s", getString(constLog), modularLog));
+    }
+
+    public void editLastUserLog(int constLog, String modularLog){
+        userLogs[userLogs.length-1].setText(String.format("%s%s", getString(constLog), modularLog));
+    }
+
+    public void setLogVisibility(int state){
+        for (TextView userLog : userLogs) {
+            userLog.setVisibility(state);
+        }
+    }
+
 
 }

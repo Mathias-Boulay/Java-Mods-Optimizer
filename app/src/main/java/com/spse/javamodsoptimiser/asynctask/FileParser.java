@@ -1,17 +1,17 @@
 package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.R;
 
 import java.io.File;
 import java.io.FileFilter;
 
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
-public class FileParser extends AsyncTask<Task, Object, MainActivity> {
+public class FileParser extends AsyncTask<MainActivity, Object, MainActivity> {
 
     MinecraftMod mod;
 
@@ -84,16 +84,16 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
     }
 
     @Override
-    public MainActivity doInBackground(Task[] task) {
+    public MainActivity doInBackground(MainActivity[] activity) {
         //Parse arguments
-        mod = task[0].getMod();
-        ProgressBar progressBar = task[0].getProgressBar();
+        mod = activity[0].mod;
+
 
 
         //First count how many textures and sounds we have
         walk(TEMP_PATH, numberFilter);
 
-        publishProgress(progressBar, 50);
+        publishProgress(activity[0],R.string.log_file_parser_1);
 
         //Then assign arrays to store both textures and sounds paths
         mod.texturePath = new String[mod.textureNumber];
@@ -107,27 +107,21 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
         //Then store those files path
         walk(TEMP_PATH, fileFilter);
 
-        publishProgress(progressBar, 100);
+        publishProgress(activity[0], R.string.log_file_parser_2);
 
-        return task[0].getActivity();
+        return activity[0];
     }
 
     @Override
     protected void onProgressUpdate(Object... argument) {
         super.onProgressUpdate(argument);
-        ProgressBar progressBar = (ProgressBar) argument[0];
-        int progress = (int) argument[1];
-
-        progressBar.setProgress(progress,true);
+        MainActivity activity = (MainActivity) argument[0];
+        activity.addUserLog((int) argument[1]);
     }
 
     @Override
     protected void onPostExecute(MainActivity activity) {
         super.onPostExecute(activity);
-        activity.setInfoSoundNumber(mod.getSoundNumber());
-        activity.setInfoTextureNumber(mod.getTextureNumber());
-
-        activity.parsingProgressBar.setProgress(100);
 
         activity.launchAsyncTask(4);
     }
