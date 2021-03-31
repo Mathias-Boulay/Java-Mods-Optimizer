@@ -102,3 +102,4 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
+app/src/main/res/layout/.idea/
