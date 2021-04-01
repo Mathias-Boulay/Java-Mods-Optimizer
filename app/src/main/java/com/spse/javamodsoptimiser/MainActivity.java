@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(fileExists(TEMP_PATH)){
             File[] root = new File(TEMP_PATH).listFiles();
-            if (root.length > 0) {
+            if (root != null && root.length > 0) {
                 //Then it means the previous work has been interrupted somehow.
                 //We have to notify the user about this issue
                 AlertDialog.Builder tempFilesFound = new AlertDialog.Builder(MAIN_ACTIVITY);
