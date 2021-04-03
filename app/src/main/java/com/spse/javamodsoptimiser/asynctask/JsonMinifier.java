@@ -10,19 +10,27 @@ import com.whoischarles.util.json.Minify;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 import static com.spse.javamodsoptimiser.FileManager.renameFile;
 
-public class JsonMinifier extends AsyncTask<Task, Object, MainActivity> {
+public class JsonMinifier extends AsyncTask<Void, Object, Void> {
+
+    WeakReference<MainActivity> activityWeakReference;
+
+    public JsonMinifier(MainActivity activity){
+        activityWeakReference = new WeakReference<>(activity);
+    }
+
+
     @Override
-    protected MainActivity doInBackground(Task[] task) {
+    protected Void doInBackground(Void[] voids) {
 
 
 
-        MinecraftMod mod = task[0].getMod();
-        ProgressBar progressBar = task[0].getProgressBar();
+        MinecraftMod mod = activityWeakReference.get().modStack.get(0);
 
         float progress = 0;
         float increment = 100f/mod.getJsonNumber();
@@ -48,28 +56,22 @@ public class JsonMinifier extends AsyncTask<Task, Object, MainActivity> {
             }
 
             progress += increment;
-            publishProgress(progressBar,Math.round(progress));
+            publishProgress(Math.round(progress));
 
         }
 
-        return task[0].getActivity();
+        return null;
     }
 
 
     @Override
-    protected void onProgressUpdate(Object... values) {
-        super.onProgressUpdate(values);
-        ProgressBar progressBar = (ProgressBar) values[0];
-        int progress = (int) values[1];
-
-        progressBar.setProgress(progress, true);
+    protected void onProgressUpdate(Object... argument) {
+        activityWeakReference.get().setCurrentTaskProgress((int)argument[0]);
     }
 
-    @Override
-    protected void onPostExecute(MainActivity activity) {
-        super.onPostExecute(activity);
-        activity.jsonProgressBar.setProgress(100);
 
-        activity.launchAsyncTask(7);
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        activityWeakReference.get().launchAsyncTask(7);
     }
 }
