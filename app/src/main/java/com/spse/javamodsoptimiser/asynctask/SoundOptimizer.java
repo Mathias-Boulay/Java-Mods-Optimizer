@@ -25,6 +25,10 @@ public class SoundOptimizer extends AsyncTask<Void, Object, Void> {
 
     @Override
     public Void doInBackground(Void[] voids){
+
+        if(Setting.SKIP_SOUND_OPTIMIZATION)
+            return null;
+
         //Parse arguments
         MinecraftMod mod = activityWeakReference.get().modStack.get(0);
         

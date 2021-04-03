@@ -5,6 +5,7 @@ import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.setting.Setting;
 import com.whoischarles.util.json.Minify;
 
 import java.io.FileInputStream;
@@ -28,7 +29,8 @@ public class JsonMinifier extends AsyncTask<Void, Object, Void> {
     @Override
     protected Void doInBackground(Void[] voids) {
 
-
+        if(Setting.SKIP_JSON_OPTIMIZATION)
+            return null;
 
         MinecraftMod mod = activityWeakReference.get().modStack.get(0);
 

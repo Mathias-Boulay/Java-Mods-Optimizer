@@ -26,6 +26,10 @@ public class TextureOptimizer extends AsyncTask<Void, Object, Void> {
 
     @Override
     protected Void doInBackground(Void[] voids){
+
+        if(Setting.SKIP_TEXTURE_OPTIMIZATION)
+            return null;
+
         //First parse the arguments
         MinecraftMod mod = activityWeakReference.get().modStack.get(0);
 
