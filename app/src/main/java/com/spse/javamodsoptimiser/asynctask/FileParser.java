@@ -8,12 +8,18 @@ import com.spse.javamodsoptimiser.MinecraftMod;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.lang.ref.WeakReference;
 
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
-public class FileParser extends AsyncTask<Task, Object, MainActivity> {
+public class FileParser extends AsyncTask<Void, Object, Void> {
 
+    WeakReference<MainActivity> activityWeakReference;
     MinecraftMod mod;
+
+    public FileParser(MainActivity activity){
+        activityWeakReference = new WeakReference<>(activity);
+    }
 
     FileFilter numberFilter = new FileFilter() {
         @Override
@@ -84,16 +90,14 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
     }
 
     @Override
-    public MainActivity doInBackground(Task[] task) {
+    public Void doInBackground(Void[] voids) {
         //Parse arguments
-        mod = task[0].getMod();
-        ProgressBar progressBar = task[0].getProgressBar();
-
+        mod = activityWeakReference.get().modStack.get(0);
 
         //First count how many textures and sounds we have
         walk(TEMP_PATH, numberFilter);
 
-        publishProgress(progressBar, 50);
+        publishProgress(50);
 
         //Then assign arrays to store both textures and sounds paths
         mod.texturePath = new String[mod.textureNumber];
@@ -102,33 +106,21 @@ public class FileParser extends AsyncTask<Task, Object, MainActivity> {
         mod.otherFilePath = new String[mod.otherFileNumber];
         mod.folderPath = new String[mod.folderNumber];
 
-
-
         //Then store those files path
         walk(TEMP_PATH, fileFilter);
 
-        publishProgress(progressBar, 100);
+        publishProgress(100);
 
-        return task[0].getActivity();
+        return null;
     }
 
     @Override
     protected void onProgressUpdate(Object... argument) {
-        super.onProgressUpdate(argument);
-        ProgressBar progressBar = (ProgressBar) argument[0];
-        int progress = (int) argument[1];
-
-        progressBar.setProgress(progress,true);
+        activityWeakReference.get().setCurrentTaskProgress((int)argument[0]);
     }
 
     @Override
-    protected void onPostExecute(MainActivity activity) {
-        super.onPostExecute(activity);
-        activity.setInfoSoundNumber(mod.getSoundNumber());
-        activity.setInfoTextureNumber(mod.getTextureNumber());
-
-        activity.parsingProgressBar.setProgress(100);
-
-        activity.launchAsyncTask(4);
+    protected void onPostExecute(Void aVoid) {
+        activityWeakReference.get().launchAsyncTask(4);
     }
 }
