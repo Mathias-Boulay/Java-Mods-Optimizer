@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#8600C4</color>
-    <color name="colorPrimaryDark">#5F008B</color>
-    <color name="colorAccent">#FF8B00</color>
+    <color name="PrimaryLight">#DCEDC8</color>
+    <color name="Primary">#8BC34A</color>
+    <color name="PrimaryDark">#689F38</color>
 
-    <color name="blackBackground">#303030</color>
-    <color name="neutralText">#F0F0F0</color>
-    <color name="soundFileText">#F0F000</color>
-    <color name="textureFileText">#00D600</color>
-    <color name="errorText">#D20000</color>
+    <color name="PrimaryText">#FFFFFF</color>
+    <color name="SecondaryText">#7F8185</color>
 
-    <color name="optionOn">#FF8B00</color>
-    <color name="optionOff">#A2A2A2</color>
+    <color name="Divider">#BDBDBD</color>
 
-    <color name="progressBarOff">#737373</color>
-    <color name="progressBarCopying">#0074E7</color>
-    <color name="progressBarUnzipping">#CA00B4</color>
-    <color name="progressBarParsing">#DC0000</color>
-    <color name="progressBarTexture">@color/textureFileText</color>
-    <color name="progressBarSound">@color/soundFileText</color>
-    <color name="progressBarMinifying">#00E8C9</color>
-    <color name="progressBarZipping">#FFFFFF</color>
+    <color name="Accent">#EC4D4B</color>
 
+    <color name="Background">#1C1F24</color>
+
+    <color name="ModBackground">#353A43</color>
+
+    <color name="RippleColor">#40FFFFFF</color>
 </resources>

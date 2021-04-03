@@ -37,7 +37,43 @@
     <string name="dialog_temp_files_found_message">It seems the optimizing last optimizing process has been interrupted, the app will start cleaning any leftovers. \n This process may take several seconds…</string>
     <string name="dialog_temp_files_found_button">Oh, OK.</string>
 
+    <string name="setting_category_skip">Skipping settings</string>
+    <string name="setting_title_skip_texture">Skip texture optimization</string>
+    <string name="setting_subtitle_skip_texture_off">Textures are optimized</string>
+    <string name="setting_subtitle_skip_texture_on">Textures are left untouched</string>
 
+    <string name="setting_title_skip_sound">Skip sound optimization</string>
+    <string name="setting_subtitle_skip_sound_off">Sounds are optimized</string>
+    <string name="setting_subtitle_skip_sound_on">Sounds are left untouched</string>
 
+    <string name="setting_title_skip_json">Skip json optimization</string>
+    <string name="setting_subtitle_skip_json_off">Json files are trimmed down</string>
+    <string name="setting_subtitle_skip_json_on">Json files are left untouched</string>
+
+    <string name="setting_category_quality">Quality settings</string>
+    <string name="setting_title_quality_texture">Texture quality</string>
+    <string name="setting_title_quality_sound">Sound quality</string>
+
+    <string name="setting_title_texture_quality_check">Lenient texture quality check</string>
+    <string name="setting_subtitle_texture_quality_check_off">Optimized textures aren\'t used if they miss the target quality by too much.</string>
+    <string name="setting_subtitle_texture_quality_check_on">Optimized textures are used, no matter the resulting quality</string>
+
+    <string-array name="setting_quality_array">
+        <item>Very High</item>
+        <item>High</item>
+        <item>Medium</item>
+        <item>Low</item>
+        <item>Destructive</item>
+    </string-array>
+
+    <string name="setting_category_misc">Miscellaneous settings</string>
+
+    <string name="setting_title_remove_original_file">Remove original file</string>
+    <string name="setting_subtitle_remove_original_file_off">Original mod files won\'t be removed</string>
+    <string name="setting_subtitle_remove_original_file_on">Original mod files will be destroyed upon successful optimization</string>
+
+    <string name="setting_title_remove_signature_file">Remove signature files</string>
+    <string name="setting_subtitle_remove_signature_files_off">Signature files are left untouched</string>
+    <string name="setting_subtitle_remove_signature_files_on">Signature files will be removed from the optimized mod</string>
 
 </resources>
