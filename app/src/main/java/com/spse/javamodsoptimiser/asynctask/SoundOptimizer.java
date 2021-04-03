@@ -6,20 +6,27 @@ import android.widget.ProgressBar;
 import com.arthenica.mobileffmpeg.FFmpeg;
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.setting.Setting;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 import static com.spse.javamodsoptimiser.FileManager.renameFile;
 
-public class SoundOptimizer extends AsyncTask<Task, Object, MainActivity> {
+public class SoundOptimizer extends AsyncTask<Void, Object, Void> {
+
+    WeakReference<MainActivity> activityWeakReference;
+
+    public SoundOptimizer(MainActivity activity){
+        activityWeakReference = new WeakReference<>(activity);
+    }
 
     @Override
-    public MainActivity doInBackground(Task[] task){
+    public Void doInBackground(Void[] voids){
         //Parse arguments
-        MinecraftMod mod = task[0].getMod();
-        ProgressBar progressBar = task[0].getProgressBar();
+        MinecraftMod mod = activityWeakReference.get().modStack.get(0);
         
         float increment = 100f/mod.getSoundNumber();
         float progress = 0;
@@ -28,7 +35,8 @@ public class SoundOptimizer extends AsyncTask<Task, Object, MainActivity> {
 
         for(int i=0; i < mod.getSoundNumber(); i++) {
             String command;
-            if(task[0].getActivity().isQualityReduced()){
+
+            if(Setting.SOUND_QUALITY.equals("Destructive")){
                 command = "-y -i '" + mod.getSoundPath(i) + "' -c:a libvorbis -b:a 36k -ac 1 -ar 26000 '" + mod.getSoundPath(i) + "-min.ogg'";
             }else {
                 command = "-y -i '" + mod.getSoundPath(i) + "' -c:a libvorbis -b:a 48k -ac 1 -ar 26000 '" + mod.getSoundPath(i) + "-min.ogg'";
@@ -46,28 +54,21 @@ public class SoundOptimizer extends AsyncTask<Task, Object, MainActivity> {
             }
             progress += increment;
             intProgress = Math.round(progress);
-            publishProgress(progressBar,intProgress);
+            publishProgress(intProgress);
+
+
         }
 
-        return task[0].getActivity();
+        return null;
     }
 
     @Override
     protected void onProgressUpdate(Object... argument) {
-        super.onProgressUpdate(argument);
-
-        ProgressBar progressBar = (ProgressBar) argument[0];
-        int progress = (int) argument[1];
-
-        progressBar.setProgress(progress, true);
+        activityWeakReference.get().setCurrentTaskProgress((int)argument[0]);
     }
 
     @Override
-    protected void onPostExecute(MainActivity activity) {
-        super.onPostExecute(activity);
-        activity.soundProgressBar.setProgress(100);
-
-        activity.launchAsyncTask(6);
-
+    protected void onPostExecute(Void aVoid) {
+        activityWeakReference.get().launchAsyncTask(6);
     }
 }
