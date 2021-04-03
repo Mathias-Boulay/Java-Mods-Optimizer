@@ -1,16 +1,22 @@
 package com.spse.javamodsoptimiser;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,8 +31,10 @@ import com.spse.javamodsoptimiser.asynctask.FileUnzipper;
 import com.spse.javamodsoptimiser.asynctask.FileZipper;
 import com.spse.javamodsoptimiser.asynctask.JsonMinifier;
 import com.spse.javamodsoptimiser.asynctask.SoundOptimizer;
-import com.spse.javamodsoptimiser.asynctask.Task;
 import com.spse.javamodsoptimiser.asynctask.TextureOptimizer;
+import com.spse.javamodsoptimiser.setting.Setting;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,96 +50,47 @@ public class MainActivity extends AppCompatActivity {
     public static final String FOLDER_PATH = Environment.getExternalStorageDirectory().toString().concat("/Mods Optimizer/");
     public static final String TEMP_PATH = FOLDER_PATH.concat("TMP/");
     public static final String OUT_PATH = FOLDER_PATH.concat("OUTPUT/");
-    public final MainActivity MAIN_ACTIVITY = this;
-    public Boolean MULTIPLE_MODS_CHECKED;
-    public int modIndex = 0;
-    public ArrayList<String> modList;
+    public static final int FILEPICKER_PERMISSIONS = 1;
 
+    private final MainActivity MAIN_ACTIVITY = this;
 
-    private MinecraftMod mod;
-    public ProgressBar copyProgressBar;
-    public ProgressBar unzipProgressBar;
-    public ProgressBar parsingProgressBar;
-    public ProgressBar textureProgressBar;
-    public ProgressBar soundProgressBar;
-    public ProgressBar jsonProgressBar;
-    public ProgressBar zipProgressBar;
-
-    private TextView modInfoName;
-    private TextView modInfoTextureNumber;
-    private TextView modInfoSoundNumber;
-
-    private CheckBox deleteOriginalFile;
-    private CheckBox removeSignatures;
-    private CheckBox reducedQuality;
+    private Dialog settingDialog;
 
     private PowerManager.WakeLock wakelock;
-    public ImageButton filepickerBtn;
+    private ImageButton filePickerBtn;
 
+    private ProgressBar currentTaskProgressBar;
+    private ProgressBar totalTaskProgressBar;
+    private ProgressBar modItemProgressBar;
 
-    public static final int FILEPICKER_PERMISSIONS = 1;
+    public ArrayList<MinecraftMod> modStack = new ArrayList<>(1);
+    private LinearLayout modList;
+    private int modListIndex = -2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.file_processing_layout);
-
-
-        if(fileExists(TEMP_PATH)){
-            File[] root = new File(TEMP_PATH).listFiles();
-            if (root != null && root.length > 0) {
-                //Then it means the previous work has been interrupted somehow.
-                //We have to notify the user about this issue
-                AlertDialog.Builder tempFilesFound = new AlertDialog.Builder(MAIN_ACTIVITY);
-                tempFilesFound.setTitle(R.string.dialog_temp_files_found_title);
-                tempFilesFound.setMessage(R.string.dialog_temp_files_found_message);
-
-                tempFilesFound.setNeutralButton(R.string.dialog_temp_files_found_button, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //We start cleaning the leftovers
-                        FileManager.removeLeftOvers();
-                    }
-                });
-
-                tempFilesFound.create().show();
-            }
-        }
+        setContentView(R.layout.main_layout);
+        Setting.initializeSettings(this);
 
         //Create folders used by the app:
         createFolder(FOLDER_PATH);
         createFolder(TEMP_PATH);
         createFolder(OUT_PATH);
 
-        copyProgressBar = findViewById(R.id.progressBarCopying);
-        unzipProgressBar = findViewById(R.id.progressBarUnzipping);
-        parsingProgressBar = findViewById(R.id.progressBarParsing);
-        textureProgressBar = findViewById(R.id.progressBarTexture);
-        soundProgressBar = findViewById(R.id.progressBarSound);
-        jsonProgressBar = findViewById(R.id.progressBarJson);
-        zipProgressBar = findViewById(R.id.progressBarZipping);
+        settingDialog =  new Dialog(this);
+        settingDialog.setContentView(R.layout.setting_layout);
 
-        modInfoName = findViewById(R.id.modInfoNameData);
-        modInfoTextureNumber = findViewById(R.id.modInfoTextureNumberData);
-        modInfoSoundNumber = findViewById(R.id.modInfoSoundNumberData);
+        currentTaskProgressBar = findViewById(R.id.currentTaskProgressBar);
+        totalTaskProgressBar = findViewById(R.id.totalTaskProgressBar);
+        modList = findViewById(R.id.listView);
+        filePickerBtn = findViewById(R.id.addModButton);
 
-        deleteOriginalFile = findViewById(R.id.optionDeleteOriginal);
-        removeSignatures = findViewById(R.id.optionRemoveSignatures);
-        reducedQuality = findViewById(R.id.optionReducedQuality);
+        checkForLeftOvers();
 
-        //Pre-activate recommended options
-        removeSignatures.setChecked(true);
-        reducedQuality.setChecked(true);
-
-
-
-
-
-
-        filepickerBtn = findViewById(R.id.filePicker);
-        filepickerBtn.setOnClickListener(new View.OnClickListener(){
+        filePickerBtn.setOnClickListener(new View.OnClickListener(){
             @Override
-            //On click function
             public void onClick(View view) {
                 String[] PERMISSIONS = {
                         android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -139,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 };
 
                 if(hasPermissions(MainActivity.this, PERMISSIONS)){
-                    ShowFilepicker();
+                    ShowFilePicker();
                 }else{
                     ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS, FILEPICKER_PERMISSIONS);
                 }
@@ -149,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method that displays the filepicker of the StorageChooser.
+     * Method that displays the filePicker of the StorageChooser.
      */
-    public void ShowFilepicker(){
+    public void ShowFilePicker(){
         //Prep: Create custom filter
         List<String> filters = Arrays.asList("zip","jar");
 
@@ -163,7 +122,9 @@ public class MainActivity extends AppCompatActivity {
                 .allowCustomPath(true)
                 .setType(StorageChooser.FILE_PICKER)
                 .customFilter(filters)
-                .setDialogTitle("Choose a mod (.zip/.jar)")
+                .setDialogTitle("Choose some mods (.zip/.jar)")
+
+
 
                 .build();
 
@@ -171,15 +132,7 @@ public class MainActivity extends AppCompatActivity {
         chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
             @Override
             public void onSelect(String path) {
-                //We aren't optimizing multiple mods.
-                MULTIPLE_MODS_CHECKED = false;
-
-                //Activate the CPU wakelock
-                setWakelockState(true);
-
-                init(path);
-
-
+                addMod(path);
             }
         });
 
@@ -187,22 +140,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDone(ArrayList<String> selectedFilePaths) {
                 //We are optimizing multiple mods
-                MULTIPLE_MODS_CHECKED = true;
-
-                //Activate the CPU wakelock
-                setWakelockState(true);
-
-                modList = new ArrayList<String>(selectedFilePaths.size());
-
-                for(String mods : selectedFilePaths){
-                    modList.add(mods);
-                }
-
-                String path = modList.get(modIndex);
-                modIndex++;
-                init(path);
-
-
+                addMod(selectedFilePaths);
             }
         });
 
@@ -236,26 +174,14 @@ public class MainActivity extends AppCompatActivity {
      * @param grantResults
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case FILEPICKER_PERMISSIONS: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(
-                            MainActivity.this,
-                            "Permission granted! Please click on pick a file once again.",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                } else {
-                    Toast.makeText(
-                            MainActivity.this,
-                            "Permission denied to read your External storage :(",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                }
-
-                return;
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, @NotNull int[] grantResults) {
+        if (requestCode == FILEPICKER_PERMISSIONS) {// If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(MainActivity.this, "Permission granted! Please click on pick a file once again.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Permission denied to read your External storage :(", Toast.LENGTH_SHORT).show();
             }
+
         }
     }
 
@@ -264,66 +190,53 @@ public class MainActivity extends AppCompatActivity {
         switch (step){
             case 1:
                 //File copy step
-                new FileCopier().execute(new Task(copyProgressBar, mod, MAIN_ACTIVITY));
+                new FileCopier(MAIN_ACTIVITY).execute();
                 break;
 
             case 2:
                 //File unzip step
-                new FileUnzipper().execute(new Task(unzipProgressBar,mod, MAIN_ACTIVITY));
+                new FileUnzipper(MAIN_ACTIVITY).execute();
                 break;
 
             case 3:
                 //File parsing step
-                new FileParser().execute(new Task(parsingProgressBar, mod, MAIN_ACTIVITY));
+                new FileParser(MAIN_ACTIVITY).execute();
                 break;
 
             case 4:
                 //Texture optimization step
-                new TextureOptimizer().execute(new Task(textureProgressBar, mod, MAIN_ACTIVITY));
+                new TextureOptimizer(MAIN_ACTIVITY).execute();
                 break;
 
             case 5:
                 //Sound optimization step
-                new SoundOptimizer().execute(new Task(soundProgressBar, mod, MAIN_ACTIVITY));
+                new SoundOptimizer(MAIN_ACTIVITY).execute();
                 break;
 
             case 6:
                 //Json minify step
-                new JsonMinifier().execute(new Task(jsonProgressBar, mod, MAIN_ACTIVITY));
+                new JsonMinifier(MAIN_ACTIVITY).execute();
                 break;
 
             case 7:
                 //Repacking step
-                new FileZipper().execute(new Task(zipProgressBar, mod, MAIN_ACTIVITY));
+                new FileZipper(MAIN_ACTIVITY).execute();
                 break;
 
             default:
                 Toast.makeText(MainActivity.this, "The async task launcher tried to launch a non-existing task ! (".concat(Integer.toString(step)).concat(")"),Toast.LENGTH_LONG).show();
-                break;
+                return;
         }
+        setTotalTaskProgress(step);
     }
 
-    public void setInfoTextureNumber(int number){
-        modInfoTextureNumber.setText(Integer.toString(number));
-    }
-    public void setInfoSoundNumber(int number){
-        modInfoSoundNumber.setText(Integer.toString(number));
-    }
-    public boolean isQualityReduced(){
-        return reducedQuality.isChecked();
-    }
-    public boolean haveSignaturesRemoved(){
-        return removeSignatures.isChecked();
-    }
-    public boolean haveOriginalDeleted(){
-        return deleteOriginalFile.isChecked();
-    }
+
 
     public void setWakelockState(boolean awake){
         if(awake){
             PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
             wakelock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"Minecraft Java Mods Optimizer::ProcessingWakelock");
-            wakelock.acquire();
+            wakelock.acquire(30*60*1000L /*30 minutes*/);
         }else{
             wakelock.release();
         }
@@ -338,9 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
             illegalPathDialog.setNeutralButton(R.string.dialog_illegal_path_button, new DialogInterface.OnClickListener(){
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    return;
-                }
+                public void onClick(DialogInterface dialog, int which) {}
             });
 
             illegalPathDialog.create().show();
@@ -349,42 +260,98 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    public void init(String absolutePath){
+    public void showSettings(View v){
+        settingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        settingDialog.show();
+    }
 
-        if(isPathIllegal(absolutePath)){
+    private void checkForLeftOvers(){
+        if(fileExists(TEMP_PATH)){
+            File[] root = new File(TEMP_PATH).listFiles();
+            if (root != null && root.length > 0) {
+                //Then it means the previous work has been interrupted somehow.
+                //We have to notify the user about this issue
+                AlertDialog.Builder tempFilesFound = new AlertDialog.Builder(MAIN_ACTIVITY);
+                tempFilesFound.setTitle(R.string.dialog_temp_files_found_title);
+                tempFilesFound.setMessage(R.string.dialog_temp_files_found_message);
+
+                tempFilesFound.setNeutralButton(R.string.dialog_temp_files_found_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //We start cleaning the leftovers
+                        FileManager.removeLeftOvers();
+                    }
+                });
+
+                tempFilesFound.create().show();
+            }
+        }
+    }
+
+    public void launchOptimization(){
+        if(modStack.size() == 0){
+            ((Button)findViewById(R.id.optimizeButton)).setClickable(true);
             return;
         }
 
-        //Make the button un-clickable for the rest of the process.
-        filepickerBtn.setClickable(false);
-
-        //Reset the progressBar progression:
-        copyProgressBar.setProgress(0, true);
-        unzipProgressBar.setProgress(0, true);
-        parsingProgressBar.setProgress(0, true);
-        textureProgressBar.setProgress(0, true);
-        jsonProgressBar.setProgress(0, true);
-        soundProgressBar.setProgress(0, true);
-        zipProgressBar.setProgress(0, true);
-
-        //Create the mod
-        mod = new MinecraftMod(absolutePath);
-
-        //Actualise info
-        modInfoName.setText(mod.getFullName());
-        modInfoTextureNumber.setText(R.string.mod_info_unknown);
-        modInfoSoundNumber.setText(R.string.mod_info_unknown);
+        ((Button)findViewById(R.id.optimizeButton)).setClickable(false);
+        setWakelockState(true);
 
         //Check if the same mod doesn't exist in output files
-        if(fileExists(OUT_PATH + mod.getFullName())) {
-            removeFile(OUT_PATH + mod.getFullName());
+        if(fileExists(OUT_PATH + modStack.get(0).getFullName())) {
+            removeFile(OUT_PATH + modStack.get(0).getFullName());
         }
 
+        //Reset progress bars
+        currentTaskProgressBar.setProgress(0);
+        totalTaskProgressBar.setProgress(0);
 
-        //Launch the first task, each task will launch the next one when it finishes
+        modListIndex += 2; //Index of the list to actualise, has to jump over the space
+        modItemProgressBar = modList.getChildAt(modListIndex).findViewById(R.id.modProgress);
+
         launchAsyncTask(1);
-
-        Toast.makeText(MainActivity.this,"Launching optimization process !\n" + mod.getName(),Toast.LENGTH_LONG).show();
     }
 
+    private void addMod(String modPath){
+        //Failsafes
+        if(isPathIllegal(modPath)){
+            throw new IllegalArgumentException(" The file is in an illegal path !");
+        }
+
+        MinecraftMod mod = new MinecraftMod(modPath);
+        modStack.add(mod);
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View v = inflater.inflate(R.layout.mod_layout, null);
+
+        ((TextView) v.findViewById(R.id.modTitle)).setText(mod.getName());
+        ((TextView) v.findViewById(R.id.modDetails)).setText(String.valueOf(mod.getFileSize()/1024).concat(" KB"));
+        ((ImageView) v.findViewById(R.id.modLogo)).setImageResource(mod.getExtension().equals(".zip") ? R.drawable.zip_icon : R.drawable.jar_icon);
+
+        modList.addView(v);
+
+        v = new Space(this);
+        v.setMinimumHeight(34 /*Yep, this is a magic number*/);
+        modList.addView(v);
+    }
+
+    private void addMod(ArrayList<String> modPath){
+        for(String str : modPath){
+            addMod(str);
+        }
+    }
+
+    public void setCurrentTaskProgress(int progress){
+        currentTaskProgressBar.setProgress(progress, true);
+    }
+
+    private void setTotalTaskProgress(int progress){
+        totalTaskProgressBar.setProgress(progress, true);
+        modItemProgressBar.setProgress(progress, true);
+    }
+
+
+    public void launchOptimizationManually(View view) {
+        launchOptimization();
+    }
 }
