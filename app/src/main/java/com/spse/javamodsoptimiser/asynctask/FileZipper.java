@@ -6,31 +6,41 @@ import android.widget.ProgressBar;
 import com.spse.javamodsoptimiser.FileManager;
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.setting.Setting;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import static com.spse.javamodsoptimiser.MainActivity.OUT_PATH;
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
+import static com.spse.javamodsoptimiser.setting.Setting.REMOVE_ORIGINAL_FILE;
+import static com.spse.javamodsoptimiser.setting.Setting.REMOVE_SIGNATURE_FILES;
 
 
-public class FileZipper extends AsyncTask<Task, Object, MainActivity> {
+public class FileZipper extends AsyncTask<Void, Object, Void> {
 
+    WeakReference<MainActivity> activityWeakReference;
 
-
-    @Override
-    protected MainActivity doInBackground(Task... task) {
-
-        repackMod(task[0].getMod(), task[0].getProgressBar(), task[0].getActivity());
-
-        return task[0].getActivity();
+    public FileZipper(MainActivity activity){
+        activityWeakReference = new WeakReference<>(activity);
     }
 
-    private void repackMod(MinecraftMod mod, ProgressBar progressBar, MainActivity activity){
+    @Override
+    protected Void doInBackground(Void... voids) {
+
+        repackMod(activityWeakReference.get().modStack.get(0));
+
+
+
+        return null;
+    }
+
+    private void repackMod(MinecraftMod mod){
         //First step is to create I/O streams
         String zipFile = OUT_PATH.concat(mod.getFullName());
 
@@ -47,20 +57,21 @@ public class FileZipper extends AsyncTask<Task, Object, MainActivity> {
             //Add all files
             for(int i=0; i < mod.getTextureNumber(); i++){
                 addFileToZip(zos, mod.getTexturePath(i));
-                progress = incrementProgress(progressBar,progress,increment);
+                progress = incrementProgress(progress,increment);
             }
             for(int i=0;i < mod.getSoundNumber();i++){
                 addFileToZip(zos,mod.getSoundPath(i));
-                progress = incrementProgress(progressBar,progress,increment);
+                progress = incrementProgress(progress,increment);
             }
             for (int i=0; i < mod.getJsonNumber(); i++){
                 addFileToZip(zos,mod.getJsonPath(i));
-                progress = incrementProgress(progressBar,progress,increment);
+                progress = incrementProgress(progress,increment);
             }
 
             for(int i=0;i < mod.getOtherFileNumber();i++){
                 //Remove signatures if needed
-                if (!activity.haveSignaturesRemoved()) {
+
+                if (!REMOVE_SIGNATURE_FILES) {
                     addFileToZip(zos, mod.getOtherFilePath(i));
                 }else{
                     if (!mod.getOtherFilePath(i).contains(".RSA") && !mod.getOtherFilePath(i).contains(".MF") && !mod.getOtherFilePath(i).contains(".SF")){
@@ -71,11 +82,13 @@ public class FileZipper extends AsyncTask<Task, Object, MainActivity> {
                     }
                 }
 
-                progress = incrementProgress(progressBar,progress,increment);
+
+
+                progress = incrementProgress(progress,increment);
             }
             for(int i=mod.getFolderNumber()-1;i >= 0;i--){
                 FileManager.removeFile(mod.getFolderPath(i) + "/");
-                progress = incrementProgress(progressBar,progress,increment);
+                progress = incrementProgress(progress,increment);
             }
 
             zos.close();
@@ -87,16 +100,17 @@ public class FileZipper extends AsyncTask<Task, Object, MainActivity> {
             io.printStackTrace();
         }
 
-        if(activity.haveOriginalDeleted()){
+
+        if(REMOVE_ORIGINAL_FILE){
             FileManager.removeFile(mod.getFolder() + mod.getFullName());
         }
 
     }
 
-    private float incrementProgress(ProgressBar progressBar, float currentProgress, float increment){
+    private float incrementProgress(float currentProgress, float increment){
         currentProgress += increment;
         int intProgress = Math.round(currentProgress);
-        publishProgress(progressBar,intProgress);
+        publishProgress(intProgress);
 
         return currentProgress;
     }
@@ -108,10 +122,10 @@ public class FileZipper extends AsyncTask<Task, Object, MainActivity> {
 
         FileInputStream fis = new FileInputStream(filePath);
         byte[] BUFFER = new byte[1024];
-        zos.putNextEntry(new ZipEntry(filePath.replace(TEMP_PATH,"/") ));
+        zos.putNextEntry(new ZipEntry(filePath.replace(TEMP_PATH,"") ));
 
         int length;
-        while ((length = fis.read(BUFFER)) > 0) {
+        while ((length = fis.read(BUFFER)) >= 0) {
             zos.write(BUFFER, 0, length);
         }
         zos.closeEntry();
@@ -122,28 +136,17 @@ public class FileZipper extends AsyncTask<Task, Object, MainActivity> {
 
     @Override
     protected void onProgressUpdate(Object... argument) {
-        super.onProgressUpdate(argument);
-        ProgressBar progressBar = (ProgressBar) argument[0];
-        int progress = (int) argument[1];
-
-        progressBar.setProgress(progress, true);
-
+        activityWeakReference.get().setCurrentTaskProgress((int)argument[0]);
     }
 
     @Override
-    protected void onPostExecute(MainActivity activity) {
-        super.onPostExecute(activity);
-        activity.zipProgressBar.setProgress(100);
+    protected void onPostExecute(Void aVoid) {
+        //Go for the next
+        MainActivity activity = activityWeakReference.get();
+        activity.modStack.remove(0);
+        activity.setWakelockState(false);
 
-        if((activity.MULTIPLE_MODS_CHECKED) && (activity.modIndex < activity.modList.size())){
-            activity.init(activity.modList.get(activity.modIndex));
-            activity.modIndex++;
-        }else{
-            activity.filepickerBtn.setClickable(true);
-
-            //Deactivate the CPU wakelock
-            activity.setWakelockState(false);
-        }
+        activity.launchOptimization();
 
     }
 }
