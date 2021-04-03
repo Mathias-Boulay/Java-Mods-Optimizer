@@ -11,26 +11,33 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
-public class FileUnzipper  extends AsyncTask<Task, Object, MainActivity> {
+public class FileUnzipper  extends AsyncTask<Void, Object, Void> {
+
+    WeakReference<MainActivity> activityWeakReference;
+
+    public FileUnzipper(MainActivity activity){
+        activityWeakReference = new WeakReference<>(activity);
+    }
 
     @Override
-    protected MainActivity doInBackground(Task[] task) {
+    protected Void doInBackground(Void[] voids) {
         try {
-            unzip(TEMP_PATH + task[0].getMod().getFullName(), task[0].getProgressBar());
+            unzip(TEMP_PATH + activityWeakReference.get().modStack.get(0).getFullName());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return task[0].getActivity();
+        return null;
     }
 
-    private void unzip(String zipFile, ProgressBar updateBar) throws IOException{
+    private void unzip(String zipFile) throws IOException{
         int BUFFER = 2048;
         File file = new File(zipFile);
 
@@ -41,7 +48,6 @@ public class FileUnzipper  extends AsyncTask<Task, Object, MainActivity> {
         float increment = 100/approximatedUncompressedFileSize;
         float progress = 0f;
         int intProgress;
-
 
 
         ZipFile zip = null;
@@ -88,7 +94,7 @@ public class FileUnzipper  extends AsyncTask<Task, Object, MainActivity> {
                     //Actualise progress
                     progress += increment;
                     intProgress = Math.round(progress);
-                    publishProgress(updateBar, intProgress);
+                    publishProgress(intProgress);
                 }
                 dest.flush();
                 dest.close();
@@ -102,17 +108,11 @@ public class FileUnzipper  extends AsyncTask<Task, Object, MainActivity> {
 
     @Override
     protected void onProgressUpdate(Object... argument) {
-        super.onProgressUpdate(argument);
-        ProgressBar progressBar = (ProgressBar) argument[0];
-        int progress = (int) argument[1];
-        progressBar.setProgress(progress, true);
+        activityWeakReference.get().setCurrentTaskProgress((int)argument[0]);
     }
 
     @Override
-    protected void onPostExecute(MainActivity activity) {
-        super.onPostExecute(activity);
-        activity.unzipProgressBar.setProgress(100);
-
-        activity.launchAsyncTask(3);
+    protected void onPostExecute(Void aVoid) {
+        activityWeakReference.get().launchAsyncTask(3);
     }
 }
