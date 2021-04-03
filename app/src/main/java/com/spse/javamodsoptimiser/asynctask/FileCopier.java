@@ -1,35 +1,37 @@
 package com.spse.javamodsoptimiser.asynctask;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 
 import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
-public class FileCopier extends AsyncTask<Task, Object, MainActivity> {
+public class FileCopier extends AsyncTask<Void, Object, Void> {
 
+    WeakReference<MainActivity> activityWeakReference;
 
-    @Override
-    protected MainActivity doInBackground(Task[] task) {
+    public FileCopier(MainActivity activity){
+        activityWeakReference = new WeakReference<>(activity);
+    }
 
+    protected Void doInBackground(Void... aVoid) {
 
         //Parse arguments
-        MinecraftMod mod = task[0].getMod();
-        ProgressBar progressBar = task[0].getProgressBar();
+        MinecraftMod mod = activityWeakReference.get().modStack.get(0);
 
         float increment = 100f/(mod.getFileSize()/1024f);
         float progress = 0;
-        int intprogress;
+        int intProgress;
 
         //Then copy the file
         InputStream in;
@@ -48,10 +50,10 @@ public class FileCopier extends AsyncTask<Task, Object, MainActivity> {
             while ((read = in.read(buffer)) != -1) {
                 out.write(buffer, 0, read);
 
-
+                //Progress update
                 progress += increment;
-                intprogress = Math.round(progress);
-                publishProgress(progressBar,intprogress);
+                intProgress = Math.round(progress);
+                publishProgress(intProgress);
             }
             in.close();
             in = null;
@@ -61,35 +63,21 @@ public class FileCopier extends AsyncTask<Task, Object, MainActivity> {
             out.close();
             out = null;
 
-        }  catch (FileNotFoundException fnfe1) {
+        } catch (Exception fnfe1) {
             Log.e("tag", fnfe1.getMessage());
         }
-        catch (Exception e) {
-            Log.e("tag", e.getMessage());
-        }
 
-        return task[0].getActivity();
+        return null;
     }
 
     @Override
-    protected void onProgressUpdate(Object... argument) {
-        super.onProgressUpdate(argument);
-        ProgressBar progressBar = (ProgressBar) argument[0];
-        int progress = (int) argument[1];
-
-
-
-        progressBar.setProgress(progress,true);
-
-
-
+    protected void onProgressUpdate(Object[] progress) {
+        activityWeakReference.get().setCurrentTaskProgress((int)progress[0]);
     }
 
     @Override
-    protected void onPostExecute(MainActivity activity) {
-        super.onPostExecute(activity);
-        activity.copyProgressBar.setProgress(100);
-
-        activity.launchAsyncTask(2);
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        activityWeakReference.get().launchAsyncTask(2);
     }
 }
