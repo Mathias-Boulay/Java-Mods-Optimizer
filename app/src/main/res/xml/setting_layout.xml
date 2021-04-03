@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/setting_category_skip">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="skip_texture"
+            android:title="@string/setting_title_skip_texture"
+            android:summaryOff="@string/setting_subtitle_skip_texture_off"
+            android:summaryOn="@string/setting_subtitle_skip_texture_on"
+            />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="skip_sound"
+            android:title="@string/setting_title_skip_sound"
+            android:summaryOff="@string/setting_subtitle_skip_sound_off"
+            android:summaryOn="@string/setting_subtitle_skip_sound_on"
+            />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="skip_json"
+            android:title="@string/setting_title_skip_json"
+            android:summaryOff="@string/setting_subtitle_skip_texture_off"
+            android:summaryOn="@string/setting_subtitle_skip_texture_on"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_category_quality">
+
+        <ListPreference
+            android:defaultValue="Medium"
+            android:entries="@array/setting_quality_array"
+            android:entryValues="@array/setting_quality_array"
+            android:key="texture_quality"
+            android:title="@string/setting_title_quality_texture"
+            android:summary="%s"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="texture_quality_check"
+            android:title="@string/setting_title_texture_quality_check"
+            android:summaryOn="@string/setting_subtitle_texture_quality_check_on"
+            android:summaryOff="@string/setting_subtitle_texture_quality_check_off"
+
+            />
+
+        <ListPreference
+            android:defaultValue="High"
+            android:entries="@array/setting_quality_array"
+            android:entryValues="@array/setting_quality_array"
+            android:key="sound_quality"
+            android:title="@string/setting_title_quality_sound"
+            android:summary="%s"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_category_misc">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="remove_original_file"
+            android:title="@string/setting_title_remove_original_file"
+            android:summaryOn="@string/setting_subtitle_remove_original_file_on"
+            android:summaryOff="@string/setting_subtitle_remove_original_file_off"
+            />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="remove_signature_files"
+            android:title="@string/setting_title_remove_signature_file"
+            android:summaryOn="@string/setting_subtitle_remove_signature_files_on"
+            android:summaryOff="@string/setting_subtitle_remove_signature_files_off"
+            />
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
