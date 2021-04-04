@@ -1,6 +1,7 @@
 package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ProgressBar;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
@@ -19,6 +20,8 @@ import static com.spse.javamodsoptimiser.FileManager.renameFile;
 public class SoundOptimizer extends AsyncTask<Void, Object, Void> {
 
     WeakReference<MainActivity> activityWeakReference;
+    String frequency;
+    String bitrate;
 
     public SoundOptimizer(MainActivity activity){
         activityWeakReference = new WeakReference<>(activity);
@@ -29,6 +32,8 @@ public class SoundOptimizer extends AsyncTask<Void, Object, Void> {
 
         if(Setting.SKIP_SOUND_OPTIMIZATION)
             return null;
+
+        setQuality();
 
         //Parse arguments
         MinecraftMod mod = activityWeakReference.get().modStack.get(0);
@@ -44,12 +49,7 @@ public class SoundOptimizer extends AsyncTask<Void, Object, Void> {
             String oggPath = mod.getSoundPath(i);
             String minOggPath = oggPath.concat("-min.ogg");
 
-            if(Setting.SOUND_QUALITY.equals("Destructive")){
-                command = "-y -i '" + oggPath + "' -c:a libvorbis -b:a 36k -ac 1 -ar 26000 '" + minOggPath + "'";
-            }else {
-                command = "-y -i '" + oggPath + "' -c:a libvorbis -b:a 48k -ac 1 -ar 26000 '" + minOggPath + "'";
-            }
-
+            command = "-y -i '" + oggPath + "' -c:a libvorbis "+ bitrate +" -ac 1 "+ frequency +" '" + minOggPath + "'";
             FFmpeg.execute(command);
 
             try {
@@ -79,4 +79,37 @@ public class SoundOptimizer extends AsyncTask<Void, Object, Void> {
     protected void onPostExecute(Void aVoid) {
         activityWeakReference.get().launchAsyncTask(6);
     }
+
+    private void setQuality(){
+        switch (Setting.SOUND_QUALITY){
+            case "Destructive":
+                bitrate = "-b:a 36k";
+                frequency = "-ar 26000";
+                break;
+
+            case "Low":
+                bitrate = "-b:a 48k";
+                frequency = "-ar 26000";
+                break;
+
+            case "Medium":
+                bitrate = "-b:a 56k";
+                frequency = "-ar 38000";
+                break;
+
+            case "High":
+                bitrate = "-b:a 64k";
+                frequency = "-ar 38000";
+                break;
+
+            case "Very High":
+                bitrate = "-b:a 80k";
+                frequency = ""; //Native frequency which is likely 44100 KHz
+                break;
+
+            default:
+                Log.e("SET QUALITY", "Unable to set quality !");
+        }
+    }
+
 }
