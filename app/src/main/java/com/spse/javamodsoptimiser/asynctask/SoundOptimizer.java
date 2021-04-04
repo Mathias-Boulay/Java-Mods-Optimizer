@@ -7,6 +7,7 @@ import android.widget.ProgressBar;
 import com.arthenica.mobileffmpeg.FFmpeg;
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.R;
 import com.spse.javamodsoptimiser.setting.Setting;
 
 import java.io.IOException;
@@ -25,6 +26,11 @@ public class SoundOptimizer extends AsyncTask<Void, Object, Void> {
 
     public SoundOptimizer(MainActivity activity){
         activityWeakReference = new WeakReference<>(activity);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        activityWeakReference.get().setCurrentTaskTextView(activityWeakReference.get().getResources().getString(R.string.process_status_sound));
     }
 
     @Override

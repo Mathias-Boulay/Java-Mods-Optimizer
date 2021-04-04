@@ -5,6 +5,7 @@ import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.FileManager;
 import com.spse.javamodsoptimiser.MainActivity;
+import com.spse.javamodsoptimiser.R;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,6 +25,11 @@ public class FileUnzipper  extends AsyncTask<Void, Object, Void> {
 
     public FileUnzipper(MainActivity activity){
         activityWeakReference = new WeakReference<>(activity);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        activityWeakReference.get().setCurrentTaskTextView(activityWeakReference.get().getResources().getString(R.string.process_status_unzipping));
     }
 
     @Override

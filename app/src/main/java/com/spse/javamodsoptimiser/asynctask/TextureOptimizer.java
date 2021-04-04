@@ -7,6 +7,7 @@ import android.widget.ProgressBar;
 import com.nicdahlquist.pngquant.LibPngQuant;
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.R;
 import com.spse.javamodsoptimiser.setting.Setting;
 
 import java.io.File;
@@ -26,6 +27,11 @@ public class TextureOptimizer extends AsyncTask<Void, Object, Void> {
 
     public TextureOptimizer(MainActivity activity){
         activityWeakReference = new WeakReference<>(activity);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        activityWeakReference.get().setCurrentTaskTextView(activityWeakReference.get().getResources().getString(R.string.process_status_texture));
     }
 
     @Override

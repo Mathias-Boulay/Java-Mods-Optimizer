@@ -3,31 +3,14 @@
     <string name="Button_choose_file">Pick file</string>
     <string name="File_picked">File Picked:</string>
 
-    <string name="mod_info_title">Information:</string>
-    <string name="mod_info_name">Name: </string>
-    <string name="mod_info_minecraft_version">Made for: </string>
-    <string name="mod_info_version">Version: </string>
-    <string name="mod_info_texture_number">Textures: </string>
-    <string name="mod_info_sound_number">Sounds: </string>
-    <string name="mod_info_unknown">Unknown, wait for parsing…</string>
-
-    <string name="option_title">Options:</string>
-    <string name="option_delete_original">Delete original file</string>
-    <string name="option_really_low_quality">Make the mod even smaller (reduced quality)</string>
-    <string name="option_parallel_workload">Multi-Threaded workload (usually faster)</string>
-    <string name="option_remove_signature">Remove signature files</string>
-    <string name="options_remove_miscellaneous">Remove miscellaneous files</string>
-
-    <string name="process_status_title">Status:</string>
-    <string name="process_status_copying">Copying:</string>
-    <string name="process_status_unzipping">Unzipping:</string>
-    <string name="process_status_parsing">Parsing:</string>
-    <string name="process_status_texture">Textures:</string>
-    <string name="process_status_sound">Sounds:</string>
-    <string name="process_status_json">Minify:</string>
-    <string name="process_status_zipping">Repacking:</string>
-
-    <string name="text_output_optimizing">Optimizing </string>
+    <string name="process_status_none">none</string>
+    <string name="process_status_copying">copying</string>
+    <string name="process_status_unzipping">unzipping</string>
+    <string name="process_status_parsing">parsing</string>
+    <string name="process_status_texture">optimizing textures</string>
+    <string name="process_status_sound">optimizing sounds</string>
+    <string name="process_status_json">minifying</string>
+    <string name="process_status_zipping">repacking</string>
 
     <string name="dialog_illegal_path_title">Illegal path !</string>
     <string name="dialog_illegal_path_message">You can\'t take mods which are in the app folder !</string>

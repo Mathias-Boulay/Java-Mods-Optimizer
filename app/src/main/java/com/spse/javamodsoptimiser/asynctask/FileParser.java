@@ -5,6 +5,7 @@ import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.R;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -19,6 +20,11 @@ public class FileParser extends AsyncTask<Void, Object, Void> {
 
     public FileParser(MainActivity activity){
         activityWeakReference = new WeakReference<>(activity);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        activityWeakReference.get().setCurrentTaskTextView(activityWeakReference.get().getResources().getString(R.string.process_status_parsing));
     }
 
     FileFilter numberFilter = new FileFilter() {

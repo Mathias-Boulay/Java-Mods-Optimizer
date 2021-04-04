@@ -5,6 +5,7 @@ import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.R;
 import com.spse.javamodsoptimiser.setting.Setting;
 import com.whoischarles.util.json.Minify;
 
@@ -25,6 +26,10 @@ public class JsonMinifier extends AsyncTask<Void, Object, Void> {
         activityWeakReference = new WeakReference<>(activity);
     }
 
+    @Override
+    protected void onPreExecute() {
+        activityWeakReference.get().setCurrentTaskTextView(activityWeakReference.get().getResources().getString(R.string.process_status_json));
+    }
 
     @Override
     protected Void doInBackground(Void[] voids) {

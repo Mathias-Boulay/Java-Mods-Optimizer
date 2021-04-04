@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
 
-        android:text="Current task progress"
+        android:text="Current task progress:"
         android:textColor="@color/PrimaryText"
         android:textStyle="bold"
 
@@ -36,6 +36,21 @@
         app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appTitle" />
+
+    <TextView
+        android:id="@+id/currentTaskTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:paddingStart="5dp"
+
+        android:text="@string/process_status_none"
+        android:textColor="@color/PrimaryText"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toBottomOf="@+id/currentTaskTextView"
+        app:layout_constraintStart_toEndOf="@+id/currentTaskTextView"
+        app:layout_constraintTop_toTopOf="@+id/currentTaskTextView" />
 
     <ProgressBar
         android:id="@+id/currentTaskProgressBar"
@@ -102,6 +117,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.39" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="15dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/settingButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/optimizingModsTitle">
+
+        <LinearLayout
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
     <ImageButton
         android:id="@+id/addModButton"
         android:layout_width="wrap_content"
@@ -138,24 +171,6 @@
         app:layout_constraintVertical_bias="0.95"
         app:srcCompat="@drawable/ic_round_settings_24" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="15dp"
-        android:layout_marginVertical="15dp"
-
-        app:layout_constraintBottom_toTopOf="@+id/settingButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/optimizingModsTitle">
-
-        <LinearLayout
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
-
     <Button
         android:id="@+id/optimizeButton"
         android:layout_width="wrap_content"
@@ -176,6 +191,8 @@
         app:layout_constraintEnd_toStartOf="@+id/addModButton"
         app:layout_constraintStart_toEndOf="@+id/settingButton"
         app:layout_constraintTop_toTopOf="@+id/settingButton" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

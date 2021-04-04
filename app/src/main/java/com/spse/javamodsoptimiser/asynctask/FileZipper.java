@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 import com.spse.javamodsoptimiser.FileManager;
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.R;
 import com.spse.javamodsoptimiser.setting.Setting;
 
 import java.io.File;
@@ -28,6 +29,11 @@ public class FileZipper extends AsyncTask<Void, Object, Void> {
 
     public FileZipper(MainActivity activity){
         activityWeakReference = new WeakReference<>(activity);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        activityWeakReference.get().setCurrentTaskTextView(activityWeakReference.get().getResources().getString(R.string.process_status_zipping));
     }
 
     @Override
@@ -144,7 +150,9 @@ public class FileZipper extends AsyncTask<Void, Object, Void> {
         //Go for the next
         MainActivity activity = activityWeakReference.get();
         activity.modStack.remove(0);
+        activity.setTotalTaskProgress(7);
         activity.setWakelockState(false);
+        activityWeakReference.get().setCurrentTaskTextView(activityWeakReference.get().getResources().getString(R.string.process_status_none));
 
         activity.launchOptimization();
 

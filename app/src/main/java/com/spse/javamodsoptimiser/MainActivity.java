@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private PowerManager.WakeLock wakelock;
     private ImageButton filePickerBtn;
 
+    private TextView currentTaskTextView;
     private ProgressBar currentTaskProgressBar;
     private ProgressBar totalTaskProgressBar;
     private ProgressBar modItemProgressBar;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         settingDialog =  new Dialog(this);
         settingDialog.setContentView(R.layout.setting_layout);
 
+        currentTaskTextView = findViewById(R.id.currentTaskTextView2);
         currentTaskProgressBar = findViewById(R.id.currentTaskProgressBar);
         totalTaskProgressBar = findViewById(R.id.totalTaskProgressBar);
         modList = findViewById(R.id.listView);
@@ -227,10 +229,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "The async task launcher tried to launch a non-existing task ! (".concat(Integer.toString(step)).concat(")"),Toast.LENGTH_LONG).show();
                 return;
         }
-        setTotalTaskProgress(step);
+        setTotalTaskProgress(Math.max(0, step-1));
     }
-
-
 
     public void setWakelockState(boolean awake){
         if(awake){
@@ -345,11 +345,14 @@ public class MainActivity extends AppCompatActivity {
         currentTaskProgressBar.setProgress(progress, true);
     }
 
-    private void setTotalTaskProgress(int progress){
+    public void setTotalTaskProgress(int progress){
         totalTaskProgressBar.setProgress(progress, true);
         modItemProgressBar.setProgress(progress, true);
     }
 
+    public void setCurrentTaskTextView(String taskAtHand){
+        currentTaskTextView.setText(taskAtHand);
+    }
 
     public void launchOptimizationManually(View view) {
         launchOptimization();

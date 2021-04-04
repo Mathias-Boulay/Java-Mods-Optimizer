@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
+import com.spse.javamodsoptimiser.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +23,11 @@ public class FileCopier extends AsyncTask<Void, Object, Void> {
 
     public FileCopier(MainActivity activity){
         activityWeakReference = new WeakReference<>(activity);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        activityWeakReference.get().setCurrentTaskTextView(activityWeakReference.get().getResources().getString(R.string.process_status_copying));
     }
 
     protected Void doInBackground(Void... aVoid) {
