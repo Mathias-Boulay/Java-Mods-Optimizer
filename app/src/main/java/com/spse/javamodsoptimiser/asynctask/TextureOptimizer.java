@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
+import static com.spse.javamodsoptimiser.FileManager.compareFileSize;
 import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 import static com.spse.javamodsoptimiser.FileManager.renameFile;
@@ -51,13 +52,13 @@ public class TextureOptimizer extends AsyncTask<Void, Object, Void> {
             }
 
             //ONCE THE OPTIMISATION IS DONE
-            if (fileExists(mod.getTexturePath(i).concat("-min.png"))) {
-                removeFile(mod.getTexturePath(i));
-                try {
+            try {
+                if (compareFileSize(mod.getTexturePath(i), mod.getTexturePath(i).concat("-min.png"))) {
+                    removeFile(mod.getTexturePath(i));
                     renameFile(mod.getTexturePath(i).concat("-min.png"), mod.getTexturePath(i));
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             progress += increment;
             intProgress = Math.round(progress);

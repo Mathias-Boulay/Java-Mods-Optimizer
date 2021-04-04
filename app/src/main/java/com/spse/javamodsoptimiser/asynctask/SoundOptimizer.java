@@ -11,6 +11,7 @@ import com.spse.javamodsoptimiser.setting.Setting;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
+import static com.spse.javamodsoptimiser.FileManager.compareFileSize;
 import static com.spse.javamodsoptimiser.FileManager.fileExists;
 import static com.spse.javamodsoptimiser.FileManager.removeFile;
 import static com.spse.javamodsoptimiser.FileManager.renameFile;
@@ -31,6 +32,7 @@ public class SoundOptimizer extends AsyncTask<Void, Object, Void> {
 
         //Parse arguments
         MinecraftMod mod = activityWeakReference.get().modStack.get(0);
+
         
         float increment = 100f/mod.getSoundNumber();
         float progress = 0;
@@ -39,22 +41,24 @@ public class SoundOptimizer extends AsyncTask<Void, Object, Void> {
 
         for(int i=0; i < mod.getSoundNumber(); i++) {
             String command;
+            String oggPath = mod.getSoundPath(i);
+            String minOggPath = oggPath.concat("-min.ogg");
 
             if(Setting.SOUND_QUALITY.equals("Destructive")){
-                command = "-y -i '" + mod.getSoundPath(i) + "' -c:a libvorbis -b:a 36k -ac 1 -ar 26000 '" + mod.getSoundPath(i) + "-min.ogg'";
+                command = "-y -i '" + oggPath + "' -c:a libvorbis -b:a 36k -ac 1 -ar 26000 '" + minOggPath + "'";
             }else {
-                command = "-y -i '" + mod.getSoundPath(i) + "' -c:a libvorbis -b:a 48k -ac 1 -ar 26000 '" + mod.getSoundPath(i) + "-min.ogg'";
+                command = "-y -i '" + oggPath + "' -c:a libvorbis -b:a 48k -ac 1 -ar 26000 '" + minOggPath + "'";
             }
 
             FFmpeg.execute(command);
 
-            if (fileExists(mod.getSoundPath(i).concat("-min.ogg"))) {
-                removeFile(mod.getSoundPath(i));
-                try {
+            try {
+                if (compareFileSize(oggPath, minOggPath)) {
+                    removeFile(mod.getSoundPath(i));
                     renameFile(mod.getSoundPath(i).concat("-min.ogg"), mod.getSoundPath(i));
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             progress += increment;
             intProgress = Math.round(progress);
