@@ -1,6 +1,7 @@
 package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ProgressBar;
 
 import com.nicdahlquist.pngquant.LibPngQuant;
@@ -20,6 +21,8 @@ import static com.spse.javamodsoptimiser.FileManager.renameFile;
 public class TextureOptimizer extends AsyncTask<Void, Object, Void> {
 
     WeakReference<MainActivity> activityWeakReference;
+    int minQuality;
+    int maxQuality;
 
     public TextureOptimizer(MainActivity activity){
         activityWeakReference = new WeakReference<>(activity);
@@ -34,6 +37,8 @@ public class TextureOptimizer extends AsyncTask<Void, Object, Void> {
         //First parse the arguments
         MinecraftMod mod = activityWeakReference.get().modStack.get(0);
 
+        setQuality();
+
         float increment = 100f/mod.getTextureNumber();
         float progress = 0;
         int intProgress;
@@ -44,12 +49,7 @@ public class TextureOptimizer extends AsyncTask<Void, Object, Void> {
             File inputFile = new File(mod.getTexturePath(i));
             File outputFile = new File(mod.getTexturePath(i).concat("-min.png"));
 
-
-            if(Setting.TEXTURE_QUALITY.equals("Destructive")) { //TODO add more granularity and control over this shit
-                new LibPngQuant().pngQuantFile(inputFile, outputFile, 0, 65);
-            }else{
-                new LibPngQuant().pngQuantFile(inputFile, outputFile, 45, 85);
-            }
+            new LibPngQuant().pngQuantFile(inputFile, outputFile, minQuality, maxQuality);
 
             //ONCE THE OPTIMISATION IS DONE
             try {
@@ -71,11 +71,46 @@ public class TextureOptimizer extends AsyncTask<Void, Object, Void> {
     @Override
     protected void onProgressUpdate(Object... argument) {
         activityWeakReference.get().setCurrentTaskProgress((int)argument[0]);
-
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
        activityWeakReference.get().launchAsyncTask(5);
+    }
+
+    private void setQuality(){
+        switch (Setting.TEXTURE_QUALITY){
+            case "Very High":
+                maxQuality = 100;
+                minQuality = 85;
+                break;
+
+            case "High":
+                maxQuality = 90;
+                minQuality = 75;
+                break;
+
+            case "Medium":
+                maxQuality = 80;
+                minQuality = 60;
+                break;
+
+            case "Low":
+                maxQuality = 65;
+                minQuality = 45;
+                break;
+
+            case "Destructive":
+                maxQuality = 45;
+                minQuality = 0;
+                break;
+
+            default:
+                Log.e("SET_QUALITY","Failed to get quality setting !");
+        }
+
+        if(Setting.LENIENT_TEXTURE_QUALITY_CHECK){
+            minQuality = 0;
+        }
     }
 }
