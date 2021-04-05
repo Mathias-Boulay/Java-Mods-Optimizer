@@ -55,7 +55,7 @@ public class TextureOptimizer extends AsyncTask<Void, Object, Void> {
             File inputFile = new File(mod.getTexturePath(i));
             File outputFile = new File(mod.getTexturePath(i).concat("-min.png"));
 
-            new LibPngQuant().pngQuantFile(inputFile, outputFile, minQuality, maxQuality);
+            new LibPngQuant().pngQuantFile(inputFile, outputFile, minQuality, maxQuality, 1, 0.5f);
 
             //ONCE THE OPTIMISATION IS DONE
             try {
