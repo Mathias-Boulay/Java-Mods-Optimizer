@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -115,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
     public void ShowFilePicker(){
         //Prep: Create custom filter
         List<String> filters = Arrays.asList("zip","jar");
+        StorageChooser.Theme theme = new StorageChooser.Theme(this);
+        theme.setScheme(getResources().getIntArray(R.array.paranoid_theme));
 
         // 1. Initialize dialog
         final StorageChooser chooser = new StorageChooser.Builder()
@@ -124,7 +127,9 @@ public class MainActivity extends AppCompatActivity {
                 .allowCustomPath(true)
                 .setType(StorageChooser.FILE_PICKER)
                 .customFilter(filters)
-                .setDialogTitle("Choose some mods (.zip/.jar)")
+                .setDialogTitle(getResources().getString(R.string.file_picker_choice))
+                .setTheme(theme)
+
 
 
 
