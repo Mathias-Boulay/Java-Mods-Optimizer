@@ -60,8 +60,10 @@ public class SoundOptimizer extends AsyncTask<Void, Object, Void> {
 
             try {
                 if (compareFileSize(oggPath, minOggPath)) {
-                    removeFile(mod.getSoundPath(i));
-                    renameFile(mod.getSoundPath(i).concat("-min.ogg"), mod.getSoundPath(i));
+                    removeFile(oggPath);
+                    renameFile(minOggPath, oggPath);
+                }else{
+                    removeFile(minOggPath);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

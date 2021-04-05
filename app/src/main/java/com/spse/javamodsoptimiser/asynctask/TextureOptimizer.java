@@ -62,6 +62,8 @@ public class TextureOptimizer extends AsyncTask<Void, Object, Void> {
                 if (compareFileSize(mod.getTexturePath(i), mod.getTexturePath(i).concat("-min.png"))) {
                     removeFile(mod.getTexturePath(i));
                     renameFile(mod.getTexturePath(i).concat("-min.png"), mod.getTexturePath(i));
+                }else{
+                    removeFile(mod.getTexturePath(i).concat("-min.png"));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
