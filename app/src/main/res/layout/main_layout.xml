@@ -10,7 +10,7 @@
         android:id="@+id/appTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Minecraft Java Mods Optimizer"
+        android:text="@string/extended_app_name"
         android:textStyle="bold"
         android:textColor="@color/PrimaryText"
         android:textSize="20sp"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
 
-        android:text="Current task progress:"
+        android:text="@string/process_current_task_progress"
         android:textColor="@color/PrimaryText"
         android:textStyle="bold"
 
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="104dp"
 
-        android:text="Total task progress"
+        android:text="@string/process_total_task_progress"
         android:textColor="@color/PrimaryText"
         android:textStyle="bold"
 
@@ -105,7 +105,7 @@
         android:id="@+id/optimizingModsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mods to optimize:"
+        android:text="@string/modList_title"
         android:textColor="@color/PrimaryText"
         android:textSize="20sp"
 
@@ -183,7 +183,7 @@
         android:onClick="launchOptimizationManually"
 
 
-        android:text="OPTIMIZE !"
+        android:text="@string/optimize_button"
         android:letterSpacing="0.25"
         android:textSize="16sp"
 
