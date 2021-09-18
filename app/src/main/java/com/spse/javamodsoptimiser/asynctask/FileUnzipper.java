@@ -1,7 +1,8 @@
 package com.spse.javamodsoptimiser.asynctask;
 
+import static com.spse.javamodsoptimiser.setting.Setting.TEMP_PATH;
+
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.FileManager;
 import com.spse.javamodsoptimiser.MainActivity;
@@ -16,8 +17,6 @@ import java.lang.ref.WeakReference;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
 public class FileUnzipper  extends AsyncTask<Void, Object, Void> {
 
@@ -86,7 +85,7 @@ public class FileUnzipper  extends AsyncTask<Void, Object, Void> {
                         .getInputStream(entry));
                 int currentByte;
                 // establish buffer for writing file
-                byte data[] = new byte[BUFFER];
+                byte[] data = new byte[BUFFER];
 
                 // write the current file to disk
                 FileOutputStream fos = new FileOutputStream(destFile);

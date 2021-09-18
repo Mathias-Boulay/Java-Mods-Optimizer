@@ -1,6 +1,7 @@
 package com.spse.javamodsoptimiser.asynctask;
 
-import android.app.Activity;
+import static com.spse.javamodsoptimiser.setting.Setting.TEMP_PATH;
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -9,13 +10,10 @@ import com.spse.javamodsoptimiser.MinecraftMod;
 import com.spse.javamodsoptimiser.R;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
-
-import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
 public class FileCopier extends AsyncTask<Void, Object, Void> {
 
@@ -48,7 +46,7 @@ public class FileCopier extends AsyncTask<Void, Object, Void> {
             if (!dir.exists()){dir.mkdirs();}
 
 
-            in = new FileInputStream(mod.getFolder() + mod.getFullName());
+            in = mod.getInputStream();
             out = new FileOutputStream(TEMP_PATH + mod.getFullName());
 
             byte[] buffer = new byte[1024];

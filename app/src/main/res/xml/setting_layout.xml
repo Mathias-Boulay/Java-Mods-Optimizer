@@ -64,14 +64,6 @@
     <PreferenceCategory android:title="@string/setting_category_misc" app:iconSpaceReserved="false">
         <SwitchPreference
             android:defaultValue="false"
-            android:key="remove_original_file"
-            android:title="@string/setting_title_remove_original_file"
-            android:summaryOn="@string/setting_subtitle_remove_original_file_on"
-            android:summaryOff="@string/setting_subtitle_remove_original_file_off"
-            app:iconSpaceReserved="false"
-            />
-        <SwitchPreference
-            android:defaultValue="false"
             android:key="remove_signature_files"
             android:title="@string/setting_title_remove_signature_file"
             android:summaryOn="@string/setting_subtitle_remove_signature_files_on"

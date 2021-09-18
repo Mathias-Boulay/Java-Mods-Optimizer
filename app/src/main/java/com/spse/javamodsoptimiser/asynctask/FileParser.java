@@ -1,17 +1,15 @@
 package com.spse.javamodsoptimiser.asynctask;
 
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
 import com.spse.javamodsoptimiser.R;
+import com.spse.javamodsoptimiser.setting.Setting;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.lang.ref.WeakReference;
-
-import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
 
 public class FileParser extends AsyncTask<Void, Object, Void> {
 
@@ -101,7 +99,7 @@ public class FileParser extends AsyncTask<Void, Object, Void> {
         mod = activityWeakReference.get().modStack.get(0);
 
         //First count how many textures and sounds we have
-        walk(TEMP_PATH, numberFilter);
+        walk(Setting.TEMP_PATH, numberFilter);
 
         publishProgress(50);
 
@@ -113,7 +111,7 @@ public class FileParser extends AsyncTask<Void, Object, Void> {
         mod.folderPath = new String[mod.folderNumber];
 
         //Then store those files path
-        walk(TEMP_PATH, fileFilter);
+        walk(Setting.TEMP_PATH, fileFilter);
 
         publishProgress(100);
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/mod_item_background"
-    android:layout_margin="15dp"
+    android:layout_marginBottom="8dp"
     android:foreground="@drawable/ripple_circle">
 
     <androidx.constraintlayout.widget.Guideline
@@ -80,16 +80,32 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="6dp"
         android:alpha="100"
         android:indeterminate="false"
         android:max="7"
         android:progress="0"
-
 
         android:progressDrawable="@drawable/round_progress_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineRight"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/shareModButton"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_share_24"
+        android:scaleType="fitCenter"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineRight"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,15 @@
 package com.spse.javamodsoptimiser.asynctask;
 
+import static com.spse.javamodsoptimiser.setting.Setting.OUTPUT_PATH;
+import static com.spse.javamodsoptimiser.setting.Setting.REMOVE_SIGNATURE_FILES;
+import static com.spse.javamodsoptimiser.setting.Setting.TEMP_PATH;
+
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
 
 import com.spse.javamodsoptimiser.FileManager;
 import com.spse.javamodsoptimiser.MainActivity;
 import com.spse.javamodsoptimiser.MinecraftMod;
 import com.spse.javamodsoptimiser.R;
-import com.spse.javamodsoptimiser.setting.Setting;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,11 +18,6 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import static com.spse.javamodsoptimiser.MainActivity.OUT_PATH;
-import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
-import static com.spse.javamodsoptimiser.setting.Setting.REMOVE_ORIGINAL_FILE;
-import static com.spse.javamodsoptimiser.setting.Setting.REMOVE_SIGNATURE_FILES;
 
 
 public class FileZipper extends AsyncTask<Void, Object, Void> {
@@ -38,18 +35,13 @@ public class FileZipper extends AsyncTask<Void, Object, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-
         repackMod(activityWeakReference.get().modStack.get(0));
-
-
-
         return null;
     }
 
     private void repackMod(MinecraftMod mod){
         //First step is to create I/O streams
-        String zipFile = OUT_PATH.concat(mod.getFullName());
-
+        String zipFile = OUTPUT_PATH.concat(mod.getFullName());
 
         int fileNumber = mod.getOtherFileNumber() + mod.getJsonNumber() + mod.getTextureNumber() + mod.getSoundNumber();
         float progress = 0;
@@ -57,7 +49,6 @@ public class FileZipper extends AsyncTask<Void, Object, Void> {
 
         try {
             FileOutputStream fos = new FileOutputStream(zipFile);
-
             ZipOutputStream zos = new ZipOutputStream(fos);
 
             //Add all files
@@ -107,9 +98,6 @@ public class FileZipper extends AsyncTask<Void, Object, Void> {
         }
 
 
-        if(REMOVE_ORIGINAL_FILE){
-            FileManager.removeFile(mod.getFolder() + mod.getFullName());
-        }
 
     }
 
@@ -149,11 +137,12 @@ public class FileZipper extends AsyncTask<Void, Object, Void> {
     protected void onPostExecute(Void aVoid) {
         //Go for the next
         MainActivity activity = activityWeakReference.get();
-        activity.modStack.remove(0);
+
         activity.setTotalTaskProgress(7);
-        activity.setWakelockState(false);
+        activity.setModDone();
         activityWeakReference.get().setCurrentTaskTextView(activityWeakReference.get().getResources().getString(R.string.process_status_none));
 
+        activity.modStack.remove(0);
         activity.launchOptimization();
 
     }

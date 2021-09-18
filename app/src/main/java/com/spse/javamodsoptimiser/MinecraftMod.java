@@ -1,24 +1,24 @@
 package com.spse.javamodsoptimiser;
 
+import static com.spse.javamodsoptimiser.setting.Setting.OUTPUT_PATH;
+
+import android.net.Uri;
+
 import java.io.File;
+import java.io.InputStream;
 
 public class MinecraftMod{
     //Interact with outside the class
     private String name;
     private String extension;
     private long sizeInBytes; //Size of the UNoptimized archive
-    private String fileFolder; //Folder where the file is stored
+    private InputStream inputStream; //ContentResolver data when a file is picked.
 
-    MinecraftMod(String filePath){
-        int index = filePath.length()-1;
-        while (!(filePath.charAt(index) == "/".charAt(0))){
-            index --;
-        }
-
-        this.fileFolder = filePath.substring(0,index+1);
-        this.name = filePath.substring(index+1,filePath.length()-4);
-        this.extension = filePath.substring(filePath.length()-4);
-        this.sizeInBytes = new File(filePath).length();
+    MinecraftMod(String name, String extension, long sizeInBytes, InputStream inputStream){
+        this.inputStream = inputStream;
+        this.sizeInBytes = sizeInBytes;
+        this.extension = extension;
+        this.name = name;
     }
 
     public int textureNumber = 0;
@@ -70,8 +70,8 @@ public class MinecraftMod{
     public String getFullName(){
         return name.concat(extension);
     }
-    public String getFolder(){
-        return fileFolder;
+    public InputStream getInputStream(){
+        return inputStream;
     }
     public int getOtherFileNumber(){return otherFileNumber;}
     public String getOtherFilePath(int index){
@@ -83,5 +83,12 @@ public class MinecraftMod{
     public int getJsonNumber(){return jsonNumber;}
     public String getJsonPath(int index) {
         return jsonPath[index];
+    }
+
+    /**
+     * @return Where the optimized version of the mod is supposed to be
+     */
+    public String getOutputPath(){
+        return OUTPUT_PATH + name + extension;
     }
 }

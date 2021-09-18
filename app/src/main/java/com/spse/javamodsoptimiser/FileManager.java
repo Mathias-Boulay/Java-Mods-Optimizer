@@ -1,15 +1,20 @@
 package com.spse.javamodsoptimiser;
 
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import java.io.File;
 import java.io.IOException;
 
-import static com.spse.javamodsoptimiser.MainActivity.TEMP_PATH;
-
+/**
+ * Class for everything related to interacting with files
+ */
 public class FileManager {
-    //Class related to everything related to files
-
 
     public static boolean removeFile(String inputPath, String inputFile){
         return removeFile(inputPath + inputFile);
@@ -50,15 +55,9 @@ public class FileManager {
     public static boolean createFolder(String absolutePathToFolder){
         File file = new File(absolutePathToFolder);
         if(!file.exists()){
-            return file.mkdir();
+            return file.mkdirs();
         }
         return true;
-    }
-
-    public static void removeLeftOvers(){
-        //Remove anything within the TEMP_PATH
-
-        walkAndRemove(TEMP_PATH);
     }
 
     public static boolean compareFileSize(String fileOne, String fileTwo) throws IOException {
@@ -75,8 +74,11 @@ public class FileManager {
         return file1.length() > file2.length();
     }
 
-    private static void walkAndRemove(String path) {
-
+    /**
+     * Remove everything inside a folder. Works recursively.
+     * @param path The path to start from.
+     */
+    public static void removeEverything(String path) {
         File root = new File(path);
         File[] list = root.listFiles();
 
@@ -84,14 +86,59 @@ public class FileManager {
 
         for (File f : list) {
             if (f.isDirectory()) {
-                walkAndRemove(f.getAbsolutePath());
-            }else{
-                removeFile(f.getAbsolutePath());
-                return;
+                removeEverything(f.getAbsolutePath());
             }
-            removeFile(f.getAbsolutePath());
+            f.delete();
         }
     }
 
+    /**
+     * Tries to get an Uri from the various sources
+     */
+    public static Uri[] getUriData(Intent intent){
+        Uri[] mUriData = new Uri[]{intent.getData()};
+        if(mUriData[0] != null) return mUriData;
+        try {
+            mUriData = new Uri[intent.getClipData().getItemCount()];
+            for(int i=0; i < mUriData.length; ++i){
+                mUriData[i] = intent.getClipData().getItemAt(i).getUri();
+            }
+        }catch (Exception ignored){}
+        return mUriData;
+    }
+
+    /**
+     * Extract the file name from an Uri
+     * @param ctx Context
+     * @param uri The Uri to extract from
+     * @return The file name
+     */
+    public static String getFileName(Context ctx, Uri uri){
+        Cursor returnCursor =
+                ctx.getContentResolver().query(uri, null, null, null, null);
+
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        String fileName = returnCursor.getString(nameIndex);
+        returnCursor.close();
+        return fileName;
+    }
+
+    /**
+     * Extract the file size from an Uri
+     * @param ctx Context
+     * @param uri The Uri to extract from
+     * @return The file name
+     */
+    public static long getFileSize(Context ctx, Uri uri){
+        Cursor returnCursor =
+                ctx.getContentResolver().query(uri, null, null, null, null);
+
+        int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+        returnCursor.moveToFirst();
+        long fileSize = returnCursor.getLong(sizeIndex);
+        returnCursor.close();
+        return fileSize;
+    }
 
 }

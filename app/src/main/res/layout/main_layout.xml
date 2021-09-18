@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_gradiant"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -127,7 +128,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/optimizingModsTitle">
-
         <LinearLayout
             android:id="@+id/listView"
             android:layout_width="match_parent"
@@ -135,10 +135,10 @@
             android:orientation="vertical" />
     </ScrollView>
 
-    <ImageButton
+    <Button
         android:id="@+id/addModButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
 
         android:background="@drawable/rounded_background"
         android:foreground="@drawable/ripple_circle"
@@ -149,10 +149,19 @@
         app:layout_constraintHorizontal_bias="0.90"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95"
-        app:srcCompat="@drawable/ic_round_add_24" />
+        app:layout_constraintVertical_bias="0.95" />
 
-    <ImageButton
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_round_add_24"
+        android:translationZ="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/addModButton"
+        app:layout_constraintEnd_toEndOf="@+id/addModButton"
+        app:layout_constraintStart_toStartOf="@+id/addModButton"
+        app:layout_constraintTop_toTopOf="@+id/addModButton" />
+
+    <Button
         android:id="@+id/settingButton"
         android:layout_width="68dp"
         android:layout_height="68dp"
@@ -162,20 +171,30 @@
         android:background="@drawable/rounded_background"
         android:foreground="@drawable/ripple_circle"
 
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.10"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95"
-        app:srcCompat="@drawable/ic_round_settings_24" />
+        app:layout_constraintVertical_bias="0.95" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_round_settings_24"
+        android:translationZ="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/settingButton"
+        app:layout_constraintEnd_toEndOf="@+id/settingButton"
+        app:layout_constraintStart_toStartOf="@+id/settingButton"
+        app:layout_constraintTop_toTopOf="@+id/settingButton" />
 
     <Button
         android:id="@+id/optimizeButton"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:paddingHorizontal="16dp"
+
 
         android:background="@drawable/rounded_background"
         android:foreground="@drawable/ripple_circle"

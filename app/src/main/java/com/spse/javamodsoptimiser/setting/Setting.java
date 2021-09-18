@@ -7,8 +7,10 @@ import androidx.preference.PreferenceManager;
 
 public class Setting {
     public static SharedPreferences DEFAULT_PREF;
+    public static String APPLICATION_PATH;
+    public static String OUTPUT_PATH;
+    public static String TEMP_PATH;
 
-    public static boolean REMOVE_ORIGINAL_FILE = false;
     public static boolean REMOVE_SIGNATURE_FILES = false;
 
     public static boolean SKIP_TEXTURE_OPTIMIZATION = false;
@@ -21,7 +23,6 @@ public class Setting {
 
 
     public static void loadSettings(){
-        REMOVE_ORIGINAL_FILE = DEFAULT_PREF.getBoolean("remove_original_file", false);
         REMOVE_SIGNATURE_FILES = DEFAULT_PREF.getBoolean("remove_signature_files", false);
 
         SKIP_TEXTURE_OPTIMIZATION = DEFAULT_PREF.getBoolean("skip_texture", false);
@@ -35,7 +36,12 @@ public class Setting {
 
     public static void initializeSettings(Context ctx){
         DEFAULT_PREF = PreferenceManager.getDefaultSharedPreferences(ctx);
+        APPLICATION_PATH = ctx.getExternalFilesDir(null).getAbsolutePath();
+        OUTPUT_PATH = APPLICATION_PATH + "/OUTPUT/";
+        TEMP_PATH = APPLICATION_PATH + "/TEMP/";
+
         loadSettings();
     }
+
 
 }
