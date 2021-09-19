@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         Setting.initializeSettings(this);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
 
         //Create folders used by the app:
         createFolder(TEMP_PATH);

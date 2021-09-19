@@ -2,7 +2,7 @@
 <resources>
     <color name="PrimaryLight">#DCEDC8</color>
     <color name="Primary">#8BC34A</color>
-    <color name="PrimaryDark">#689F38</color>
+    <color name="PrimaryDark">@android:color/transparent</color>
 
     <color name="PrimaryText">#FFFFFF</color>
     <color name="SecondaryText">#7F8185</color>
@@ -11,9 +11,9 @@
 
     <color name="Accent">#EC4D4B</color>
 
-    <color name="Background">#1C1F24</color>
+    <color name="Background">#28313b</color>
 
-    <color name="ModBackground">#353A43</color>
+    <color name="ModBackground">#485461</color>
 
     <color name="RippleColor">#40FFFFFF</color>
 </resources>

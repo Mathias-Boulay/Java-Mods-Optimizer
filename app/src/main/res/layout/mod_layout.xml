@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     android:background="@drawable/mod_item_background"
-    android:layout_marginBottom="8dp"
+    android:elevation="7dp"
     android:foreground="@drawable/ripple_circle">
 
     <androidx.constraintlayout.widget.Guideline
@@ -48,32 +49,30 @@
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
+        android:paddingStart="2dp"
 
+        android:singleLine="true"
         android:text="MOD NAME PLACEHOLDER"
         android:textColor="@color/PrimaryText"
         android:textStyle="bold"
-        android:singleLine="true"
 
 
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/modDetails"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft" />
 
     <TextView
         android:id="@+id/modDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="6dp"
+        android:paddingStart="2dp"
 
         android:text="SIZE PLACEHOLDER"
         android:textColor="@color/SecondaryText"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/modTitle" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.62" />
 
     <ProgressBar
         android:id="@+id/modProgress"
@@ -94,18 +93,18 @@
 
     <ImageButton
         android:id="@+id/shareModButton"
-        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="5dp"
-
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_baseline_share_24"
+
         android:scaleType="fitCenter"
+        android:src="@drawable/ic_baseline_share_24"
+        android:visibility="gone"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineRight"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
