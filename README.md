@@ -13,9 +13,8 @@ This application is a simple way to optimize Minecraft java mods size (and perfo
 This tool lowers the requirements for playing Minecraft modpacks:
 
  - **Memory usage is lowered**, since files are smaller. It allows for faster startup times.
- - CPU usage when playing sounds, accessing images and sounds is **lowered**.
- - VRAM usage is **lowered** due to smaller file size. (If you are using integrated graphics, the RAM is used as VRAM)
- - **Increase on FPS on integrated graphics** due to lower RAM bandwidth being taken by textures.
+ - CPU usage when playing sounds, accessing images and sounds can be **lowered**.
+ - VRAM usage can be **lowered** due to smaller file size. (If you are using integrated graphics, the RAM is used as VRAM)
 
 # Should I use this awesome optimizer ?
 **Yes**, I personally use this in **all my modpacks** to allow them **to run on my lower-end hardware** (limited RAM, integrated graphics...).
@@ -31,19 +30,10 @@ Same story for the sounds, all of them are stored at the .OGG format using the V
 Some more recent mods make heavy use of JSON files, those can be trimmed down as well.
 
 # How to use the app ?
-
-Upon opening the application, you will encounter the main (and only) menu of the app.
-
- - Two options are already activated, as they are the recommended setting
- - Click on the " **+** " button
- - Select your Minecraft mod
- - Wait for the process to complete !
- - **Enjoy !** 
+Launch it, you'll quicky see.
  
 *Note*: 
 - You can see the progression of each steps with the various progress bars.
-
-- All optimized mods are in the internal storage>Mods Optimizer>OUTPUT
 
 
 # Credits
@@ -58,7 +48,6 @@ And of course, thanks to all contributors of all of those projects !
 
 # Building the app
 I'm developing **on Linux** *(lubuntu if you're curious)* so I don't know if it will work on Mac OS, and it **does not work on Windows**
-I did not test it, but I'm fairly sure you can just clone the repository, open the android studio project on run the app, libs are pre-compiled.
 
 ## Things I should do that I surely won't.
 
