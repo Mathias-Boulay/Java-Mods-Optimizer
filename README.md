@@ -23,7 +23,7 @@ The android application lowers the requirements for playing Minecraft modpacks:
 However, you should consider some other optimizations before doing using this tool, such as:
  - Remove useless mods
  - Tweak config files
- - Use performance-enhancing mods, like [Sodium](https://www.curseforge.com/minecraft/mc-mods/sodium), [Lithium](https://www.curseforge.com/minecraft/mc-mods/lithium), and [Starlight](https://www.curseforge.com/minecraft/mc-mods/starlight)
+ - Use [performance-enhancing mods](https://github.com/NordicGamerFE/usefulmods)
  - Using the latest java for your minecraft version
  - And other miscilanious Windows 10 Optimizations (you can find plenty of guides online)
 
