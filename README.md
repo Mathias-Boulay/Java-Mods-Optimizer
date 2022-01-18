@@ -25,7 +25,7 @@ However, you should consider some other optimizations before doing using this to
  - Tweak config files
  - Use [performance-enhancing mods](https://github.com/NordicGamerFE/usefulmods)
  - Using the latest java for your minecraft version
- - And other miscilanious Windows 10 Optimizations (you can find plenty of guides online)
+ - And other miscellaneous Windows 10 Optimizations (you can find plenty of guides online)
 
 ## Nice! How does it work?
 First, almost all textures in Minecraft Java mods use the `.PNG` format. This tool uses the fantastic PNGQuant software to optimize all textures.
